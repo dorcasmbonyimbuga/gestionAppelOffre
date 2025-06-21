@@ -2,6 +2,11 @@
 // fichier : update.php
 require '../bd/conbd.php';
 
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
+// file_put_contents('log_post.txt', print_r($_POST, true));
+
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if (isset($_POST['table'])) {
         $table = $_POST['table'];

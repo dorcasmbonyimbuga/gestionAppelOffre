@@ -2,7 +2,7 @@
 <div class="modal fade" id="modalFournisseur" tabindex="-1" aria-labelledby="modalFournisseurLabel" aria-hidden="true">
   <div class="modal-dialog">
     <div class="modal-content">
-      <form id="formFournisseur">
+      <form id="formFournisseur" name="formFournisseur">
         <div class="modal-header">
           <h5 class="modal-title" id="modalFournisseurLabel">Ajouter / Modifier Fournisseur</h5>
           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fermer"></button>
@@ -66,8 +66,8 @@
           <input type="hidden" name="idEta" id="idEta">
 
           <div class="mb-3">
-            <label for="refFournisseur" class="form-label">Fournisseur (Réf)</label>
-            <input type="text" class="form-control" name="refFournisseur" id="refFournisseur" required>
+            <label for="refFournisseurEtat" class="form-label">Fournisseur (Réf)</label>
+            <input type="text" class="form-control" name="refFournisseurEtat" id="refFournisseurEtat" required>
           </div>
 
           <div class="mb-3">
@@ -104,8 +104,8 @@
           <input type="hidden" name="idCategorie" id="idCategorie">
 
           <div class="mb-3">
-            <label for="designation" class="form-label">Désignation</label>
-            <input type="text" class="form-control" name="designation" id="designation" required>
+            <label for="designationCat" class="form-label">Désignation</label>
+            <input type="text" class="form-control" name="designationCat" id="designationCat" required>
           </div>
         </div>
         <div class="modal-footer">
@@ -137,8 +137,8 @@
           </div>
 
           <div class="mb-3">
-            <label for="PU" class="form-label">Prix Unitaire</label>
-            <input type="number" step="0.01" class="form-control" name="PU" id="PU" required>
+            <label for="PUProduit" class="form-label">Prix Unitaire</label>
+            <input type="number" step="0.01" class="form-control" name="PUProduit" id="PUProduit" required>
           </div>
 
           <div class="mb-3">
@@ -178,8 +178,8 @@
           <input type="hidden" name="idDetail" id="idDetail">
 
           <div class="mb-3">
-            <label for="refEtat" class="form-label">Réf. État de Besoin</label>
-            <input type="text" class="form-control" name="refEtat" id="refEtat" required>
+            <label for="refEtatDetail" class="form-label">Réf. État de Besoin</label>
+            <input type="text" class="form-control" name="refEtatDetail" id="refEtatDetail" required>
           </div>
 
           <div class="mb-3">
@@ -221,13 +221,13 @@
           <input type="hidden" name="idAppel" id="idAppel">
 
           <div class="mb-3">
-            <label for="refEtat" class="form-label">Réf. État de Besoin</label>
-            <input type="text" class="form-control" name="refEtat" id="refEtat" required>
+            <label for="refEtatAppel" class="form-label">Réf. État de Besoin</label>
+            <input type="text" class="form-control" name="refEtatAppel" id="refEtatAppel" required>
           </div>
 
           <div class="mb-3">
-            <label for="date" class="form-label">Date de l'appel</label>
-            <input type="date" class="form-control" name="date" id="date" required>
+            <label for="datePub" class="form-label">Date de l'appel</label>
+            <input type="date" class="form-control" name="datePub" id="datePub" required>
           </div>
 
           <div class="mb-3">
@@ -236,8 +236,8 @@
           </div>
 
           <div class="mb-3">
-            <label for="autres" class="form-label">Autres informations</label>
-            <textarea class="form-control" name="autres" id="autres" rows="2"></textarea>
+            <label for="autresInfo" class="form-label">Autres informations</label>
+            <textarea class="form-control" name="autresInfo" id="autresInfo" rows="2"></textarea>
           </div>
         </div>
         <div class="modal-footer">
@@ -269,8 +269,8 @@
           </div>
 
           <div class="mb-3">
-            <label for="refFournisseur" class="form-label">Réf. Fournisseur</label>
-            <input type="text" class="form-control" name="refFournisseur" id="refFournisseur" required>
+            <label for="refFournisseurCandidat" class="form-label">Réf. Fournisseur</label>
+            <input type="text" class="form-control" name="refFournisseurCandidat" id="refFournisseurCandidat" required>
           </div>
 
           <div class="mb-3">
@@ -279,8 +279,8 @@
           </div>
 
           <div class="mb-3">
-            <label for="date" class="form-label">Date de candidature</label>
-            <input type="date" class="form-control" name="date" id="date">
+            <label for="dateCandidature" class="form-label">Date de candidature</label>
+            <input type="date" class="form-control" name="dateCandidature" id="dateCandidature">
           </div>
 
           <div class="mb-3">

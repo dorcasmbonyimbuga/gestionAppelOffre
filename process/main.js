@@ -35,61 +35,76 @@ $(document).ready(function() {
     $(`#${modalId}`).modal('show');
   });
 
-  // Ouvrir modal pour édition (charger données)
-  $(document).on('click', '.btn-edit', function() {
-    const modalId = $(this).data('modal');
-    const table = $(this).data('table');
-    const id = $(this).data('id');
-    const form = $(`#${modalId} form`)[0];
-    $(form).find('input, select, textarea').val('');
+// Ouvrir modal pour édition (charger données)
+$(document).on('click', '.btn-edit', function() {
+  const modalId = $(this).data('modal');
+  const table = $(this).data('table');
+  const id = $(this).data('id');
+  const form = $(`#${modalId} form`)[0];
 
-    $.post('../process/fetch.php', {table: table, id: id}, function(data) {
-      if (data) {
-        for (const key in data) {
-          $(`#${modalId} [name="${key}"]`).val(data[key]);
-        }
-        $(`#${modalId}`).modal('show');
-      } else {
-        showMessage('Erreur chargement données.', 'danger');
+  // 1. Vider les champs du formulaire
+  $(form).find('input, select, textarea').val('');
+
+  // ✅ 2. Remettre la valeur du champ "table" correctement
+  $(form).find('input[name="table"]').val(table);
+
+  // 3. Charger les données depuis la base
+  $.post('../process/fetch.php', {table: table, id: id}, function(data) {
+    if (data) {
+      // 4. Remplir les champs avec les données reçues
+      for (const key in data) {
+        $(`#${modalId} [name="${key}"]`).val(data[key]);
       }
-    }, 'json').fail(() => {
-      showMessage('Erreur serveur.', 'danger');
-    });
+
+      // 5. Afficher le modal
+      $(`#${modalId}`).modal('show');
+    } else {
+      showMessage('Erreur chargement données.', 'danger');
+    }
+  }, 'json').fail(() => {
+    showMessage('Erreur serveur.', 'danger');
   });
+});
+
+
 
   // Gestion soumission formulaire (insert ou update)
   $(document).on('submit', 'form', function(e) {
-    e.preventDefault();
-    const form = this;
-    const modal = $(form).closest('.modal');
-    const table = $(form).find('input[name="table"]').val();
-    let url = '../process/insert.php';
+  e.preventDefault();
+  const form = this;
+  const modal = $(form).closest('.modal');
+  const table = $(form).find('input[name="table"]').val();
+  let url = '../process/insert.php';
 
-    const idFields = $(form).find('input[type=hidden]').filter(function() {
-      return this.name.startsWith('id') && $(this).val() !== '';
-    });
-    if (idFields.length > 0) {
-      url = '../process/update.php';
-    }
-
-    $.ajax({
-      url: url,
-      method: 'POST',
-      data: $(form).serialize(),
-      success: function(resp) {
-        if (resp.trim() === 'success') {
-          showMessage('Opération réussie.');
-          modal.modal('hide');
-          loadTable(table);
-        } else {
-          showMessage('Erreur lors de l\'opération.', 'danger');
-        }
-      },
-      error: function() {
-        showMessage('Erreur serveur.', 'danger');
-      }
-    });
+  const idFields = $(form).find('input[type=hidden]').filter(function() {
+    return this.name.startsWith('id') && $(this).val() !== '';
   });
+
+  if (idFields.length > 0) {
+    url = '../process/update.php';
+  }
+
+  $.ajax({
+    url: url,
+    method: 'POST',
+    data: $(form).serialize(),
+    success: function(resp) {
+      console.log('Réponse du serveur:', resp);
+      if (resp.trim() === 'success') {
+        showMessage('Opération réussie.');
+        modal.modal('hide');
+        loadTable(table);
+      } else {
+        showMessage('Erreur lors de l\'opération: ' + resp, 'danger');
+      }
+    },
+    error: function(xhr, status, error) {
+      console.log('Erreur AJAX:', error);
+      showMessage('Erreur serveur.', 'danger');
+    }
+  });
+});
+
 
   // Suppression avec SweetAlert2
   $(document).on('click', '.btn-delete', function() {
@@ -122,3 +137,4 @@ $(document).ready(function() {
   });
 
 });
+console.log($(form).serialize());
