@@ -19,49 +19,49 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     // EtatBesoin
     elseif ($_POST['table'] === 'etatBesoin') {
-        $stmt = $con->prepare("INSERT INTO etatBesoin (refFournisseur, date, libelle) VALUES (?, ?, ?)");
+        $stmt = $con->prepare("INSERT INTO etatBesoin (refFournisseurEtat, date, libelle) VALUES (?, ?, ?)");
         echo $stmt->execute([
-            $_POST['refFournisseur'], $_POST['date'], $_POST['libelle']
+            $_POST['refFournisseurEtat'], $_POST['date'], $_POST['libelle']
         ]) ? 'success' : 'error';
     }
 
     // CategorieProduit
     elseif ($_POST['table'] === 'categorieProduit') {
-        $stmt = $con->prepare("INSERT INTO categorieProduit (designation) VALUES (?)");
+        $stmt = $con->prepare("INSERT INTO categorieProduit (designationCat) VALUES (?)");
         echo $stmt->execute([
-            $_POST['designation']
+            $_POST['designationCat']
         ]) ? 'success' : 'error';
     }
 
     // Produit
     elseif ($_POST['table'] === 'produit') {
-        $stmt = $con->prepare("INSERT INTO produit (designation, PU, unite, refCategorie) VALUES (?, ?, ?, ?)");
+        $stmt = $con->prepare("INSERT INTO produit (designation, PUProduit, unite, refCategorie) VALUES (?, ?, ?, ?)");
         echo $stmt->execute([
-            $_POST['designation'], $_POST['PU'], $_POST['unite'], $_POST['refCategorie']
+            $_POST['designation'], $_POST['PUProduit'], $_POST['unite'], $_POST['refCategorie']
         ]) ? 'success' : 'error';
     }
 
     // DetailEtat
     elseif ($_POST['table'] === 'detailEtat') {
-        $stmt = $con->prepare("INSERT INTO detailEtat (refEtat, refProduit, PU, Qte) VALUES (?, ?, ?, ?)");
+        $stmt = $con->prepare("INSERT INTO detailEtat (refEtatDetail, refProduit, PU, Qte) VALUES (?, ?, ?, ?)");
         echo $stmt->execute([
-            $_POST['refEtat'], $_POST['refProduit'], $_POST['PU'], $_POST['Qte']
+            $_POST['refEtatDetail'], $_POST['refProduit'], $_POST['PU'], $_POST['Qte']
         ]) ? 'success' : 'error';
     }
 
     // AppelOffre
     elseif ($_POST['table'] === 'appelOffre') {
-        $stmt = $con->prepare("INSERT INTO appelOffre (refEtat, date, objets, autres) VALUES (?, ?, ?, ?)");
+        $stmt = $con->prepare("INSERT INTO appelOffre (refEtatAppel, datePub, objets, autresInfo) VALUES (?, ?, ?, ?)");
         echo $stmt->execute([
-            $_POST['refEtat'], $_POST['date'], $_POST['objets'], $_POST['autres']
+            $_POST['refEtatAppel'], $_POST['datePub'], $_POST['objets'], $_POST['autresInfo']
         ]) ? 'success' : 'error';
     }
 
     // Candidats
     elseif ($_POST['table'] === 'candidats') {
-        $stmt = $con->prepare("INSERT INTO candidats (refAppel, refFournisseur, statut, date, autre) VALUES (?, ?, ?, ?, ?)");
+        $stmt = $con->prepare("INSERT INTO candidats (refAppelOffre, refFournisseurCandidat, statut, dateCandidature, autresDetails) VALUES (?, ?, ?, ?, ?)");
         echo $stmt->execute([
-            $_POST['refAppel'], $_POST['refFournisseur'], $_POST['statut'], $_POST['date'], $_POST['autre']
+            $_POST['refAppelOffre'], $_POST['refFournisseurCandidat'], $_POST['statut'], $_POST['dateCandidature'], $_POST['autresDetails']
         ]) ? 'success' : 'error';
     }
 }

@@ -18,34 +18,34 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 $_POST['username'], $_POST['pswd'], $_POST['idFourni']
             ]) ? 'success' : 'error';
         } elseif ($table === 'etatBesoin') {
-            $stmt = $con->prepare("UPDATE etatBesoin SET refFournisseur=?, date=?, libelle=? WHERE idEta=?");
+            $stmt = $con->prepare("UPDATE etatBesoin SET refFournisseurEtat=?, date=?, libelle=? WHERE idEtat=?");
             echo $stmt->execute([
-                $_POST['refFournisseur'], $_POST['date'], $_POST['libelle'], $_POST['idEta']
+                $_POST['refFournisseurEtat'], $_POST['date'], $_POST['libelle'], $_POST['idEtat']
             ]) ? 'success' : 'error';
         } elseif ($table === 'categorieProduit') {
-            $stmt = $con->prepare("UPDATE categorieProduit SET designation=? WHERE idCategorie=?");
+            $stmt = $con->prepare("UPDATE categorieProduit SET designationCat=? WHERE idCategorie=?");
             echo $stmt->execute([
-                $_POST['designation'], $_POST['idCategorie']
+                $_POST['designationCat'], $_POST['idCategorie']
             ]) ? 'success' : 'error';
         } elseif ($table === 'produit') {
-            $stmt = $con->prepare("UPDATE produit SET designation=?, PU=?, unite=?, refCategorie=? WHERE idProduit=?");
+            $stmt = $con->prepare("UPDATE produit SET designation=?, PUProduit=?, unite=?, refCategorie=? WHERE idProduit=?");
             echo $stmt->execute([
-                $_POST['designation'], $_POST['PU'], $_POST['unite'], $_POST['refCategorie'], $_POST['idProduit']
+                $_POST['designation'], $_POST['PUProduit'], $_POST['unite'], $_POST['refCategorie'], $_POST['idProduit']
             ]) ? 'success' : 'error';
         } elseif ($table === 'detailEtat') {
-            $stmt = $con->prepare("UPDATE detailEtat SET refEtat=?, refProduit=?, PU=?, Qte=? WHERE idDetail=?");
+            $stmt = $con->prepare("UPDATE detailEtat SET refEtatDetail=?, refProduit=?, PU=?, Qte=? WHERE idDetail=?");
             echo $stmt->execute([
-                $_POST['refEtat'], $_POST['refProduit'], $_POST['PU'], $_POST['Qte'], $_POST['idDetail']
+                $_POST['refEtatDetail'], $_POST['refProduit'], $_POST['PU'], $_POST['Qte'], $_POST['idDetail']
             ]) ? 'success' : 'error';
         } elseif ($table === 'appelOffre') {
-            $stmt = $con->prepare("UPDATE appelOffre SET refEtat=?, date=?, objets=?, autres=? WHERE idAppel=?");
+            $stmt = $con->prepare("UPDATE appelOffre SET refEtatAppel=?, datePub=?, objets=?, autresInfo=? WHERE idAppel=?");
             echo $stmt->execute([
-                $_POST['refEtat'], $_POST['date'], $_POST['objets'], $_POST['autres'], $_POST['idAppel']
+                $_POST['refEtatAppel'], $_POST['datePub'], $_POST['objets'], $_POST['autresInfo'], $_POST['idAppel']
             ]) ? 'success' : 'error';
         } elseif ($table === 'candidats') {
-            $stmt = $con->prepare("UPDATE candidats SET refAppel=?, refFournisseur=?, statut=?, date=?, autre=? WHERE idCandidat=?");
+            $stmt = $con->prepare("UPDATE candidats SET refAppelOffre=?, refFournisseurCandidat=?, statut=?, dateCandidature=?, autresDetails=? WHERE idCandidat=?");
             echo $stmt->execute([
-                $_POST['refAppel'], $_POST['refFournisseur'], $_POST['statut'], $_POST['date'], $_POST['autre'], $_POST['idCandidat']
+                $_POST['refAppelOffre'], $_POST['refFournisseurCandidat'], $_POST['statut'], $_POST['dateCandidature'], $_POST['autresDetails'], $_POST['idCandidat']
             ]) ? 'success' : 'error';
         }
     }

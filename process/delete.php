@@ -8,7 +8,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $id = $_POST['id'];
         $primaryKey = [
             'fournisseur' => 'idFourni',
-            'etatBesoin' => 'idEta',
+            'etatBesoin' => 'idEtat',
             'categorieProduit' => 'idCategorie',
             'produit' => 'idProduit',
             'detailEtat' => 'idDetail',
