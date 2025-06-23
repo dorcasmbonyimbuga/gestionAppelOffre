@@ -22,9 +22,9 @@
                         <tr>
                           <th scope="col">ID</th>
                           <th scope="col">Etat besoin</th>
-                          <th scope="col">Date</th>
-                          <th scope="col">Objets</th>
-                          <th scope="col">Autres</th>
+                          <th scope="col">Produit</th>
+                          <th scope="col">PU</th>
+                          <th scope="col">Quantite</th>
                           <th scope="col">Actions</th>
                         </tr>
                       </thead>

@@ -1,3 +1,5 @@
+<!-- Connexion vers la BD -->
+ <?php require_once './../bd/conbd.php';?>
 <!-- Modal Fournisseur -->
 <div class="modal fade" id="modalFournisseur" tabindex="-1" aria-labelledby="modalFournisseurLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered modal-lg">
@@ -69,7 +71,18 @@
                     <div class="row">
                         <div class="col-md-6 mb-3">
                             <label for="refFournisseurEtat" class="form-label">Fournisseur (Réf)</label>
-                            <input type="text" class="form-control" name="refFournisseurEtat" id="refFournisseurEtat" required>
+                            <select name="refFournisseurEtat" id="refFournisseurEtat" class="form-select" required>
+                                <option value="">-- Sélectionner un fournisseur --</option>
+                                <?php
+                                $sql = "SELECT * FROM fournisseur";
+                                $stmt = $con->prepare($sql);
+                                $stmt->execute();
+
+                                while ($reponse = $stmt->fetch(PDO::FETCH_ASSOC)) {
+                                    echo "<option value=" . $reponse['idFourni'] . ">" . $reponse['noms'] . "</option>";
+                                };
+                                ?>
+                            </select>
                         </div>
 
                         <div class="col-md-6 mb-3">
@@ -156,8 +169,15 @@
                             <label for="refCategorie" class="form-label">Catégorie</label>
                             <select name="refCategorie" id="refCategorie" class="form-select" required>
                                 <option value="">-- Sélectionner une catégorie --</option>
-                                <option value="2"></option>
-                                <!-- À remplir dynamiquement en JS si besoin -->
+                                <?php
+                                $sql = "SELECT * FROM categorieProduit";
+                                $stmt = $con->prepare($sql);
+                                $stmt->execute();
+
+                                while ($reponse = $stmt->fetch(PDO::FETCH_ASSOC)) {
+                                    echo "<option value=" . $reponse['idCategorie'] . ">" . $reponse['designationCat'] . "</option>";
+                                };
+                                ?>
                             </select>
                         </div>
                     </div>
@@ -188,12 +208,34 @@
                     <div class="row">
                         <div class="col-md-6 mb-3">
                             <label for="refEtatDetail" class="form-label">Réf. État de Besoin</label>
-                            <input type="text" class="form-control" name="refEtatDetail" id="refEtatDetail" required>
+                            <select name="refEtatDetail" id="refEtatDetail" class="form-select" required>
+                                <option value="">-- Sélectionner libellé Etat de besoin --</option>
+                                <?php
+                                $sql = "SELECT * FROM etatBesoin";
+                                $stmt = $con->prepare($sql);
+                                $stmt->execute();
+
+                                while ($reponse = $stmt->fetch(PDO::FETCH_ASSOC)) {
+                                    echo "<option value=" . $reponse['idEtat'] . ">" . $reponse['libelle'] . "</option>";
+                                };
+                                ?>
+                            </select>
                         </div>
 
                         <div class="col-md-6 mb-3">
                             <label for="refProduit" class="form-label">Réf. Produit</label>
-                            <input type="text" class="form-control" name="refProduit" id="refProduit" required>
+                            <select name="refProduit" id="refProduit" class="form-select" required>
+                                <option value="">-- Sélectionner le produit --</option>
+                                <?php
+                                $sql = "SELECT * FROM produit";
+                                $stmt = $con->prepare($sql);
+                                $stmt->execute();
+
+                                while ($reponse = $stmt->fetch(PDO::FETCH_ASSOC)) {
+                                    echo "<option value=" . $reponse['idProduit'] . ">" . $reponse['designation'] . "</option>";
+                                };
+                                ?>
+                            </select>
                         </div>
 
                         <div class="col-md-6 mb-3">
@@ -233,7 +275,18 @@
                     <div class="row">
                         <div class="col-md-6 mb-3">
                             <label for="refEtatAppel" class="form-label">Réf. État de Besoin</label>
-                            <input type="text" class="form-control" name="refEtatAppel" id="refEtatAppel" required>
+                            <select name="refEtatAppel" id="refEtatAppel" class="form-select" required>
+                                <option value="">-- Sélectionner libellé Etat de besoin --</option>
+                                <?php
+                                $sql = "SELECT * FROM etatBesoin";
+                                $stmt = $con->prepare($sql);
+                                $stmt->execute();
+
+                                while ($reponse = $stmt->fetch(PDO::FETCH_ASSOC)) {
+                                    echo "<option value=" . $reponse['idEtat'] . ">" . $reponse['libelle'] . "</option>";
+                                };
+                                ?>
+                            </select>
                         </div>
 
                         <div class="col-md-6 mb-3">
@@ -278,12 +331,34 @@
                     <div class="row">
                         <div class="col-md-6 mb-3">
                             <label for="refAppelOffre" class="form-label">Réf. Appel d'Offre</label>
-                            <input type="text" class="form-control" name="refAppelOffre" id="refAppelOffre" required>
+                            <select name="refAppelOffre" id="refAppelOffre" class="form-select" required>
+                                <option value="">-- Sélectionner  l'objet de l'appel --</option>
+                                <?php
+                                $sql = "SELECT * FROM appelOffre";
+                                $stmt = $con->prepare($sql);
+                                $stmt->execute();
+
+                                while ($reponse = $stmt->fetch(PDO::FETCH_ASSOC)) {
+                                    echo "<option value=" . $reponse['idAppel'] . ">" . $reponse['objets'] . "</option>";
+                                };
+                                ?>
+                            </select>
                         </div>
 
                         <div class="col-md-6 mb-3">
                             <label for="refFournisseurCandidat" class="form-label">Réf. Fournisseur</label>
-                            <input type="text" class="form-control" name="refFournisseurCandidat" id="refFournisseurCandidat" required>
+                            <select name="refFournisseurCandidat" id="refFournisseurCandidat" class="form-select" required>
+                                <option value="">-- Sélectionner un fournisseur --</option>
+                                <?php
+                                $sql = "SELECT * FROM fournisseur";
+                                $stmt = $con->prepare($sql);
+                                $stmt->execute();
+
+                                while ($reponse = $stmt->fetch(PDO::FETCH_ASSOC)) {
+                                    echo "<option value=" . $reponse['idFourni'] . ">" . $reponse['noms'] . "</option>";
+                                };
+                                ?>
+                            </select>
                         </div>
 
                         <div class="col-md-6 mb-3">
