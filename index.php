@@ -1,3 +1,24 @@
+<!-- Dans votre HTML -->
+<?php if ($message): ?>
+  <div id="message" class="alert alert-<?= $alertClass ?> text-center">
+    <?= $message ?>
+  </div>
+<?php endif; ?>
+
+<script>
+  setTimeout(() => {
+    const msg = document.getElementById('message');
+    if (msg) msg.style.display = 'none';
+  }, 5000);
+</script>
+
+<!-- Affichage dans le menu topbar -->
+<?php
+$nom = isset($_SESSION['noms']) ? $_SESSION['noms'] : (isset($_SESSION['username']) ? $_SESSION['username'] : 'Invité');
+$initiales = implode('', array_map(function ($part) {
+  return strtoupper($part[0]);
+}, explode(' ', $nom)));
+?>
 <!DOCTYPE html>
 <html lang="fr">
 
@@ -235,26 +256,25 @@
               </li>
 
               <li class="nav-item topbar-user dropdown hidden-caret">
-                <a
-                  class="dropdown-toggle profile-pic" href="#">
+                <a class="profile-pic" href="#">
                   <div class="avatar-sm">
-                    <img
-                      src="assets/img/profile.jpg"
-                      alt="..."
-                      class="avatar-img rounded-circle" />
+                    <span class="avatar-title rounded-circle border border-white bg-secondary">
+                      <?= $initiales ?>
+                    </span>
                   </div>
                   <span class="profile-username">
-                    <span class="op-7">Hi,</span>
-                    <span class="fw-bold">Hizrian</span>
+                    <span class="op-7">Bonjour,</span>
+                    <span class="fw-bold"><?= htmlspecialchars($nom) ?></span>
                   </span>
                 </a>
               </li>
+              
             </ul>
           </div>
         </nav>
         <!-- End Navbar -->
       </div>
-      
+
       <div class="container">
         <div class="page-inner">
           <div
@@ -480,36 +500,36 @@
                   </div>
                   <div class="card-list py-4">
                     <div class="item-list">
-                      
+
                       <div class="info-user ms-3">
                         <?php
-                          $stmt = $con->query("SELECT noms, adresse, contact FROM fournisseur ORDER BY idFourni DESC LIMIT 5");
-                          $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
+                        $stmt = $con->query("SELECT noms, adresse, contact FROM fournisseur ORDER BY idFourni DESC LIMIT 5");
+                        $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-                          foreach ($rows as $row) {
-                              $noms = htmlspecialchars($row['noms']);
-                              $adresse = htmlspecialchars($row['adresse']);
-                              $contact = htmlspecialchars($row['contact']);
+                        foreach ($rows as $row) {
+                          $noms = htmlspecialchars($row['noms']);
+                          $adresse = htmlspecialchars($row['adresse']);
+                          $contact = htmlspecialchars($row['contact']);
 
-                              // Générer les initiales
-                              $initiales = '';
-                              foreach (explode(' ', $noms) as $part) {
-                                  $initiales .= strtoupper(substr($part, 0, 1));
-                              }
-                              echo '
+                          // Générer les initiales
+                          $initiales = '';
+                          foreach (explode(' ', $noms) as $part) {
+                            $initiales .= strtoupper(substr($part, 0, 1));
+                          }
+                          echo '
                               <div class="d-flex align-items-center mb-3">
                                   <div class="avatar me-3">
                                       <span class="avatar-title rounded-circle border border-white bg-secondary text-white">'
-                                          . $initiales .
-                                      '</span>
+                            . $initiales .
+                            '</span>
                                   </div>
                                   <div>
-                                      <div class="username fw-bold">'. $noms .'</div>
-                                      <div class="status text-muted">'. $adresse .' | '. $contact .'</div>
+                                      <div class="username fw-bold">' . $noms . '</div>
+                                      <div class="status text-muted">' . $adresse . ' | ' . $contact . '</div>
                                   </div>
                               </div>';
-                          }
-                          ?>
+                        }
+                        ?>
 
                       </div>
                     </div>

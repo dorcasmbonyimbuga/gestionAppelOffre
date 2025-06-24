@@ -1,3 +1,45 @@
+<?php
+session_start();
+require_once '../bd/conbd.php';
+
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
+
+$message = '';
+$alertClass = '';
+
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['connecter'])) {
+    $username = $_POST['username'];
+    $pswd = $_POST['pswd'];
+
+    // Vérifie d'abord dans fournisseur
+    $stmt = $con->prepare("SELECT noms, username, pswd FROM fournisseur WHERE username = ? LIMIT 1");
+    $stmt->execute([$username]);
+    $fournisseur = $stmt->fetch(PDO::FETCH_ASSOC);
+
+    if ($fournisseur && $fournisseur['pswd'] === md5($pswd)) {
+        $_SESSION['username'] = $fournisseur['username'];
+        $_SESSION['noms'] = $fournisseur['noms'];
+        header('Location: register.php');
+        exit;
+    }
+    // Sinon vérifie dans user
+    $stmt2 = $con->prepare("SELECT username, pswd, niveauAcces FROM user WHERE username = ? LIMIT 1");
+    $stmt2->execute([$username]);
+    $user = $stmt2->fetch(PDO::FETCH_ASSOC);
+
+    if ($user && $user['pswd'] === md5($pswd)) {
+        $_SESSION['username'] = $user['username'];
+        $_SESSION['niveauAcces'] = $user['niveauAcces'];
+        header('Location: register.php');
+        exit;
+    }
+
+    $alertClass = 'danger';
+    $message = 'Nom d\'utilisateur ou mot de passe incorrect';
+}
+?>
 <!DOCTYPE html>
 <html lang="fr">
 
@@ -35,6 +77,11 @@
     <link rel="stylesheet" href="../assets/css/kaiadmin.min.css" />
 
 </head>
+<?php if ($message): ?>
+  <div id="message" class="alert alert-<?= $alertClass ?> text-center">
+    <?= $message ?>
+  </div>
+<?php endif; ?>
 
 <body>
 
@@ -49,7 +96,7 @@
                             <div class="card-body">
                                 <h3 class="text-center">Appel d'offre</h3>
                                 <h4 class="text-center">Login</h4>
-                                <form method="POST" action="./login.php">
+                                <form method="POST" action="">
                                     <div class="form-group mb-3">
                                         <label for="username" class="form-label">Nom d'utilisateur</label>
                                         <input type="text" id="username" class="form-control" name="username" placeholder="Entrer votre nom d'utilisateur" required="required">
@@ -88,6 +135,14 @@
 
     <!-- 6. Kaiadmin JS (si nécessaire pour l’UI) -->
     <script src="../assets/js/kaiadmin.min.js"></script>
+
+    <script>
+  setTimeout(() => {
+    const msg = document.getElementById('message');
+    if (msg) msg.style.display = 'none';
+  }, 5000);
+</script>
+
 
 </body>
 

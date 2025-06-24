@@ -1,3 +1,24 @@
+<!-- Dans votre HTML -->
+<?php if ($message): ?>
+    <div id="message" class="alert alert-<?= $alertClass ?> text-center">
+        <?= $message ?>
+    </div>
+<?php endif; ?>
+
+<script>
+    setTimeout(() => {
+        const msg = document.getElementById('message');
+        if (msg) msg.style.display = 'none';
+    }, 5000);
+</script>
+
+<!-- Affichage dans le menu topbar -->
+<?php
+$nom = isset($_SESSION['noms']) ? $_SESSION['noms'] : (isset($_SESSION['username']) ? $_SESSION['username'] : 'Invité');
+$initiales = implode('', array_map(function ($part) {
+    return strtoupper($part[0]);
+}, explode(' ', $nom)));
+?>
 <!DOCTYPE html>
 <html lang="fr">
 
@@ -231,11 +252,13 @@
                             <li class="nav-item topbar-user dropdown hidden-caret">
                                 <a class="profile-pic" href="#">
                                     <div class="avatar-sm">
-                                        <img src="../assets/img/profile.jpg" alt="..." class="avatar-img rounded-circle" />
+                                        <span class="avatar-title rounded-circle border border-white bg-secondary">
+                                            <?= $initiales ?>
+                                        </span>
                                     </div>
                                     <span class="profile-username">
-                                        <span class="op-7">Hi,</span>
-                                        <span class="fw-bold">Hizrian</span>
+                                        <span class="op-7">Bonjour,</span>
+                                        <span class="fw-bold"><?= htmlspecialchars($nom) ?></span>
                                     </span>
                                 </a>
                             </li>
