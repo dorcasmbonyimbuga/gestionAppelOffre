@@ -1,7 +1,7 @@
 <?php include "../partials/header.php" ?>
 <!-- Tableau -->
 <div class="row">
-  <div class="col-md-9">
+  <div class="col-md-8">
     <div class="card">
       <div class="card-header">
         <div class="d-flex align-items-center">
@@ -20,10 +20,9 @@
             class="display table table-striped table-hover">
             <thead class="table-dark">
               <tr>
-                <th scope="col">ID</th>
+                <th scope="col">#</th>
                 <th scope="col">Désignation</th>
                 <th scope="col">PU</th>
-                <th scope="col">Unité</th>
                 <th scope="col">Catégorie</th>
                 <th scope="col">Actions</th>
               </tr>
@@ -37,15 +36,15 @@
     </div>
   </div>
   <!-- Tableau categorie produit -->
-  <div class="col-md-3">
+  <div class="col-md-4">
     <div class="card">
       <div class="card-header">
         <div class="d-flex align-items-center">
-          <h4 class="card-title">Liste de catégorie</h4>
+          <h4 class="card-title">Catégorie</h4>
           <button
             class="btn btn-primary btn-round btn-add ms-auto" data-modal="modalCategorieProduit">
             <i class="fa fa-plus"></i>
-            Ajouter catégorie
+            Ajouter
           </button>
         </div>
       </div>
@@ -56,8 +55,8 @@
             class="display table table-striped table-hover">
             <thead class="table-dark">
               <tr>
-                <th scope="col">ID</th>
-                <th scope="col">Désignation</th>
+                <th scope="col">#</th>
+                <th scope="col">Désign</th>
                 <th scope="col">Actions</th>
               </tr>
             </thead>

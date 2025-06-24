@@ -15,7 +15,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['table'])) {
             $stmt = $con->query("SELECT idEtat, fournisseur.noms, date, libelle FROM etatBesoin inner join fournisseur on etatBesoin.refFournisseurEtat=fournisseur.idFourni ORDER BY idEtat DESC");
             break;
         case 'produit':
-            $stmt = $con->query("SELECT idProduit, designation, PUProduit, unite, categorieproduit.designationCat FROM produit  inner join categorieproduit on produit.refCategorie=categorieproduit.idCategorie ORDER BY idProduit DESC");
+            $stmt = $con->query("SELECT idProduit, designation, concat(PUProduit,' ',unite) as PUProduit, categorieproduit.designationCat FROM produit  inner join categorieproduit on produit.refCategorie=categorieproduit.idCategorie ORDER BY idProduit DESC");
             break;
         case 'detailEtat':
             $stmt = $con->query("SELECT idDetail,etatBesoin.libelle,produit.designation, PU, Qte FROM detailEtat inner join etatBesoin on detailEtat.refEtatDetail=etatBesoin.idEtat inner join produit on detailEtat.refProduit=produit.idProduit ORDER BY idDetail DESC");
@@ -25,6 +25,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['table'])) {
             break;
         case 'candidats':
             $stmt = $con->query("SELECT idCandidat,appelOffre.objets, fournisseur.noms, statut, dateCandidature, autresDetails FROM candidats inner join fournisseur on candidats.refFournisseurCandidat=fournisseur.idFourni inner join appelOffre on candidats.refAppelOffre=appelOffre.idAppel ORDER BY idCandidat DESC");
+            break;
+        case 'user':
+            $stmt = $con->query("SELECT idUser,username,niveauAcces FROM user ORDER BY idUser DESC");
             break;
         default:
             echo '<tr><td colspan="100%">Table inconnue</td></tr>';
@@ -38,8 +41,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['table'])) {
             echo '<td>' . htmlspecialchars($col) . '</td>';
         }
         echo '<td>
-            <button class="btn btn-primary btn-edit" data-modal="modal' . ucfirst($table) . '" data-table="' . $table . '" data-id="' . array_values($row)[0] . '"><i class="fas fa-edit"></i></button>
-            <button class="btn btn-danger btn-delete" data-table="' . $table . '" data-id="' . array_values($row)[0] . '"><i class="fas fa-trash-alt"></i></button>
+            <button class="btn btn-primary btn-xs btn-edit" data-modal="modal' . ucfirst($table) . '" data-table="' . $table . '" data-id="' . array_values($row)[0] . '"><i class="fas fa-edit"></i></button>
+            <button class="btn btn-danger btn-xs btn-delete" data-table="' . $table . '" data-id="' . array_values($row)[0] . '"><i class="fas fa-trash-alt"></i></button>
         </td>';
         echo '</tr>';
     }

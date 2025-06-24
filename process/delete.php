@@ -13,7 +13,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             'produit' => 'idProduit',
             'detailEtat' => 'idDetail',
             'appelOffre' => 'idAppel',
-            'candidats' => 'idCandidat'
+            'candidats' => 'idCandidat',
+            'user' => 'idUser'
         ];
 
         if (array_key_exists($table, $primaryKey)) {

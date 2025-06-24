@@ -385,3 +385,43 @@
         </div>
     </div>
 </div>
+
+
+<!-- Modal User -->
+<div class="modal fade" id="modalUser" tabindex="-1" aria-labelledby="modalUserLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content">
+            <form id="formUser" name="formUser">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="modalUserLabel">Ajouter / Modifier Appel d'Offre</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fermer"></button>
+                </div>
+                <div class="modal-body">
+                    <!-- Champs cachés -->
+                    <input type="hidden" name="table" value="user">
+                    <input type="hidden" name="idUser" id="idUser">
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label for="username" class="form-label">Nom d'utilisateur</label>
+                            <input type="text" class="form-control" name="username" id="datePub" required>
+                        </div>
+
+                        <div class="col-md-6 mb-3">
+                            <label for="pswd" class="form-label">Mot de passe</label>
+                            <input type="password" class="form-control" name="pswd" id="pswd" required>
+                        </div>
+
+                        <div class="col-md-6 mb-3">
+                            <label for="niveauAcces" class="form-label">Niveau d'accès</label>
+                            <input type="text" class="form-control" name="niveauAcces" id="niveauAcces" required>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Annuler</button>
+                    <button type="submit" class="btn btn-primary">Enregistrer</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

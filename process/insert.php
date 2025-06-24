@@ -13,7 +13,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $stmt = $con->prepare("INSERT INTO fournisseur (noms, adresse, contact, autres, username, pswd) VALUES (?, ?, ?, ?, ?, ?)");
         echo $stmt->execute([
             $_POST['noms'], $_POST['adresse'], $_POST['contact'],
-            $_POST['autres'], $_POST['username'], $_POST['pswd']
+            $_POST['autres'], $_POST['username'],md5( $_POST['pswd'])
         ]) ? 'success' : 'error';
     }
 
@@ -62,6 +62,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $stmt = $con->prepare("INSERT INTO candidats (refAppelOffre, refFournisseurCandidat, statut, dateCandidature, autresDetails) VALUES (?, ?, ?, ?, ?)");
         echo $stmt->execute([
             $_POST['refAppelOffre'], $_POST['refFournisseurCandidat'], $_POST['statut'], $_POST['dateCandidature'], $_POST['autresDetails']
+        ]) ? 'success' : 'error';
+    }
+
+    // Utilisateur
+    elseif ($_POST['table'] === 'user') {
+        $stmt = $con->prepare("INSERT INTO user (username, pswd, niveauAcces) VALUES (?, ?, ?)");
+        echo $stmt->execute([
+            $_POST['username'],md5($_POST['pswd']), $_POST['niveauAcces']
         ]) ? 'success' : 'error';
     }
 }

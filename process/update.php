@@ -15,7 +15,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $stmt = $con->prepare("UPDATE fournisseur SET noms=?, adresse=?, contact=?, autres=?, username=?, pswd=? WHERE idFourni=?");
             echo $stmt->execute([
                 $_POST['noms'], $_POST['adresse'], $_POST['contact'], $_POST['autres'],
-                $_POST['username'], $_POST['pswd'], $_POST['idFourni']
+                $_POST['username'], md5($_POST['pswd']), $_POST['idFourni']
             ]) ? 'success' : 'error';
         } elseif ($table === 'etatBesoin') {
             $stmt = $con->prepare("UPDATE etatBesoin SET refFournisseurEtat=?, date=?, libelle=? WHERE idEtat=?");
@@ -46,6 +46,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $stmt = $con->prepare("UPDATE candidats SET refAppelOffre=?, refFournisseurCandidat=?, statut=?, dateCandidature=?, autresDetails=? WHERE idCandidat=?");
             echo $stmt->execute([
                 $_POST['refAppelOffre'], $_POST['refFournisseurCandidat'], $_POST['statut'], $_POST['dateCandidature'], $_POST['autresDetails'], $_POST['idCandidat']
+            ]) ? 'success' : 'error';
+        } elseif ($table === 'user') {
+            $stmt = $con->prepare("UPDATE user SET username=?, pswd=?, niveauAcces=? WHERE idUser=?");
+            echo $stmt->execute([
+                $_POST['username'], $_POST['pswd'], $_POST['niveauAcces'], $_POST['idUser']
             ]) ? 'success' : 'error';
         }
     }

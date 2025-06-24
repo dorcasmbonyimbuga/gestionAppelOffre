@@ -34,8 +34,6 @@
 <!-- 7. Ton script principal contenant toute la logique AJAX -->
 <script src="../process/main.js"></script>
 
-
-
 </body>
 
 </html>
