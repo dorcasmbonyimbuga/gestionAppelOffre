@@ -1,5 +1,5 @@
 <?php    
-@include('./../dbConnexion/connect.php');
+@include('../bd/conbd.php');
 session_start();
 session_unset();
 session_destroy();

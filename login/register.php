@@ -1,133 +1,160 @@
 <?php
+require_once '../bd/conbd.php';
 
-$con=new mysqli('localhost','root','','jh_db');
+$message = '';
+$alertClass = '';
 
-if(isset($_POST['submit'])){
-    $name=mysqli_real_escape_string($con,$_POST['Nom']);
-    $MotDePasse=md5($_POST['MotDePasse']);
-    //$fonction=$_POST['Fonction'];
-    $RefMbr=$_POST['RefMbr'];
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['enregistrer'])) {
+    $noms = $_POST['noms'];
+    $adresse = $_POST['adresse'];
+    $contact = $_POST['contact'];
+    $autres = $_POST['autres'];
+    $username = $_POST['username'];
+    $pswd = md5($_POST['pswd']); // Tu peux faire password_hash() ici si tu veux
 
-    $select=" SELECT * FROM tutilisateur WHERE Nom='$name' && RefMbr='$RefMbr'";
+    $stmt = $con->prepare("INSERT INTO fournisseur (noms, adresse, contact, autres, username, pswd) VALUES (?, ?, ?, ?, ?, ?)");
+    $success = $stmt->execute([$noms, $adresse, $contact, $autres, $username, $pswd]);
 
-    $result=mysqli_query($con,$select);
-
-    if(mysqli_num_rows($result) > 0){
-        $error[]='Ce compte existe deja !';
+    if ($success) {
+        $alertClass = 'success';
+        $message = 'Inscription réussie ! Redirection en cours...';
+        echo "<script>
+                setTimeout(function() {
+                    window.location.href = 'login.php';
+                }, 2000);
+              </script>";
+    } else {
+        $alertClass = 'danger';
+        $message = 'Erreur lors de l\'inscription.';
     }
-    else{
-        $insert="INSERT INTO tutilisateur(Nom,MotDePasse,Fonction,RefMbr) VALUES ('$name','$MotDePasse','Membre','$RefMbr')";
-        mysqli_query($con,$insert);
-        header('location:index.php');
-    }
-};
-
+}
 ?>
 
-<!doctype html>
-<html class="no-js" lang="">
+<!DOCTYPE html>
+<html lang="fr">
 
 <head>
-    <meta charset="utf-8">
-    <meta http-equiv="x-ua-compatible" content="ie=edge">
-    <title>ASBL - Jeunes Humanitaires</title>
-    <meta name="description" content="">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <!-- Favicon -->
-    <link rel="shortcut icon" type="image/x-icon" href="./../img/New/logoJH.jpg">
-    <!-- Bootstrap CSS -->
-    <link rel="stylesheet" href="includes-login/css/bootstrap.min.css">
-    <!-- Fontawesome CSS -->
-    <link rel="stylesheet" href="includes-login/css/fontawesome-all.min.css">
-    <!-- Flaticon CSS -->
-    <link rel="stylesheet" href="includes-login/font/flaticon.css" >
-    <!-- Google Web Fonts -->
-    <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&amp;display=swap" rel="stylesheet">
-    <!-- Custom CSS -->
-    <link rel="stylesheet" href="style.css">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <title>Appel d'offre - Register</title>
+    <meta content="width=device-width, initial-scale=1.0, shrink-to-fit=no" name="viewport" />
+    <link rel="icon" href="../assets/img/kaiadmin/favicon.ico" type="image/x-icon" />
+
+    <!-- Fonts and icons -->
+    <script src="../assets/js/plugin/webfont/webfont.min.js"></script>
+    <script>
+        WebFont.load({
+            google: {
+                families: ["Public Sans:300,400,500,600,700"]
+            },
+            custom: {
+                families: [
+                    "Font Awesome 5 Solid",
+                    "Font Awesome 5 Regular",
+                    "Font Awesome 5 Brands",
+                    "simple-line-icons",
+                ],
+                urls: ["../assets/css/fonts.min.css"],
+            },
+            active: function() {
+                sessionStorage.fonts = true;
+            },
+        });
+    </script>
+
+    <!-- CSS Files -->
+    <link rel="stylesheet" href="../assets/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="../assets/css/plugins.min.css" />
+    <link rel="stylesheet" href="../assets/css/kaiadmin.min.css" />
+
 </head>
 
 <body>
-    <div id="preloader" class="preloader">
-        <div class='inner'>
-            <div class='line1'></div>
-            <div class='line2'></div>
-            <div class='line3'></div>
-        </div>
-    </div>
- 
-    <section class="fxt-template-animation fxt-template-layout33">
-        <div class="fxt-content-wrap">
-            <div class="fxt-heading-content">
-                <div class="fxt-inner-wrap fxt-transformX-R-50 fxt-transition-delay-3">
-                    <div class="fxt-transformX-R-50 fxt-transition-delay-10">
-                        <a href="login-33.html" class="fxt-logo"><img src="includes-login/img/jh2.png" alt="Logo"></a>
-                    </div>
-                    <div class="fxt-transformX-R-50 fxt-transition-delay-10">
-                        <div class="fxt-middle-content">
-                            <div class="fxt-sub-title">Bienvenue chez les</div>
-                            <h1 class="fxt-main-title">Jeunes Humanitaires.</h1>
-                            <p class="fxt-description">
-                            L' Association Jeunes Humanitaires est une Association Sans But Lucratif reunissant les jeunes qui font differentes contributions
-                                dans le but d'apportez de l'aide aux personnes vulnerables. Nous aidons les personnes sans appuis, qui par manque de finance n'arrivent même pas à payer 
-                                leurs factures à l'hôpital, scolariser ou nourrir leurs enfants mais aussi les personnes de 3ème age 
-                                que l'on a longtemps oublié.
-                            </p>
+    <div class="main-panel container-fluid">
+        <div class="container">
+            <div class="page-inner">
+                <!-- Formulaire de connexion -->
+                <div class="row">
+                    <div class="col-md-2"></div>
+                    <div class="col-md-6">
+                        <div class="card">
+                            <div class="card-body">
+                                <h3 class="text-center">Appel d'offre</h3>
+                                <h4 class="text-center">Register</h4>
+                                <form method="POST">
+                                    <?php if ($message): ?>
+                                        <div id="message" class="alert alert-<?= $alertClass ?> text-center">
+                                            <?= $message ?>
+                                        </div>
+                                    <?php endif; ?>
+                                    <div class="row">
+                                        <div class="col-md-6 mb-3">
+                                            <label for="noms" class="form-label">Nom</label>
+                                            <input type="text" class="form-control" name="noms" id="noms" required>
+                                        </div>
+
+                                        <div class="col-md-6 mb-3">
+                                            <label for="adresse" class="form-label">Adresse</label>
+                                            <input type="text" class="form-control" name="adresse" id="adresse">
+                                        </div>
+
+                                        <div class="col-md-6 mb-3">
+                                            <label for="contact" class="form-label">Contact</label>
+                                            <input type="text" class="form-control" name="contact" id="contact">
+                                        </div>
+
+                                        <div class="col-md-6 mb-3">
+                                            <label for="autres" class="form-label">Autres infos</label>
+                                            <input type="text" class="form-control" name="autres" id="autres">
+                                        </div>
+
+                                        <div class="col-md-6 mb-3">
+                                            <label for="username" class="form-label">Nom d'utilisateur</label>
+                                            <input type="text" class="form-control" name="username" id="username" required>
+                                        </div>
+
+                                        <div class="col-md-6 mb-3">
+                                            <label for="pswd" class="form-label">Mot de passe</label>
+                                            <input type="password" class="form-control" name="pswd" id="pswd" required>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group mb-3 text-center">
+                                        <button type="submit" name="enregistrer" id="enregistrer" class="btn btn-primary btn-round mx-auto">Connexion</button>
+
+                                    </div>
+                                    <p>Vous avez un compte? <a href="./login.php">Cliquez ici pour vous connecter</a></p>
+                                </form>
+                            </div>
                         </div>
                     </div>
-                    <div class="fxt-transformX-R-50 fxt-transition-delay-10">
-                    </div>
-                </div>
-            </div>
-            <div class="fxt-form-content">
-                <div class="fxt-main-form">
-                    <div class="fxt-inner-wrap fxt-opacity fxt-transition-delay-13">
-                        <h2 class="fxt-page-title">Creez un compte</h2>
-                        <p class="fxt-description">Creez-vous un compte pour connaitre nos incroyables services</p>
-                        <form method="POST" action="">
-                            <?php 
-                                if(isset($error)){
-                                    foreach($error as $error){
-                                        echo '<span class="error-msg">'.$error.'</span>';
-                                    };
-                                };
-                            ?>
-                            <div class="form-group">
-                                <label for="Nom" class="fxt-label">Nom d'utilisateur</label>
-                                <input type="text" id="Nom" class="form-control" name="Nom" placeholder="Entrer votre nom d'utilisateur" required>
-                            </div>
-                            <div class="form-group">
-                                <label for="MotDePasse" class="fxt-label">Mot de passe</label>
-                                <input id="MotDePasse" type="password" class="form-control" name="MotDePasse" placeholder="Entrer le mot de passe" required>
-                            </div>
-                            <div class="form-group">
-                                <label for="RefMbr" class="fxt-label">Code du membre</label>
-                                <input id="RefMbr" type="text" class="form-control" name="RefMbr" placeholder="Entrer votre code" required>
-                            </div>                           
-                            <div class="form-group mb-3">
-                                <button type="submit" name="submit" id="submit" class="fxt-btn-fill">Creer un compte</button>
-                            </div>
-                            <p>Vous avez un compte? <a href="./index.php">Cliquez ici pour vous connectez !</a></p>
-                        </form>
-                        
-                    </div>
                 </div>
             </div>
         </div>
-    </section>
-    <!-- jquery-->
-    <script src="includes-login/js/jquery-3.5.0.min.js"></script>
-    <!-- Bootstrap js -->
-    <script src="includes-login/js/bootstrap.min.js"></script>
-    <!-- Imagesloaded js -->
-    <script src="includes-login/js/imagesloaded.pkgd.min.js"></script>
-    <!-- Validator js -->
-    <script src="includes-login/js/validator.min.js"></script>
-    <!-- Custom Js -->
-    <script src="includes-login/js/main.js"></script>
+
+
+        <footer class="footer">
+            <div class="container-fluid d-flex justify-content-between">
+                <div class="">© 2025 All rights reserved by Team 467</div>
+                <div>Done by Dorcas Mbonyimbuga.</div>
+            </div>
+        </footer>
+    </div>
+
+
+    <!-- 3. Bootstrap et ses dépendances -->
+    <script src="../assets/js/core/popper.min.js"></script>
+    <script src="../assets/js/core/bootstrap.min.js"></script>
+
+    <!-- 6. Kaiadmin JS (si nécessaire pour l’UI) -->
+    <script src="../assets/js/kaiadmin.min.js"></script>
+
+    <script>
+        setTimeout(() => {
+            const msg = document.getElementById('message');
+            if (msg) msg.style.display = 'none';
+        }, 5000);
+    </script>
 
 </body>
 
-
-<!-- Mirrored from affixtheme.com/html/xmee/demo/login-33.html by HTTrack Website Copier/3.x [XR&CO'2014], Tue, 18 Jan 2022 18:24:17 GMT -->
 </html>
