@@ -78,9 +78,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['connecter'])) {
 
 </head>
 <?php if ($message): ?>
-  <div id="message" class="alert alert-<?= $alertClass ?> text-center">
-    <?= $message ?>
-  </div>
+    <div id="message" class="alert alert-<?= $alertClass ?> text-center">
+        <?= $message ?>
+    </div>
 <?php endif; ?>
 
 <body>
@@ -108,7 +108,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['connecter'])) {
 
                                     <div class="form-group mb-3 text-center">
                                         <button type="submit" name="connecter" id="connecter" class="btn btn-primary btn-round mx-auto">Connexion</button>
-                                        
+
                                     </div>
                                     <p>Vous n'avez pas un compte? <a href="./register.php">Cliquez ici pour créer un compte</a></p>
                                 </form>
@@ -137,11 +137,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['connecter'])) {
     <script src="../assets/js/kaiadmin.min.js"></script>
 
     <script>
-  setTimeout(() => {
-    const msg = document.getElementById('message');
-    if (msg) msg.style.display = 'none';
-  }, 5000);
-</script>
+        setTimeout(() => {
+            const msg = document.getElementById('message');
+            if (msg) msg.style.display = 'none';
+        }, 5000);
+    </script>
 
 
 </body>

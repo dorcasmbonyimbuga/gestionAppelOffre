@@ -1,4 +1,9 @@
-<?php include "../partials/header.php" ?>
+<?php
+$pageTitle = "Produit";
+$currentPage = "produit";
+$breadcrumb = ["Pages", "Produit"];
+include "../partials/header.php"
+?>
 <!-- Tableau -->
 <div class="row">
   <div class="col-md-8">

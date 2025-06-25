@@ -24,7 +24,7 @@ $initiales = implode('', array_map(function ($part) {
 
 <head>
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <title>Appel d'offre - Fournisseur</title>
+    <title>Appel d'offre - <?= htmlspecialchars($pageTitle ?? 'Dashboard') ?></title>
     <meta content="width=device-width, initial-scale=1.0, shrink-to-fit=no" name="viewport" />
     <link rel="icon" href="../assets/img/kaiadmin/favicon.ico" type="image/x-icon" />
 
@@ -83,9 +83,8 @@ $initiales = implode('', array_map(function ($part) {
             <div class="sidebar-wrapper scrollbar scrollbar-inner">
                 <div class="sidebar-content">
                     <ul class="nav nav-secondary">
-                        <li class="nav-item active">
-                            <a
-                                href="../index.php">
+                        <li class="nav-item <?= ($currentPage === 'dashboard') ? 'active' : '' ?>">
+                            <a href="./../index.php">
                                 <i class="fas fa-home"></i>
                                 <p>Dashboard</p>
                             </a>
@@ -97,32 +96,34 @@ $initiales = implode('', array_map(function ($part) {
                             <h4 class="text-section">Pages</h4>
                         </li>
 
-                        <li class="nav-item">
+                        <li class="nav-item <?= ($currentPage === 'produit') ? 'active' : '' ?>">
                             <a href="produit.php">
                                 <i class="fas fa-luggage-cart"></i>
                                 <p>Produits</p>
                             </a>
                         </li>
-                        <li class="nav-item">
+
+                        <li class="nav-item <?= ($currentPage === 'fournisseur') ? 'active' : '' ?>">
                             <a href="fournisseur.php">
                                 <i class="fas fa-users"></i>
                                 <p>Fournisseurs</p>
                             </a>
                         </li>
-                        <li class="nav-item">
-                            <a data-bs-toggle="collapse" href="#maps">
+                        <!-- Pour les sous-menus (ex. Etat de besoin) -->
+                        <li class="nav-item <?= in_array($currentPage, ['etatBesoin', 'detailEtat']) ? 'active' : '' ?>">
+                            <a data-bs-toggle="collapse" href="#maps" <?= in_array($currentPage, ['etatBesoin', 'detailEtat']) ? 'aria-expanded="true"' : '' ?>>
                                 <i class="fas fa-th-list"></i>
                                 <p>Etat de besoin</p>
                                 <span class="caret"></span>
                             </a>
-                            <div class="collapse" id="maps">
+                            <div class="collapse <?= in_array($currentPage, ['etatBesoin', 'detailEtat']) ? 'show' : '' ?>" id="maps">
                                 <ul class="nav nav-collapse">
-                                    <li>
+                                    <li class="<?= ($currentPage === 'etatBesoin') ? 'active' : '' ?>">
                                         <a href="etatBesoin.php">
                                             <span class="sub-item">Etat de besoin</span>
                                         </a>
                                     </li>
-                                    <li>
+                                    <li class="<?= ($currentPage === 'detailEtat') ? 'active' : '' ?>">
                                         <a href="detailEtat.php">
                                             <span class="sub-item">Detail etat de besoin</span>
                                         </a>
@@ -130,19 +131,19 @@ $initiales = implode('', array_map(function ($part) {
                                 </ul>
                             </div>
                         </li>
-                        <li class="nav-item">
+                        <li class="nav-item <?= ($currentPage === 'appelOffre') ? 'active' : '' ?>">
                             <a href="appelOffre.php">
                                 <i class="fas fa-bullhorn"></i>
                                 <p>Appel d'offre</p>
                             </a>
                         </li>
-                        <li class="nav-item">
+                        <li class="nav-item <?= ($currentPage === 'candidat') ? 'active' : '' ?>">
                             <a href="candidat.php">
                                 <i class="fas fa-user-friends"></i>
                                 <p>Candidatures</p>
                             </a>
                         </li>
-                        <li class="nav-item">
+                        <li class="nav-item <?= ($currentPage === 'user') ? 'active' : '' ?>">
                             <a href="user.php">
                                 <i class="far fa-user-circle"></i>
                                 <p>Utilisateurs</p>
@@ -267,28 +268,31 @@ $initiales = implode('', array_map(function ($part) {
                 </nav>
                 <!-- End Navbar -->
             </div>
-
+            <!-- PAGE HEADER DYNAMIQUE -->
             <div class="container">
                 <div class="page-inner">
                     <div class="page-header">
-                        <h3 class="fw-bold mb-3">Fournisseur</h3>
+                        <h3 class="fw-bold mb-3"><?= htmlspecialchars($pageTitle ?? 'Titre') ?></h3>
                         <ul class="breadcrumbs mb-3">
                             <li class="nav-home">
-                                <a href="#">
+                                <a href="index.php">
                                     <i class="icon-home"></i>
                                 </a>
                             </li>
                             <li class="separator">
                                 <i class="icon-arrow-right"></i>
                             </li>
-                            <li class="nav-item">
-                                <a href="#">Pages</a>
-                            </li>
-                            <li class="separator">
-                                <i class="icon-arrow-right"></i>
-                            </li>
-                            <li class="nav-item">
-                                <a href="#">Fournisseur</a>
-                            </li>
+                            <?php if (isset($breadcrumb)) : ?>
+                                <?php foreach ($breadcrumb as $index => $item): ?>
+                                    <li class="nav-item">
+                                        <a href="#"><?= htmlspecialchars($item) ?></a>
+                                    </li>
+                                    <?php if ($index < count($breadcrumb) - 1): ?>
+                                        <li class="separator">
+                                            <i class="icon-arrow-right"></i>
+                                        </li>
+                                    <?php endif; ?>
+                                <?php endforeach; ?>
+                            <?php endif; ?>
                         </ul>
                     </div>
