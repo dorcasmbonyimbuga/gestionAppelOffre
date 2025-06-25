@@ -69,7 +69,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     elseif ($_POST['table'] === 'user') {
         $stmt = $con->prepare("INSERT INTO user (username, pswd, niveauAcces) VALUES (?, ?, ?)");
         echo $stmt->execute([
-            $_POST['username'],md5($_POST['pswd']), $_POST['niveauAcces']
+            $_POST['username'],md5( $_POST['pswd']), $_POST['niveauAcces']
         ]) ? 'success' : 'error';
     }
 }

@@ -32,8 +32,15 @@
 <script src="../assets/js/kaiadmin.min.js"></script>
 
 <!-- 7. Ton script principal contenant toute la logique AJAX -->
-<script src="../process/main.js"></script>
 
+
+<!-- Initialisation DataTables -->
+<script>
+  $(document).ready(function() {
+    $('#table_fournisseur').DataTable();
+  });
+</script>
+<script src="../process/main.js"></script>
 </body>
 
 </html>

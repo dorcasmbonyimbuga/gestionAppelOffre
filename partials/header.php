@@ -1,3 +1,8 @@
+<?php 
+session_start();
+$message = '';
+$alertClass = '';
+?>
 <!-- Dans votre HTML -->
 <?php if ($message): ?>
     <div id="message" class="alert alert-<?= $alertClass ?> text-center">

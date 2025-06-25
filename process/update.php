@@ -50,7 +50,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         } elseif ($table === 'user') {
             $stmt = $con->prepare("UPDATE user SET username=?, pswd=?, niveauAcces=? WHERE idUser=?");
             echo $stmt->execute([
-                $_POST['username'], $_POST['pswd'], $_POST['niveauAcces'], $_POST['idUser']
+                $_POST['username'], md5($_POST['pswd']), $_POST['niveauAcces'], $_POST['idUser']
             ]) ? 'success' : 'error';
         }
     }

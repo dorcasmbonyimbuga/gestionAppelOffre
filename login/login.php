@@ -21,7 +21,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['connecter'])) {
     if ($fournisseur && $fournisseur['pswd'] === md5($pswd)) {
         $_SESSION['username'] = $fournisseur['username'];
         $_SESSION['noms'] = $fournisseur['noms'];
-        header('Location: register.php');
+        header('Location: ./../index.php');
         exit;
     }
     // Sinon vérifie dans user
@@ -32,7 +32,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['connecter'])) {
     if ($user && $user['pswd'] === md5($pswd)) {
         $_SESSION['username'] = $user['username'];
         $_SESSION['niveauAcces'] = $user['niveauAcces'];
-        header('Location: register.php');
+        header('Location: ./../index.php');
         exit;
     }
 

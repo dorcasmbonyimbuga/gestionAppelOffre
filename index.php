@@ -1,4 +1,8 @@
-
+<?php include "bd/conbd.php";
+session_start();
+$message = '';
+$alertClass = '';
+?>
 <!-- Dans votre HTML -->
 <?php if ($message): ?>
   <div id="message" class="alert alert-<?= $alertClass ?> text-center">
@@ -58,7 +62,7 @@ $initiales = implode('', array_map(function ($part) {
 
 
 </head>
-<?php include "./bd/conbd.php"; ?>
+
 
 <body>
   <div class="wrapper">
@@ -269,7 +273,7 @@ $initiales = implode('', array_map(function ($part) {
                   </span>
                 </a>
               </li>
-              
+
             </ul>
           </div>
         </nav>
