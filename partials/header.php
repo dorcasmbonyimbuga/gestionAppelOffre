@@ -237,7 +237,7 @@ $initiales = implode('', array_map(function ($part) {
                                     aria-labelledby="notifDropdown">
                                     <li>
                                         <div class="dropdown-title">
-                                            You have 4 new notification
+                                            Vous avez (nbr) notification
                                         </div>
                                     </li>
                                     <li>
@@ -245,7 +245,8 @@ $initiales = implode('', array_map(function ($part) {
                                             <div class="notif-center">
                                                 <a href="#">
                                                     <div class="notif-content">
-                                                        <span class="block"> New user registered </span>
+                                                        <span class="block"> Nom du fournisseur</span>
+                                                        <span class="block"> objets de l'appel</span>
                                                         <span class="time">5 minutes ago</span>
                                                     </div>
                                                 </a>

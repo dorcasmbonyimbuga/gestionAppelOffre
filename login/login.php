@@ -14,11 +14,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['connecter'])) {
     $pswd = $_POST['pswd'];
 
     // Vérifie d'abord dans fournisseur
-    $stmt = $con->prepare("SELECT noms, username, pswd FROM fournisseur WHERE username = ? LIMIT 1");
+    $stmt = $con->prepare("SELECT idFourni,noms, username, pswd FROM fournisseur WHERE username = ? LIMIT 1");
     $stmt->execute([$username]);
     $fournisseur = $stmt->fetch(PDO::FETCH_ASSOC);
 
     if ($fournisseur && $fournisseur['pswd'] === md5($pswd)) {
+        $_SESSION['idFourni'] = $fournisseur['idFourni'];
         $_SESSION['username'] = $fournisseur['username'];
         $_SESSION['noms'] = $fournisseur['noms'];
         header('Location: ./../index.php');

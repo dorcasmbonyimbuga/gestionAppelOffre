@@ -237,27 +237,17 @@ $initiales = implode('', array_map(function ($part) {
                   <i class="fa fa-bell"></i>
                   <span class="notification">4</span>
                 </a>
-                <ul
-                  class="dropdown-menu notif-box animated fadeIn"
-                  aria-labelledby="notifDropdown">
+                <ul class="dropdown-menu notif-box animated fadeIn" aria-labelledby="notifDropdown">
                   <li>
-                    <div class="dropdown-title">
-                      You have 4 new notification
-                    </div>
+                    <div class="dropdown-title">Vous avez <span id="notif-count">0</span> notification(s)</div>
                   </li>
                   <li>
-                    <div class="notif-scroll scrollbar-outer">
-                      <div class="notif-center">
-                        <a href="#">
-                          <div class="notif-content">
-                            <span class="block"> New user registered </span>
-                            <span class="time">5 minutes ago</span>
-                          </div>
-                        </a>
-                      </div>
+                    <div class="notif-scroll scrollbar-outer" id="notif-container">
+                      <!-- notifications chargées ici -->
                     </div>
                   </li>
                 </ul>
+
               </li>
 
               <li class="nav-item topbar-user dropdown hidden-caret">
@@ -426,8 +416,8 @@ $initiales = implode('', array_map(function ($part) {
                       <thead class="thead-light">
                         <tr>
                           <th scope="col">ID</th>
-                          <th scope="col">Noms candidat</th>
                           <th scope="col">Ref. Offre</th>
+                          <th scope="col">Noms candidat</th>
                           <th scope="col">Statut</th>
                           <th scope="col">Date</th>
                           <th scope="col">Autres</th>
@@ -568,7 +558,6 @@ $initiales = implode('', array_map(function ($part) {
   <!-- jQuery Scrollbar -->
   <script src="assets/js/plugin/jquery-scrollbar/jquery.scrollbar.min.js"></script>
 
-
   <!-- Datatables -->
   <script src="assets/js/plugin/datatables/datatables.min.js"></script>
 
@@ -588,6 +577,41 @@ $initiales = implode('', array_map(function ($part) {
       $('#table_candidats').DataTable();
       $('#table_detailEtat').DataTable();
     });
+  </script>
+
+  <script>
+    function chargerNotifications() {
+      $.ajax({
+        url: '../process/get_notifications.php',
+        method: 'GET',
+        dataType: 'json',
+        success: function(data) {
+          let html = '';
+          if (data.length === 0) {
+            html = '<div class="notif-center"><span class="dropdown-item">Aucune notification</span></div>';
+          } else {
+            html += '<div class="notif-center">';
+            data.forEach(notif => {
+              html += `
+            <a href="#">
+              <div class="notif-content">
+                <span class="block">${notif.noms}</span>
+                <span class="block">${notif.objets}</span>
+                <span class="time">${notif.timeago}</span>
+              </div>
+            </a>`;
+            });
+            html += '</div>';
+          }
+
+          $('#notif-container').html(html);
+          $('#notif-count').text(data.length);
+        }
+      });
+    }
+
+    setInterval(chargerNotifications, 15000);
+    $(document).ready(chargerNotifications);
   </script>
 
 </body>
