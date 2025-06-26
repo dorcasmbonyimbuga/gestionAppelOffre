@@ -11,8 +11,6 @@
   <!-- Conteneur alert -->
   <div id="alertContainer" style="position: fixed; top: 20px; right: 20px; z-index: 1055; width: 320px;"></div>
 
-<!-- 1. Inclusion des modals (HTML, pas encore de JS ici) -->
-<?php include '../process/modals.php'; ?>
 
 <!-- 2. jQuery (toujours d'abord) -->
 <script src="../assets/js/core/jquery-3.7.1.min.js"></script>

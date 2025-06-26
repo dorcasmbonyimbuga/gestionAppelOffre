@@ -20,6 +20,7 @@ $alertClass = '';
 <!-- Affichage dans le menu topbar -->
 <?php
 $nom = isset($_SESSION['noms']) ? $_SESSION['noms'] : (isset($_SESSION['username']) ? $_SESSION['username'] : 'Invité');
+$idFourni=isset($_SESSION['noms']);
 $initiales = implode('', array_map(function ($part) {
     return strtoupper($part[0]);
 }, explode(' ', $nom)));

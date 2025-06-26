@@ -3,7 +3,7 @@ session_start();
 require '../bd/conbd.php';
 
 $idAppel = $_GET['idAppel'];
-$idFournisseur = $_SESSION['id_fournisseur'];
+$idFournisseur = $_SESSION['idFourni'];
 
 // Vérifie si déjà postulé
 $stmt = $con->prepare("SELECT * FROM candidats WHERE refAppelOffre = ? AND refFournisseurCandidat = ?");

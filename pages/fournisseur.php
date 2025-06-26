@@ -46,3 +46,9 @@ include "../partials/header.php"
 </div>
 
 <?php include "../partials/footer.php"; ?>
+<!-- Initialisation DataTables -->
+<script>
+  $(document).ready(function() {
+    $('#table_fournisseur').DataTable();
+  });
+</script>
