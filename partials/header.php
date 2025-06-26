@@ -154,6 +154,12 @@ $initiales = implode('', array_map(function ($part) {
                                 <p>Utilisateurs</p>
                             </a>
                         </li>
+                        <li class="nav-item">
+                            <a href="../login/logout.php">
+                                <i class="fas fa-arrow-circle-left"></i>
+                                <p>Déconnexion</p>
+                            </a>
+                        </li>
                     </ul>
                 </div>
             </div>

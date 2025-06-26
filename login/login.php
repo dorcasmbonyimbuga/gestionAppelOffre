@@ -22,7 +22,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['connecter'])) {
         $_SESSION['idFourni'] = $fournisseur['idFourni'];
         $_SESSION['username'] = $fournisseur['username'];
         $_SESSION['noms'] = $fournisseur['noms'];
-        header('Location: ./../index.php');
+        header('Location: ../fournisseur/listeAppel.php');
         exit;
     }
     // Sinon vérifie dans user

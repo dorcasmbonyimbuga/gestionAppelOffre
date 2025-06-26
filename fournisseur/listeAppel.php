@@ -30,15 +30,16 @@ include "../partials/headerFourni.php"
           $check->execute([$appel['idAppel'], $idFourni]);
           $dejaPostule = $check->fetchColumn() > 0;
           ?>
-          <div class="row">
+          
             <div class="col-md-4 mb-4">
+              <div class="row">
             <div class="card shadow">
               <div class="card-body">
                 <h5 class="card-title"><?= htmlspecialchars($appel['objets']) ?></h5>
                 <p class="card-text"><strong>Besoin :</strong> <?= htmlspecialchars($appel['libelle']) ?></p>
                 <p><strong>Infos :</strong> <?= nl2br(htmlspecialchars($appel['autresInfo'])) ?></p>
                 <p><small>Publié le : <?= $appel['datePub'] ?></small></p>
-                <a href="details_appel.php?id=<?= $appel['idAppel'] ?>" class="btn btn-info btn-sm">Voir plus</a>
+                <a href="details_appel.php?id=<?= $appel['idAppel'] ?>" class="btn btn-secondary btn-sm">Voir plus</a>
                 <a href="postuler.php?idAppel=<?= $appel['idAppel'] ?>" class="btn btn-primary btn-sm <?= $dejaPostule ? 'disabled' : '' ?>">
                   <?= $dejaPostule ? 'Déjà postulé' : 'Postuler' ?>
                 </a>

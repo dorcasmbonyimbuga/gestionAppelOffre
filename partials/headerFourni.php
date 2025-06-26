@@ -20,7 +20,7 @@ $alertClass = '';
 <!-- Affichage dans le menu topbar -->
 <?php
 $nom = isset($_SESSION['noms']) ? $_SESSION['noms'] : (isset($_SESSION['username']) ? $_SESSION['username'] : 'Invité');
-$idFourni=isset($_SESSION['noms']);
+
 $initiales = implode('', array_map(function ($part) {
     return strtoupper($part[0]);
 }, explode(' ', $nom)));
@@ -153,6 +153,12 @@ $initiales = implode('', array_map(function ($part) {
                             <a href="user.php">
                                 <i class="far fa-user-circle"></i>
                                 <p>Utilisateurs</p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="../login/logout.php">
+                                <i class="fas fa-arrow-circle-left"></i>
+                                <p>Déconnexion</p>
                             </a>
                         </li>
                     </ul>
