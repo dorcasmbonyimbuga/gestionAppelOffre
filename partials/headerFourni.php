@@ -143,10 +143,10 @@ $initiales = implode('', array_map(function ($part) {
                                 <p>Appel d'offre</p>
                             </a>
                         </li>
-                        <li class="nav-item <?= ($currentPage === 'candidat') ? 'active' : '' ?>">
-                            <a href="candidat.php">
-                                <i class="fas fa-user-friends"></i>
-                                <p>Candidatures</p>
+                        <li class="nav-item">
+                            <a href="mesCandidatures.php">
+                                <i class="fas fa-clipboard-check"></i>
+                                <p>Mes candidatures</p>
                             </a>
                         </li>
                         <li class="nav-item <?= ($currentPage === 'user') ? 'active' : '' ?>">
