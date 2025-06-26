@@ -363,7 +363,13 @@
 
                         <div class="col-md-6 mb-3">
                             <label for="statut" class="form-label">Statut</label>
-                            <input type="text" class="form-control" name="statut" id="statut">
+                            <select name="statut" id="statut" class="form-select" required>
+                                <option value="">-- Sélectionner le statut --</option>
+                                <option value="">En attente</option>
+                                <option value="Reçu">Reçu</option>
+                                <option value="Validé">Validé</option>
+                            </select>
+                            <!-- <input type="text" class="form-control" name="statut" id="statut"> -->
                         </div>
 
                         <div class="col-md-6 mb-3">

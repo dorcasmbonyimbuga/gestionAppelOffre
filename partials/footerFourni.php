@@ -29,9 +29,6 @@
 <!-- 6. Kaiadmin JS (si nécessaire pour l’UI) -->
 <script src="../assets/js/kaiadmin.min.js"></script>
 
-<!-- 7. Ton script principal contenant toute la logique AJAX -->
-
-<script src="../process/main.js"></script>
 </body>
 
 </html>

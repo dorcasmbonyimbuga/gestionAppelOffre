@@ -35,8 +35,7 @@ $breadcrumb = ["Fournisseur", "Liste Appel d'offre"];
           
           <!-- ✅ Boutons côte à côte -->
           <div class="d-flex justify-content-between mt-2">
-            <a href="detail_appel.php?id=<?= $appel['idAppel'] ?>" class="btn btn-secondary btn-sm flex-fill me-2">Voir plus</a>
-            <!-- <a href="details_appel.php?id=<?= $appel['idAppel'] ?>" class="btn btn-secondary btn-sm flex-fill me-2">Voir plus</a> -->
+            <a href="detailAppel.php?id=<?= $appel['idAppel'] ?>" class="btn btn-secondary btn-sm flex-fill me-2">Voir plus</a>
             <a href="postuler.php?idAppel=<?= $appel['idAppel'] ?>" class="btn btn-primary btn-sm flex-fill <?= $dejaPostule ? 'disabled' : '' ?>">
               <?= $dejaPostule ? 'Déjà postulé' : 'Postuler' ?>
             </a>
