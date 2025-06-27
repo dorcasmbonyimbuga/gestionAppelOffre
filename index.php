@@ -1,5 +1,11 @@
 <?php include "bd/conbd.php";
 session_start();
+
+if (!isset($_SESSION['idUser'])) {
+    header("Location: ./login/login.php");
+    exit();
+}
+
 $message = '';
 $alertClass = '';
 ?>

@@ -1,6 +1,6 @@
 <?php
 require '../bd/conbd.php';
-session_start();
+include '../login/auth.php';
 
 $refF = $_POST['refFournisseurCandidat'];
 $refAppel = $_POST['refAppelOffre'];

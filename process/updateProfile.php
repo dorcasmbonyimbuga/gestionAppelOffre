@@ -1,5 +1,5 @@
 <?php
-session_start();
+include '../login/auth.php';
 require '../bd/conbd.php';
 
 $id = $_SESSION['idFourni'] ?? null;
