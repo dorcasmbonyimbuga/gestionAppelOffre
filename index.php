@@ -175,7 +175,7 @@ $initiales = implode('', array_map(function ($part) {
               </a>
             </li>
             <li class="nav-item">
-              <a href="#">
+              <a href="./pages/profile.php">
                 <i class="far fa-user-circle"></i>
                 <p>Profile</p>
               </a>

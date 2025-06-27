@@ -42,6 +42,6 @@ $appels = $stmt->fetchAll(PDO::FETCH_ASSOC);
     </div>
   <?php endforeach; ?>
 </div>
-
+</div>
 
 <?php include "../partials/footerFourni.php"; ?>

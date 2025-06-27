@@ -26,11 +26,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['connecter'])) {
         exit;
     }
     // Sinon vérifie dans user
-    $stmt2 = $con->prepare("SELECT username, pswd, niveauAcces FROM user WHERE username = ? LIMIT 1");
+    $stmt2 = $con->prepare("SELECT idUser,username, pswd, niveauAcces FROM user WHERE username = ? LIMIT 1");
     $stmt2->execute([$username]);
     $user = $stmt2->fetch(PDO::FETCH_ASSOC);
 
     if ($user && $user['pswd'] === md5($pswd)) {
+        $_SESSION['idUser'] = $user['idUser'];
         $_SESSION['username'] = $user['username'];
         $_SESSION['niveauAcces'] = $user['niveauAcces'];
         header('Location: ./../index.php');

@@ -174,7 +174,7 @@ $initiales = implode('', array_map(function ($part) {
                             </a>
                         </li>
                         <li class="nav-item <?= ($currentPage === 'profile') ? 'active' : '' ?>">
-                            <a href="#">
+                            <a href="profile.php">
                                 <i class="far fa-user-circle"></i>
                                 <p>Profile</p>
                             </a>

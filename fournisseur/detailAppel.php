@@ -56,5 +56,5 @@ $dejaPostule = $check->fetchColumn() > 0;
     </div>
   </div>
 </div>
-
+</div>
 <?php include "../partials/footerFourni.php"; ?>

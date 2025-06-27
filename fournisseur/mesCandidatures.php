@@ -70,5 +70,5 @@ $candidatures = $stmt->fetchAll(PDO::FETCH_ASSOC);
         </div>
     </div>
 </div>
-
+</div>
 <?php include "../partials/footerFourni.php"; ?>

@@ -41,7 +41,7 @@ if ($stmt->rowCount() > 0) {
     </div>
   </div>
 </div>
-
+</div>
 <?php include "../partials/footerFourni.php"; ?>
 
 <script>
