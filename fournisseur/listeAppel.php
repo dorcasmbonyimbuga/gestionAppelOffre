@@ -1,5 +1,8 @@
 <?php
-require '../bd/conbd.php';
+$pageTitle = "Liste Appel d'offre";
+$currentPage = "listeAppel";
+$breadcrumb = ["Pages", "Liste Appel d'offre"];
+
 include "../partials/headerFourni.php";
 $idFourni = $_SESSION['idFourni']; // doit être défini au login
 
@@ -11,12 +14,6 @@ $stmt = $con->query("SELECT appelOffre.idAppel, etatBesoin.libelle, datePub, obj
 $appels = $stmt->fetchAll(PDO::FETCH_ASSOC);
 ?>
 
-<?php
-$pageTitle = "Fournisseur";
-$currentPage = "listeAppel";
-$breadcrumb = ["Fournisseur", "Liste Appel d'offre"];
-
-?>
 <!-- Tableau -->
 <div class="row">
   <?php foreach ($appels as $index => $appel): ?>
@@ -32,7 +29,7 @@ $breadcrumb = ["Fournisseur", "Liste Appel d'offre"];
           <p class="card-text"><strong>Besoin :</strong> <?= htmlspecialchars($appel['libelle']) ?></p>
           <p><strong>Infos :</strong> <?= nl2br(htmlspecialchars($appel['autresInfo'])) ?></p>
           <p class="mt-auto"><small>Publié le : <?= $appel['datePub'] ?></small></p>
-          
+
           <!-- ✅ Boutons côte à côte -->
           <div class="d-flex justify-content-between mt-2">
             <a href="detailAppel.php?id=<?= $appel['idAppel'] ?>" class="btn btn-secondary btn-sm flex-fill me-2">Voir plus</a>
@@ -45,11 +42,6 @@ $breadcrumb = ["Fournisseur", "Liste Appel d'offre"];
     </div>
   <?php endforeach; ?>
 </div>
-
-</div>
-</div>
-
-
 
 
 <?php include "../partials/footerFourni.php"; ?>

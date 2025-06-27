@@ -1,5 +1,4 @@
 <?php
-require '../bd/conbd.php';
 include "../partials/headerFourni.php";
 
 if (!isset($_GET['id']) || !is_numeric($_GET['id'])) {
@@ -40,7 +39,6 @@ $dejaPostule = $check->fetchColumn() > 0;
         </div>
       </div>
       <div class="card-body">
-
         <h2><?= htmlspecialchars($data['objets']) ?></h2>
         <p><strong>État de besoin :</strong> <?= htmlspecialchars($data['libelle']) ?></p>
         <p><strong>Informations complémentaires :</strong> <?= nl2br(htmlspecialchars($data['autresInfo'])) ?></p>
@@ -57,8 +55,6 @@ $dejaPostule = $check->fetchColumn() > 0;
       </div>
     </div>
   </div>
-</div>
-</div>
 </div>
 
 <?php include "../partials/footerFourni.php"; ?>

@@ -1,7 +1,7 @@
 <?php
-$pageTitle = "Mes candidatures";
-$currentPage = "mesCandidatures";
-$breadcrumb = ["Pages", "Mes candidatures"];
+$pageTitle = "Dashboard Fournisseur";
+$currentPage = "indexFourni";
+$breadcrumb = ["Pages", "Dashboard Fournisseur"];
 
 include "../partials/headerFourni.php";
 $idFourni = $_SESSION['idFourni'];
@@ -51,7 +51,7 @@ $candidatures = $stmt->fetchAll(PDO::FETCH_ASSOC);
                                                 echo '<span class="badge bg-warning text-dark">En attente</span>';
                                                 break;
                                             case 'Reçu':
-                                                echo '<span class="badge bg-info text-dark">Reçu</span>';
+                                                echo '<span class="badge badge-info text-dark">Reçu</span>';
                                                 break;
                                             case 'Validé':
                                                 echo '<span class="badge bg-success">Validé</span>';
@@ -70,5 +70,6 @@ $candidatures = $stmt->fetchAll(PDO::FETCH_ASSOC);
         </div>
     </div>
 </div>
+
 
 <?php include "../partials/footerFourni.php"; ?>

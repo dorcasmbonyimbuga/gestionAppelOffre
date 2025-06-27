@@ -1,4 +1,5 @@
 <?php
+require '../bd/conbd.php';
 session_start();
 $message = '';
 $alertClass = '';
@@ -148,10 +149,34 @@ $initiales = implode('', array_map(function ($part) {
                                 <p>Candidatures</p>
                             </a>
                         </li>
+                        <li class="nav-section">
+                            <span class="sidebar-mini-icon">
+                                <i class="fa fa-ellipsis-h"></i>
+                            </span>
+                            <h4 class="text-section">Rapports</h4>
+                        </li>
+                        <li class="nav-item <?= ($currentPage === 'rapports') ? 'active' : '' ?>">
+                            <a href="rapports.php">
+                                <i class="fas fa-file"></i>
+                                <p>Rapports</p>
+                            </a>
+                        </li>
+                        <li class="nav-section">
+                            <span class="sidebar-mini-icon">
+                                <i class="fa fa-ellipsis-h"></i>
+                            </span>
+                            <h4 class="text-section">Users</h4>
+                        </li>
                         <li class="nav-item <?= ($currentPage === 'user') ? 'active' : '' ?>">
                             <a href="user.php">
                                 <i class="far fa-user-circle"></i>
                                 <p>Utilisateurs</p>
+                            </a>
+                        </li>
+                        <li class="nav-item <?= ($currentPage === 'profile') ? 'active' : '' ?>">
+                            <a href="#">
+                                <i class="far fa-user-circle"></i>
+                                <p>Profile</p>
                             </a>
                         </li>
                         <li class="nav-item">

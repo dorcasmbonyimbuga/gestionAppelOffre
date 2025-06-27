@@ -1,4 +1,5 @@
 <?php
+require '../bd/conbd.php';
 session_start();
 $message = '';
 $alertClass = '';
@@ -70,7 +71,7 @@ $initiales = implode('', array_map(function ($part) {
             <div class="sidebar-logo">
                 <!-- Logo Header -->
                 <div class="logo-header" data-background-color="dark">
-                    <a href="../index.php" class="logo text-white">Appel Offre</a>
+                    <a href="indexFourni.php" class="logo text-white">Appel Offre</a>
                     <div class="nav-toggle">
                         <button class="btn btn-toggle toggle-sidebar">
                             <i class="gg-menu-right"></i>
@@ -89,8 +90,8 @@ $initiales = implode('', array_map(function ($part) {
             <div class="sidebar-wrapper scrollbar scrollbar-inner">
                 <div class="sidebar-content">
                     <ul class="nav nav-secondary">
-                        <li class="nav-item <?= ($currentPage === 'dashboard') ? 'active' : '' ?>">
-                            <a href="./../index.php">
+                        <li class="nav-item <?= ($currentPage === 'indexFourni') ? 'active' : '' ?>">
+                            <a href="indexFourni.php">
                                 <i class="fas fa-home"></i>
                                 <p>Dashboard</p>
                             </a>
@@ -102,57 +103,23 @@ $initiales = implode('', array_map(function ($part) {
                             <h4 class="text-section">Pages</h4>
                         </li>
 
-                        <li class="nav-item <?= ($currentPage === 'produit') ? 'active' : '' ?>">
-                            <a href="produit.php">
-                                <i class="fas fa-luggage-cart"></i>
-                                <p>Produits</p>
+                        <li class="nav-item <?= ($currentPage === 'listeAppel') ? 'active' : '' ?>">
+                            <a href="listeAppel.php">
+                                <i class="fas fa-bullhorn"></i>
+                                <p>Liste Appel</p>
                             </a>
                         </li>
 
-                        <li class="nav-item <?= ($currentPage === 'fournisseur') ? 'active' : '' ?>">
-                            <a href="fournisseur.php">
-                                <i class="fas fa-users"></i>
-                                <p>Fournisseurs</p>
-                            </a>
-                        </li>
-                        <!-- Pour les sous-menus (ex. Etat de besoin) -->
-                        <li class="nav-item <?= in_array($currentPage, ['etatBesoin', 'detailEtat']) ? 'active' : '' ?>">
-                            <a data-bs-toggle="collapse" href="#maps" <?= in_array($currentPage, ['etatBesoin', 'detailEtat']) ? 'aria-expanded="true"' : '' ?>>
-                                <i class="fas fa-th-list"></i>
-                                <p>Etat de besoin</p>
-                                <span class="caret"></span>
-                            </a>
-                            <div class="collapse <?= in_array($currentPage, ['etatBesoin', 'detailEtat']) ? 'show' : '' ?>" id="maps">
-                                <ul class="nav nav-collapse">
-                                    <li class="<?= ($currentPage === 'etatBesoin') ? 'active' : '' ?>">
-                                        <a href="etatBesoin.php">
-                                            <span class="sub-item">Etat de besoin</span>
-                                        </a>
-                                    </li>
-                                    <li class="<?= ($currentPage === 'detailEtat') ? 'active' : '' ?>">
-                                        <a href="detailEtat.php">
-                                            <span class="sub-item">Detail etat de besoin</span>
-                                        </a>
-                                    </li>
-                                </ul>
-                            </div>
-                        </li>
-                        <li class="nav-item <?= ($currentPage === 'appelOffre') ? 'active' : '' ?>">
-                            <a href="appelOffre.php">
-                                <i class="fas fa-bullhorn"></i>
-                                <p>Appel d'offre</p>
-                            </a>
-                        </li>
-                        <li class="nav-item">
+                        <li class="nav-item <?= ($currentPage === 'mesCandidatures') ? 'active' : '' ?>">
                             <a href="mesCandidatures.php">
                                 <i class="fas fa-clipboard-check"></i>
                                 <p>Mes candidatures</p>
                             </a>
                         </li>
-                        <li class="nav-item <?= ($currentPage === 'user') ? 'active' : '' ?>">
-                            <a href="user.php">
+                        <li class="nav-item <?= ($currentPage === 'profile') ? 'active' : '' ?>">
+                            <a href="profile.php">
                                 <i class="far fa-user-circle"></i>
-                                <p>Utilisateurs</p>
+                                <p>Profile</p>
                             </a>
                         </li>
                         <li class="nav-item">

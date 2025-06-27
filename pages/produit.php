@@ -74,8 +74,6 @@ include "../partials/header.php"
     </div>
   </div>
 </div>
-</div>
-</div>
 
 <?php include "../partials/footer.php"; ?>
 <!-- Initialisation DataTables -->

@@ -1,5 +1,4 @@
 <?php
-require '../bd/conbd.php';
 include "../partials/headerFourni.php";
 
 $idAppel = $_GET['idAppel'];
@@ -41,8 +40,6 @@ if ($stmt->rowCount() > 0) {
       </div>
     </div>
   </div>
-</div>
-</div>
 </div>
 
 <?php include "../partials/footerFourni.php"; ?>

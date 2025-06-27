@@ -20,7 +20,7 @@ $alertClass = '';
 <!-- Affichage dans le menu topbar -->
 <?php
 $nom = isset($_SESSION['noms']) ? $_SESSION['noms'] : (isset($_SESSION['username']) ? $_SESSION['username'] : 'Invité');
-$idFourni=isset($_SESSION['idFourni']);
+$idFourni = isset($_SESSION['idFourni']);
 $initiales = implode('', array_map(function ($part) {
   return strtoupper($part[0]);
 }, explode(' ', $nom)));
@@ -150,10 +150,34 @@ $initiales = implode('', array_map(function ($part) {
                 <p>Candidatures</p>
               </a>
             </li>
+            <li class="nav-section">
+              <span class="sidebar-mini-icon">
+                <i class="fa fa-ellipsis-h"></i>
+              </span>
+              <h4 class="text-section">Rapports</h4>
+            </li>
+            <li class="nav-item">
+              <a href="./pages/rapports.php">
+                <i class="fas fa-file"></i>
+                <p>Rapports</p>
+              </a>
+            </li>
+            <li class="nav-section">
+              <span class="sidebar-mini-icon">
+                <i class="fa fa-ellipsis-h"></i>
+              </span>
+              <h4 class="text-section">Users</h4>
+            </li>
             <li class="nav-item">
               <a href="./pages/user.php">
                 <i class="far fa-user-circle"></i>
                 <p>Utilisateurs</p>
+              </a>
+            </li>
+            <li class="nav-item">
+              <a href="#">
+                <i class="far fa-user-circle"></i>
+                <p>Profile</p>
               </a>
             </li>
             <li class="nav-item">
