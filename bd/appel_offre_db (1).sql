@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Hôte : 127.0.0.1
--- Généré le : ven. 27 juin 2025 à 05:24
+-- Généré le : dim. 29 juin 2025 à 05:32
 -- Version du serveur : 10.4.32-MariaDB
 -- Version de PHP : 8.2.12
 
@@ -42,7 +42,11 @@ CREATE TABLE `appeloffre` (
 INSERT INTO `appeloffre` (`idAppel`, `refEtatAppel`, `datePub`, `objets`, `autresInfo`) VALUES
 (1, 1, '2025-06-10', 'Requisition biscuits', 'Aucun'),
 (3, 1, '2025-06-25', 'Requisition Jus', 'Jus'),
-(4, 4, '2025-06-26', 'Requisition Jus Afia', 'Aucune');
+(4, 4, '2025-06-26', 'Requisition Jus Afia', 'Aucune'),
+(5, 3, '2025-06-29', 'Requisition fguyiw', 'wertyui'),
+(6, 4, '2025-06-29', 'Requisition jus', 'wertyuio'),
+(7, 3, '2025-06-29', 'oiuytre', 'kuytre'),
+(8, 4, '2025-06-28', 'oiuytre', 'wertyuio oiuytre');
 
 -- --------------------------------------------------------
 
@@ -70,7 +74,8 @@ INSERT INTO `candidats` (`idCandidat`, `refAppelOffre`, `refFournisseurCandidat`
 (8, 3, 2, 'en attente', '2025-06-26', 'Rapidite et fiabilite'),
 (9, 3, 7, 'en attente', '2025-06-26', 'Meilleur offre'),
 (10, 1, 7, 'en attente', '2025-06-26', 'Prioritaire'),
-(11, 4, 7, 'Reçu', '2025-06-26', 'Prix promotionnelle');
+(11, 4, 7, 'Reçu', '2025-06-26', 'Prix promotionnelle'),
+(12, 7, 9, 'en attente', '2025-06-29', 'Efficace et prix unitaire 100fc');
 
 -- --------------------------------------------------------
 
@@ -89,10 +94,10 @@ CREATE TABLE `categorieproduit` (
 
 INSERT INTO `categorieproduit` (`idCategorie`, `designationCat`) VALUES
 (1, 'Biscuit'),
-(2, 'Jus'),
 (3, 'Bonbons'),
-(5, 'Jus'),
-(6, 'Jus');
+(5, 'Cahier'),
+(2, 'Jus'),
+(6, 'Stylo');
 
 -- --------------------------------------------------------
 
@@ -106,7 +111,7 @@ CREATE TABLE `detailetat` (
   `refProduit` int(11) NOT NULL,
   `PU` double NOT NULL,
   `Qte` int(11) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ;
 
 --
 -- Déchargement des données de la table `detailetat`
@@ -161,7 +166,7 @@ CREATE TABLE `fournisseur` (
 
 INSERT INTO `fournisseur` (`idFourni`, `noms`, `adresse`, `contact`, `autres`, `username`, `pswd`) VALUES
 (1, 'Promesse Mbonyimbuga', 'Virunga', '+243973885864', 'fullstack', 'promesse', '81dc9bdb52d04dc20036dbd8313ed055'),
-(2, 'Mbonyimbuga Promesse', 'Goma', '0854252581', 'web dev', 'prom', 'e10adc3949ba59abbe56e057f20f883e'),
+(2, 'Mbonyimbuga Promesse', 'Goma', '08542525812', 'web dev', 'prom', '14e1b600b1fd579f47433b88e8d85291'),
 (3, 'Dorcas Mbonyi Promesse', 'Goma ville', '039824888', 'devellopeuse', 'Dor', '8d4112ce0aabe7aeef422c136a222624'),
 (7, 'Lydie Niyonzima', 'Himbi', '7895118888', 'dataanalyst', 'Lydia', '4ba29b9f9e5732ed33761840f4ba6c53'),
 (8, 'Dylan Kavundama', 'Katoyi', '0854252581', 'Mobile dev', 'Dylan', '670b14728ad9902aecba32e22fa4f6bd'),
@@ -179,7 +184,7 @@ CREATE TABLE `produit` (
   `PUProduit` double NOT NULL,
   `unite` varchar(10) NOT NULL,
   `refCategorie` int(11) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ;
 
 --
 -- Déchargement des données de la table `produit`
@@ -234,7 +239,8 @@ ALTER TABLE `candidats`
 -- Index pour la table `categorieproduit`
 --
 ALTER TABLE `categorieproduit`
-  ADD PRIMARY KEY (`idCategorie`);
+  ADD PRIMARY KEY (`idCategorie`),
+  ADD UNIQUE KEY `une_categorie` (`designationCat`);
 
 --
 -- Index pour la table `detailetat`
@@ -255,20 +261,25 @@ ALTER TABLE `etatbesoin`
 -- Index pour la table `fournisseur`
 --
 ALTER TABLE `fournisseur`
-  ADD PRIMARY KEY (`idFourni`);
+  ADD PRIMARY KEY (`idFourni`),
+  ADD UNIQUE KEY `un_fournisseur` (`noms`),
+  ADD UNIQUE KEY `un_usename_fournisseur` (`username`),
+  ADD UNIQUE KEY `un_contact_forunisseur` (`contact`);
 
 --
 -- Index pour la table `produit`
 --
 ALTER TABLE `produit`
   ADD PRIMARY KEY (`idProduit`),
+  ADD UNIQUE KEY `un_produit` (`designation`),
   ADD KEY `fk_categorie` (`refCategorie`);
 
 --
 -- Index pour la table `user`
 --
 ALTER TABLE `user`
-  ADD PRIMARY KEY (`idUser`);
+  ADD PRIMARY KEY (`idUser`),
+  ADD UNIQUE KEY `un_usename_user` (`username`);
 
 --
 -- AUTO_INCREMENT pour les tables déchargées
@@ -278,13 +289,13 @@ ALTER TABLE `user`
 -- AUTO_INCREMENT pour la table `appeloffre`
 --
 ALTER TABLE `appeloffre`
-  MODIFY `idAppel` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `idAppel` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 
 --
 -- AUTO_INCREMENT pour la table `candidats`
 --
 ALTER TABLE `candidats`
-  MODIFY `idCandidat` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
+  MODIFY `idCandidat` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
 
 --
 -- AUTO_INCREMENT pour la table `categorieproduit`
@@ -296,7 +307,7 @@ ALTER TABLE `categorieproduit`
 -- AUTO_INCREMENT pour la table `detailetat`
 --
 ALTER TABLE `detailetat`
-  MODIFY `idDetail` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `idDetail` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT pour la table `etatbesoin`
@@ -314,7 +325,7 @@ ALTER TABLE `fournisseur`
 -- AUTO_INCREMENT pour la table `produit`
 --
 ALTER TABLE `produit`
-  MODIFY `idProduit` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `idProduit` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT pour la table `user`

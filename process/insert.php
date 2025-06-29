@@ -5,7 +5,8 @@ require '../bd/conbd.php';
 ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
-
+date_default_timezone_set('Africa/Kinshasa');
+$date = date('Y-m-d');
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     // Fournisseur
@@ -21,7 +22,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     elseif ($_POST['table'] === 'etatBesoin') {
         $stmt = $con->prepare("INSERT INTO etatBesoin (refFournisseurEtat, date, libelle) VALUES (?, ?, ?)");
         echo $stmt->execute([
-            $_POST['refFournisseurEtat'], $_POST['date'], $_POST['libelle']
+            $_POST['refFournisseurEtat'], $date, $_POST['libelle']
         ]) ? 'success' : 'error';
     }
 
@@ -53,7 +54,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     elseif ($_POST['table'] === 'appelOffre') {
         $stmt = $con->prepare("INSERT INTO appelOffre (refEtatAppel, datePub, objets, autresInfo) VALUES (?, ?, ?, ?)");
         echo $stmt->execute([
-            $_POST['refEtatAppel'], $_POST['datePub'], $_POST['objets'], $_POST['autresInfo']
+            $_POST['refEtatAppel'], $date, $_POST['objets'], $_POST['autresInfo']
         ]) ? 'success' : 'error';
     }
 
@@ -61,7 +62,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     elseif ($_POST['table'] === 'candidats') {
         $stmt = $con->prepare("INSERT INTO candidats (refAppelOffre, refFournisseurCandidat, statut, dateCandidature, autresDetails) VALUES (?, ?, ?, ?, ?)");
         echo $stmt->execute([
-            $_POST['refAppelOffre'], $_POST['refFournisseurCandidat'], $_POST['statut'], $_POST['dateCandidature'], $_POST['autresDetails']
+            $_POST['refAppelOffre'], $_POST['refFournisseurCandidat'], $_POST['statut'], $date, $_POST['autresDetails']
         ]) ? 'success' : 'error';
     }
 

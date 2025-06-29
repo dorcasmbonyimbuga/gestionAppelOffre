@@ -51,6 +51,8 @@ $user = $stmt->fetch();
     </div>
 </div>
 </div>
+</div>
+
 <?php include "../partials/footer.php"; ?>
 <script>
     $(document).ready(function() {

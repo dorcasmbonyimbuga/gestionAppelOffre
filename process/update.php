@@ -5,6 +5,8 @@ require '../bd/conbd.php';
 ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
+date_default_timezone_set('Africa/Kinshasa');
+$date = date('Y-m-d');
 // file_put_contents('log_post.txt', print_r($_POST, true));
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
@@ -20,7 +22,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         } elseif ($table === 'etatBesoin') {
             $stmt = $con->prepare("UPDATE etatBesoin SET refFournisseurEtat=?, date=?, libelle=? WHERE idEtat=?");
             echo $stmt->execute([
-                $_POST['refFournisseurEtat'], $_POST['date'], $_POST['libelle'], $_POST['idEtat']
+                $_POST['refFournisseurEtat'], $date, $_POST['libelle'], $_POST['idEtat']
             ]) ? 'success' : 'error';
         } elseif ($table === 'categorieProduit') {
             $stmt = $con->prepare("UPDATE categorieProduit SET designationCat=? WHERE idCategorie=?");
@@ -40,12 +42,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         } elseif ($table === 'appelOffre') {
             $stmt = $con->prepare("UPDATE appelOffre SET refEtatAppel=?, datePub=?, objets=?, autresInfo=? WHERE idAppel=?");
             echo $stmt->execute([
-                $_POST['refEtatAppel'], $_POST['datePub'], $_POST['objets'], $_POST['autresInfo'], $_POST['idAppel']
+                $_POST['refEtatAppel'], $date, $_POST['objets'], $_POST['autresInfo'], $_POST['idAppel']
             ]) ? 'success' : 'error';
         } elseif ($table === 'candidats') {
             $stmt = $con->prepare("UPDATE candidats SET refAppelOffre=?, refFournisseurCandidat=?, statut=?, dateCandidature=?, autresDetails=? WHERE idCandidat=?");
             echo $stmt->execute([
-                $_POST['refAppelOffre'], $_POST['refFournisseurCandidat'], $_POST['statut'], $_POST['dateCandidature'], $_POST['autresDetails'], $_POST['idCandidat']
+                $_POST['refAppelOffre'], $_POST['refFournisseurCandidat'], $_POST['statut'], $date, $_POST['autresDetails'], $_POST['idCandidat']
             ]) ? 'success' : 'error';
         } elseif ($table === 'user') {
             $stmt = $con->prepare("UPDATE user SET username=?, pswd=?, niveauAcces=? WHERE idUser=?");

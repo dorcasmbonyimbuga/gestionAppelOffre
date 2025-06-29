@@ -72,6 +72,8 @@ $user = $stmt->fetch();
     </div>
 </div>
 </div>
+</div>
+
 <?php include "../partials/footerFourni.php"; ?>
 <script>
     $(document).ready(function() {

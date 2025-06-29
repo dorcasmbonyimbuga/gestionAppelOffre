@@ -86,11 +86,6 @@
                         </div>
 
                         <div class="col-md-6 mb-3">
-                            <label for="date" class="form-label">Date</label>
-                            <input type="date" class="form-control" name="date" id="date" required>
-                        </div>
-
-                        <div class="col-md-6 mb-3">
                             <label for="libelle" class="form-label">Libellé</label>
                             <input type="text" class="form-control" name="libelle" id="libelle" required>
                         </div>
@@ -290,16 +285,11 @@
                         </div>
 
                         <div class="col-md-6 mb-3">
-                            <label for="datePub" class="form-label">Date de l'appel</label>
-                            <input type="date" class="form-control" name="datePub" id="datePub" required>
-                        </div>
-
-                        <div class="col-md-6 mb-3">
                             <label for="objets" class="form-label">Objet</label>
                             <input type="text" class="form-control" name="objets" id="objets" required>
                         </div>
 
-                        <div class="col-md-6 mb-3">
+                        <div class="col-md-12 mb-3">
                             <label for="autresInfo" class="form-label">Autres informations</label>
                             <textarea class="form-control" name="autresInfo" id="autresInfo" rows="2"></textarea>
                         </div>
@@ -373,11 +363,6 @@
                         </div>
 
                         <div class="col-md-6 mb-3">
-                            <label for="dateCandidature" class="form-label">Date de candidature</label>
-                            <input type="date" class="form-control" name="dateCandidature" id="dateCandidature">
-                        </div>
-
-                        <div class="col-md-6 mb-3">
                             <label for="autresDetails" class="form-label">Autres infos</label>
                             <textarea class="form-control" name="autresDetails" id="autresDetails" rows="2"></textarea>
                         </div>
@@ -409,7 +394,7 @@
                     <div class="row">
                         <div class="col-md-6 mb-3">
                             <label for="username" class="form-label">Nom d'utilisateur</label>
-                            <input type="text" class="form-control" name="username" id="datePub" required>
+                            <input type="text" class="form-control" name="username" id="username" required>
                         </div>
 
                         <div class="col-md-6 mb-3">
