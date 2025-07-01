@@ -2,10 +2,10 @@
 -- version 5.2.1
 -- https://www.phpmyadmin.net/
 --
--- Hôte : 127.0.0.1
--- Généré le : dim. 29 juin 2025 à 05:32
--- Version du serveur : 10.4.32-MariaDB
--- Version de PHP : 8.2.12
+-- Host: 127.0.0.1
+-- Generation Time: Jun 30, 2025 at 04:13 AM
+-- Server version: 10.4.32-MariaDB
+-- PHP Version: 8.2.12
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -18,13 +18,13 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- Base de données : `appel_offre_db`
+-- Database: `appel_offre_db`
 --
 
 -- --------------------------------------------------------
 
 --
--- Structure de la table `appeloffre`
+-- Table structure for table `appeloffre`
 --
 
 CREATE TABLE `appeloffre` (
@@ -35,23 +35,10 @@ CREATE TABLE `appeloffre` (
   `autresInfo` varchar(200) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
---
--- Déchargement des données de la table `appeloffre`
---
-
-INSERT INTO `appeloffre` (`idAppel`, `refEtatAppel`, `datePub`, `objets`, `autresInfo`) VALUES
-(1, 1, '2025-06-10', 'Requisition biscuits', 'Aucun'),
-(3, 1, '2025-06-25', 'Requisition Jus', 'Jus'),
-(4, 4, '2025-06-26', 'Requisition Jus Afia', 'Aucune'),
-(5, 3, '2025-06-29', 'Requisition fguyiw', 'wertyui'),
-(6, 4, '2025-06-29', 'Requisition jus', 'wertyuio'),
-(7, 3, '2025-06-29', 'oiuytre', 'kuytre'),
-(8, 4, '2025-06-28', 'oiuytre', 'wertyuio oiuytre');
-
 -- --------------------------------------------------------
 
 --
--- Structure de la table `candidats`
+-- Table structure for table `candidats`
 --
 
 CREATE TABLE `candidats` (
@@ -63,24 +50,10 @@ CREATE TABLE `candidats` (
   `autresDetails` varchar(200) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
---
--- Déchargement des données de la table `candidats`
---
-
-INSERT INTO `candidats` (`idCandidat`, `refAppelOffre`, `refFournisseurCandidat`, `statut`, `dateCandidature`, `autresDetails`) VALUES
-(1, 1, 1, 'Publier', '2025-06-10', 'Rapidite uihoroe ytreertyu'),
-(6, 1, 3, 'Envoyer', '2025-06-24', 'ertyuio'),
-(7, 1, 2, 'Publier', '2025-06-01', 'oiuytr'),
-(8, 3, 2, 'en attente', '2025-06-26', 'Rapidite et fiabilite'),
-(9, 3, 7, 'en attente', '2025-06-26', 'Meilleur offre'),
-(10, 1, 7, 'en attente', '2025-06-26', 'Prioritaire'),
-(11, 4, 7, 'Reçu', '2025-06-26', 'Prix promotionnelle'),
-(12, 7, 9, 'en attente', '2025-06-29', 'Efficace et prix unitaire 100fc');
-
 -- --------------------------------------------------------
 
 --
--- Structure de la table `categorieproduit`
+-- Table structure for table `categorieproduit`
 --
 
 CREATE TABLE `categorieproduit` (
@@ -88,21 +61,10 @@ CREATE TABLE `categorieproduit` (
   `designationCat` varchar(100) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
---
--- Déchargement des données de la table `categorieproduit`
---
-
-INSERT INTO `categorieproduit` (`idCategorie`, `designationCat`) VALUES
-(1, 'Biscuit'),
-(3, 'Bonbons'),
-(5, 'Cahier'),
-(2, 'Jus'),
-(6, 'Stylo');
-
 -- --------------------------------------------------------
 
 --
--- Structure de la table `detailetat`
+-- Table structure for table `detailetat`
 --
 
 CREATE TABLE `detailetat` (
@@ -113,19 +75,10 @@ CREATE TABLE `detailetat` (
   `Qte` int(11) NOT NULL
 ) ;
 
---
--- Déchargement des données de la table `detailetat`
---
-
-INSERT INTO `detailetat` (`idDetail`, `refEtatDetail`, `refProduit`, `PU`, `Qte`) VALUES
-(1, 1, 1, 200, 50),
-(2, 3, 2, 15000, 80),
-(3, 4, 2, 1500, 50);
-
 -- --------------------------------------------------------
 
 --
--- Structure de la table `etatbesoin`
+-- Table structure for table `etatbesoin`
 --
 
 CREATE TABLE `etatbesoin` (
@@ -135,19 +88,10 @@ CREATE TABLE `etatbesoin` (
   `libelle` varchar(200) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
---
--- Déchargement des données de la table `etatbesoin`
---
-
-INSERT INTO `etatbesoin` (`idEtat`, `refFournisseurEtat`, `date`, `libelle`) VALUES
-(1, 1, '2025-06-23', 'rioiuyt ertyuio'),
-(3, 3, '2025-06-11', 'poiuiytre'),
-(4, 3, '2025-06-26', 'Requisition Jus Afia');
-
 -- --------------------------------------------------------
 
 --
--- Structure de la table `fournisseur`
+-- Table structure for table `fournisseur`
 --
 
 CREATE TABLE `fournisseur` (
@@ -160,22 +104,10 @@ CREATE TABLE `fournisseur` (
   `pswd` varchar(50) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
---
--- Déchargement des données de la table `fournisseur`
---
-
-INSERT INTO `fournisseur` (`idFourni`, `noms`, `adresse`, `contact`, `autres`, `username`, `pswd`) VALUES
-(1, 'Promesse Mbonyimbuga', 'Virunga', '+243973885864', 'fullstack', 'promesse', '81dc9bdb52d04dc20036dbd8313ed055'),
-(2, 'Mbonyimbuga Promesse', 'Goma', '08542525812', 'web dev', 'prom', '14e1b600b1fd579f47433b88e8d85291'),
-(3, 'Dorcas Mbonyi Promesse', 'Goma ville', '039824888', 'devellopeuse', 'Dor', '8d4112ce0aabe7aeef422c136a222624'),
-(7, 'Lydie Niyonzima', 'Himbi', '7895118888', 'dataanalyst', 'Lydia', '4ba29b9f9e5732ed33761840f4ba6c53'),
-(8, 'Dylan Kavundama', 'Katoyi', '0854252581', 'Mobile dev', 'Dylan', '670b14728ad9902aecba32e22fa4f6bd'),
-(9, 'Eliza Magana', 'Virunga', '039824888777', 'styliste', 'IME', 'd47268e9db2e9aa3827bba3afb7ff94a');
-
 -- --------------------------------------------------------
 
 --
--- Structure de la table `produit`
+-- Table structure for table `produit`
 --
 
 CREATE TABLE `produit` (
@@ -186,19 +118,10 @@ CREATE TABLE `produit` (
   `refCategorie` int(11) NOT NULL
 ) ;
 
---
--- Déchargement des données de la table `produit`
---
-
-INSERT INTO `produit` (`idProduit`, `designation`, `PUProduit`, `unite`, `refCategorie`) VALUES
-(1, 'Cremica', 200, 'FC', 1),
-(2, 'Afia', 1500, 'FC', 2),
-(3, 'Apple', 1000, 'FC', 2);
-
 -- --------------------------------------------------------
 
 --
--- Structure de la table `user`
+-- Table structure for table `user`
 --
 
 CREATE TABLE `user` (
@@ -209,26 +132,26 @@ CREATE TABLE `user` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Déchargement des données de la table `user`
+-- Dumping data for table `user`
 --
 
 INSERT INTO `user` (`idUser`, `username`, `pswd`, `niveauAcces`) VALUES
-(1, 'Dorcas', '202cb962ac59075b964b07152d234b70', 'Admin'),
-(2, 'Kizo', '21c3134ee5edcb618c4f9aae358d73a7', 'Admin');
+(1, 'Admin', 'e10adc3949ba59abbe56e057f20f883e', 'Admin'),
+(2, 'Gabriel', 'e10adc3949ba59abbe56e057f20f883e', 'Admin');
 
 --
--- Index pour les tables déchargées
+-- Indexes for dumped tables
 --
 
 --
--- Index pour la table `appeloffre`
+-- Indexes for table `appeloffre`
 --
 ALTER TABLE `appeloffre`
   ADD PRIMARY KEY (`idAppel`),
   ADD KEY `fk_etat_appel` (`refEtatAppel`);
 
 --
--- Index pour la table `candidats`
+-- Indexes for table `candidats`
 --
 ALTER TABLE `candidats`
   ADD PRIMARY KEY (`idCandidat`),
@@ -236,14 +159,14 @@ ALTER TABLE `candidats`
   ADD KEY `fk_fourni_candidat` (`refFournisseurCandidat`);
 
 --
--- Index pour la table `categorieproduit`
+-- Indexes for table `categorieproduit`
 --
 ALTER TABLE `categorieproduit`
   ADD PRIMARY KEY (`idCategorie`),
   ADD UNIQUE KEY `une_categorie` (`designationCat`);
 
 --
--- Index pour la table `detailetat`
+-- Indexes for table `detailetat`
 --
 ALTER TABLE `detailetat`
   ADD PRIMARY KEY (`idDetail`),
@@ -251,14 +174,14 @@ ALTER TABLE `detailetat`
   ADD KEY `fk_produit` (`refProduit`);
 
 --
--- Index pour la table `etatbesoin`
+-- Indexes for table `etatbesoin`
 --
 ALTER TABLE `etatbesoin`
   ADD PRIMARY KEY (`idEtat`),
   ADD KEY `fk_fourni_etat` (`refFournisseurEtat`);
 
 --
--- Index pour la table `fournisseur`
+-- Indexes for table `fournisseur`
 --
 ALTER TABLE `fournisseur`
   ADD PRIMARY KEY (`idFourni`),
@@ -267,7 +190,7 @@ ALTER TABLE `fournisseur`
   ADD UNIQUE KEY `un_contact_forunisseur` (`contact`);
 
 --
--- Index pour la table `produit`
+-- Indexes for table `produit`
 --
 ALTER TABLE `produit`
   ADD PRIMARY KEY (`idProduit`),
@@ -275,96 +198,96 @@ ALTER TABLE `produit`
   ADD KEY `fk_categorie` (`refCategorie`);
 
 --
--- Index pour la table `user`
+-- Indexes for table `user`
 --
 ALTER TABLE `user`
   ADD PRIMARY KEY (`idUser`),
   ADD UNIQUE KEY `un_usename_user` (`username`);
 
 --
--- AUTO_INCREMENT pour les tables déchargées
+-- AUTO_INCREMENT for dumped tables
 --
 
 --
--- AUTO_INCREMENT pour la table `appeloffre`
+-- AUTO_INCREMENT for table `appeloffre`
 --
 ALTER TABLE `appeloffre`
-  MODIFY `idAppel` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+  MODIFY `idAppel` int(11) NOT NULL AUTO_INCREMENT;
 
 --
--- AUTO_INCREMENT pour la table `candidats`
+-- AUTO_INCREMENT for table `candidats`
 --
 ALTER TABLE `candidats`
-  MODIFY `idCandidat` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
+  MODIFY `idCandidat` int(11) NOT NULL AUTO_INCREMENT;
 
 --
--- AUTO_INCREMENT pour la table `categorieproduit`
+-- AUTO_INCREMENT for table `categorieproduit`
 --
 ALTER TABLE `categorieproduit`
-  MODIFY `idCategorie` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `idCategorie` int(11) NOT NULL AUTO_INCREMENT;
 
 --
--- AUTO_INCREMENT pour la table `detailetat`
+-- AUTO_INCREMENT for table `detailetat`
 --
 ALTER TABLE `detailetat`
   MODIFY `idDetail` int(11) NOT NULL AUTO_INCREMENT;
 
 --
--- AUTO_INCREMENT pour la table `etatbesoin`
+-- AUTO_INCREMENT for table `etatbesoin`
 --
 ALTER TABLE `etatbesoin`
-  MODIFY `idEtat` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `idEtat` int(11) NOT NULL AUTO_INCREMENT;
 
 --
--- AUTO_INCREMENT pour la table `fournisseur`
+-- AUTO_INCREMENT for table `fournisseur`
 --
 ALTER TABLE `fournisseur`
-  MODIFY `idFourni` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
+  MODIFY `idFourni` int(11) NOT NULL AUTO_INCREMENT;
 
 --
--- AUTO_INCREMENT pour la table `produit`
+-- AUTO_INCREMENT for table `produit`
 --
 ALTER TABLE `produit`
   MODIFY `idProduit` int(11) NOT NULL AUTO_INCREMENT;
 
 --
--- AUTO_INCREMENT pour la table `user`
+-- AUTO_INCREMENT for table `user`
 --
 ALTER TABLE `user`
   MODIFY `idUser` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
--- Contraintes pour les tables déchargées
+-- Constraints for dumped tables
 --
 
 --
--- Contraintes pour la table `appeloffre`
+-- Constraints for table `appeloffre`
 --
 ALTER TABLE `appeloffre`
   ADD CONSTRAINT `fk_etat_appel` FOREIGN KEY (`refEtatAppel`) REFERENCES `etatbesoin` (`idEtat`);
 
 --
--- Contraintes pour la table `candidats`
+-- Constraints for table `candidats`
 --
 ALTER TABLE `candidats`
   ADD CONSTRAINT `fk_appel_offre` FOREIGN KEY (`refAppelOffre`) REFERENCES `appeloffre` (`idAppel`),
   ADD CONSTRAINT `fk_fourni_candidat` FOREIGN KEY (`refFournisseurCandidat`) REFERENCES `fournisseur` (`idFourni`);
 
 --
--- Contraintes pour la table `detailetat`
+-- Constraints for table `detailetat`
 --
 ALTER TABLE `detailetat`
   ADD CONSTRAINT `fk_etat_detail` FOREIGN KEY (`refEtatDetail`) REFERENCES `etatbesoin` (`idEtat`),
   ADD CONSTRAINT `fk_produit` FOREIGN KEY (`refProduit`) REFERENCES `produit` (`idProduit`);
 
 --
--- Contraintes pour la table `etatbesoin`
+-- Constraints for table `etatbesoin`
 --
 ALTER TABLE `etatbesoin`
   ADD CONSTRAINT `fk_fourni_etat` FOREIGN KEY (`refFournisseurEtat`) REFERENCES `fournisseur` (`idFourni`);
 
 --
--- Contraintes pour la table `produit`
+-- Constraints for table `produit`
 --
 ALTER TABLE `produit`
   ADD CONSTRAINT `fk_categorie` FOREIGN KEY (`refCategorie`) REFERENCES `categorieproduit` (`idCategorie`);

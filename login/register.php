@@ -119,7 +119,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['enregistrer'])) {
                                     </div>
 
                                     <div class="form-group mb-3 text-center">
-                                        <button type="submit" name="enregistrer" id="enregistrer" class="btn btn-primary btn-round mx-auto">Connexion</button>
+                                        <button type="submit" name="enregistrer" id="enregistrer" class="btn btn-primary btn-round mx-auto">Enregistrer</button>
 
                                     </div>
                                     <p>Vous avez un compte? <a href="./login.php">Cliquez ici pour vous connecter</a></p>
