@@ -66,6 +66,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         ]) ? 'success' : 'error';
     }
 
+    // Payement
+    elseif ($_POST['table'] === 'payement') {
+        $stmt = $con->prepare("INSERT INTO payement (refFourniPaye, refProduitPaye,QtePaye,PUPaye, datePaye) VALUES (?, ?, ?, ?, ?)");
+        echo $stmt->execute([
+            $_POST['refFourniPaye'],$_POST['refProduitPaye'], $_POST['QtePaye'],$_POST['PUPaye'],$date
+        ]) ? 'success' : 'error';
+    }
+
     // Utilisateur
     elseif ($_POST['table'] === 'user') {
         $stmt = $con->prepare("INSERT INTO user (username, pswd, niveauAcces) VALUES (?, ?, ?)");

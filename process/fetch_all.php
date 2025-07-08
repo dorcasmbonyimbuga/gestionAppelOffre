@@ -27,7 +27,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['table'])) {
             $stmt = $con->query("SELECT idCandidat, appelOffre.objets, fournisseur.noms, statut, dateCandidature, autresDetails FROM candidats inner join fournisseur on candidats.refFournisseurCandidat=fournisseur.idFourni inner join appelOffre on candidats.refAppelOffre=appelOffre.idAppel ORDER BY idCandidat DESC");
             break;
             case 'payement':
-            $stmt = $con->query("SELECT idPaye, fournisseur.noms, produit.designation, QtePaye, PUPaye, datePaye FROM payement inner join fournisseur on payement.refFourniPaye=fournisseur.idFourni ORDER BY idPaye DESC");
+            $stmt = $con->query("SELECT idPaye, f.noms, p.designation, QtePaye, PUPaye, (QtePaye * PUPaye) as PT, datePaye FROM payement paye inner join fournisseur f on paye.refFourniPaye=f.idFourni inner join produit p on paye.refProduitPaye=p.idProduit ORDER BY idPaye DESC");
             break;
         case 'user':
             $stmt = $con->query("SELECT idUser, username, niveauAcces FROM user ORDER BY idUser DESC");
@@ -37,18 +37,45 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['table'])) {
             exit;
     }
 
-    $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
-    foreach ($rows as $row) {
-        echo '<tr>';
-        foreach ($row as $col) {
-            echo '<td>' . htmlspecialchars($col) . '</td>';
-        }
-        echo '<td>
-            <button class="btn btn-primary btn-xs btn-edit" data-modal="modal' . ucfirst($table) . '" data-table="' . $table . '" data-id="' . array_values($row)[0] . '" title="Modifier"><i class="fas fa-edit"></i></button>
-            <button class="btn btn-danger btn-xs btn-delete" data-table="' . $table . '" data-id="' . array_values($row)[0] . '" title="Supprimer"><i class="fas fa-trash-alt"></i></button>
-        </td>';
-        echo '</tr>';
+//     $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
+//     foreach ($rows as $row) {
+//         echo '<tr>';
+//         foreach ($row as $col) {
+//             echo '<td>' . htmlspecialchars($col) . '</td>';
+//         }
+//         echo '<td>
+//             <button class="btn btn-primary btn-xs btn-edit" data-modal="modal' . ucfirst($table) . '" data-table="' . $table . '" data-id="' . array_values($row)[0] . '" title="Modifier"><i class="fas fa-edit"></i></button>
+//             <button class="btn btn-danger btn-xs btn-delete" data-table="' . $table . '" data-id="' . array_values($row)[0] . '" title="Supprimer"><i class="fas fa-trash-alt"></i></button>
+//         </td>';
+//         echo '</tr>';
+//     }
+// } else {
+//     echo '<tr><td colspan="100%">Requête invalide</td></tr>';
+// }
+
+
+$rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
+foreach ($rows as $row) {
+    echo '<tr>';
+    foreach ($row as $col) {
+        echo '<td>' . htmlspecialchars($col) . '</td>';
     }
-} else {
-    echo '<tr><td colspan="100%">Requête invalide</td></tr>';
+
+    echo '<td>';
+
+    if ($table === 'appelOffre') {
+        echo '<button class="btn btn-success btn-xs btn-detail" data-idappel="' . $row['idAppel'] . '" data-bs-toggle="modal" data-bs-target="#modalDetailAppel" title="Ajouter Détail"><i class="fas fa-plus"></i></button> ';
+    }
+
+    if ($table !== 'payement') {
+        echo '<button class="btn btn-primary btn-xs btn-edit" data-modal="modal' . ucfirst($table) . '" data-table="' . $table . '" data-id="' . array_values($row)[0] . '" title="Modifier"><i class="fas fa-edit"></i></button> ';
+        echo '<button class="btn btn-danger btn-xs btn-delete" data-table="' . $table . '" data-id="' . array_values($row)[0] . '" title="Supprimer"><i class="fas fa-trash-alt"></i></button> ';
+    }
+
+    if ($table === 'payement') {
+        echo '<a href="print_recu.php?idPaye=' . $row['idPaye'] . '" class="btn btn-info btn-xs" target="_blank" title="Imprimer Reçu"><i class="fas fa-print"></i></a>';
+    }
+
+    echo '</td>';
+    echo '</tr>';
 }

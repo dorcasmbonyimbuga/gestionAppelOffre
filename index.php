@@ -2,8 +2,8 @@
 session_start();
 
 if (!isset($_SESSION['idUser'])) {
-    header("Location: ./login/login.php");
-    exit();
+  header("Location: ./login/login.php");
+  exit();
 }
 
 $message = '';
@@ -154,6 +154,12 @@ $initiales = implode('', array_map(function ($part) {
               <a href="./pages/candidat.php">
                 <i class="fas fa-user-friends"></i>
                 <p>Candidatures</p>
+              </a>
+            </li>
+            <li class="nav-item">
+              <a href="./pages/payement.php">
+                <i class="fas fa-hand-holding-usd"></i>
+                <p>Payement</p>
               </a>
             </li>
             <li class="nav-section">

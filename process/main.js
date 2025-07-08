@@ -10,6 +10,47 @@ $(document).ready(function () {
     setTimeout(() => alertBox.alert("close"), 5000);
   }
 
+  // ============================================
+  // Quand on clique sur le bouton "Ajouter Détail"
+$(document).on('click', '.btn-detail', function () {
+    let idAppel = $(this).data('idappel');
+    $('#refAppel').val(idAppel);
+
+    // Charger les détails existants
+    fetchDetailAppel(idAppel);
+});
+
+// Soumission du formulaire d'ajout
+$('#formDetailAppel').on('submit', function (e) {
+    e.preventDefault();
+    $.post('insert_detailAppel.php', $(this).serialize(), function (response) {
+        let idAppel = $('#refAppel').val();
+        fetchDetailAppel(idAppel); // Recharger les détails après ajout
+        $('#qte').val('');
+        $('#pu').val('');
+    });
+});
+
+// Fonction pour charger les détails d'un appel
+function fetchDetailAppel(idAppel) {
+    $.post('fetch_detailAppel.php', { idAppel: idAppel }, function (data) {
+        $('#tableDetailAppel tbody').html(data);
+    });
+}
+
+// Supprimer un détail
+$(document).on('click', '.btn-delete-detail', function () {
+    if (confirm("Supprimer ce détail ?")) {
+        let idDetail = $(this).data('id');
+        let idAppel = $('#refAppel').val();
+        $.post('delete_detailAppel.php', { idDetail: idDetail }, function () {
+            fetchDetailAppel(idAppel);
+        });
+    }
+});
+
+// ===================================================================
+
   // Charger un tableau (fonction générique)
   function loadTable(table) {
     $.post("../process/fetch_all.php", { table: table }, function (data) {

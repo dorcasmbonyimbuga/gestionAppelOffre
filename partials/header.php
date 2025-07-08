@@ -149,6 +149,12 @@ $initiales = implode('', array_map(function ($part) {
                                 <p>Candidatures</p>
                             </a>
                         </li>
+                        <li class="nav-item <?= ($currentPage === 'payement') ? 'active' : '' ?>">
+                            <a href="payement.php">
+                                <i class="fas fa-hand-holding-usd"></i>
+                                <p>Payement</p>
+                            </a>
+                        </li>
                         <li class="nav-section">
                             <span class="sidebar-mini-icon">
                                 <i class="fa fa-ellipsis-h"></i>

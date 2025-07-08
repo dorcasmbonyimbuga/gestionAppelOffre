@@ -1,5 +1,5 @@
 <!-- Connexion vers la BD -->
- <?php require_once './../bd/conbd.php';?>
+<?php require_once './../bd/conbd.php'; ?>
 <!-- Modal Fournisseur -->
 <div class="modal fade" id="modalFournisseur" tabindex="-1" aria-labelledby="modalFournisseurLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered modal-lg">
@@ -248,6 +248,27 @@
                     <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Annuler</button>
                     <button type="submit" class="btn btn-primary">Enregistrer</button>
                 </div>
+
+                <!-- Tableau détails existants -->
+                <div class="table-responsive mt-4">
+                    <table
+                        id="table_detailEtat"
+                        class="display table table-striped table-hover">
+                        <thead class="table-dark">
+                            <tr>
+                                <th scope="col">ID</th>
+                                <th scope="col">Etat besoin</th>
+                                <th scope="col">Produit</th>
+                                <th scope="col">PU</th>
+                                <th scope="col">Quantite</th>
+                                <th scope="col">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <!-- Contenu chargé par AJAX -->
+                        </tbody>
+                    </table>
+                </div>
             </form>
         </div>
     </div>
@@ -322,7 +343,7 @@
                         <div class="col-md-6 mb-3">
                             <label for="refAppelOffre" class="form-label">Réf. Appel d'Offre</label>
                             <select name="refAppelOffre" id="refAppelOffre" class="form-select" required>
-                                <option value="">-- Sélectionner  l'objet de l'appel --</option>
+                                <option value="">-- Sélectionner l'objet de l'appel --</option>
                                 <?php
                                 $sql = "SELECT * FROM appelOffre";
                                 $stmt = $con->prepare($sql);
@@ -377,6 +398,72 @@
     </div>
 </div>
 
+
+<!-- Modal Payement -->
+<div class="modal fade" id="modalPayement" tabindex="-1" aria-labelledby="modalPayementLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content">
+            <form id="formPayement" name="formPayement">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="modalPayementLabel">Ajouter / Modifier Payement</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fermer"></button>
+                </div>
+                <div class="modal-body">
+                    <!-- Champs cachés -->
+                    <input type="hidden" name="table" value="payement">
+                    <input type="hidden" name="idPaye" id="idPaye">
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label for="refFourniPaye" class="form-label">Fournisseur</label>
+                            <select name="refFourniPaye" id="refFourniPaye" class="form-select" required>
+                                <option value="">-- Sélectionner un fournisseur --</option>
+                                <?php
+                                $sql = "SELECT * FROM fournisseur";
+                                $stmt = $con->prepare($sql);
+                                $stmt->execute();
+
+                                while ($reponse = $stmt->fetch(PDO::FETCH_ASSOC)) {
+                                    echo "<option value=" . $reponse['idFourni'] . ">" . $reponse['noms'] . "</option>";
+                                };
+                                ?>
+                            </select>
+                        </div>
+
+                        <div class="col-md-6 mb-3">
+                            <label for="refProduitPaye" class="form-label">Produit</label>
+                            <select name="refProduitPaye" id="refProduitPaye" class="form-select" required>
+                                <option value="">-- Sélectionner un produit --</option>
+                                <?php
+                                $sql = "SELECT * FROM produit";
+                                $stmt = $con->prepare($sql);
+                                $stmt->execute();
+
+                                while ($reponse = $stmt->fetch(PDO::FETCH_ASSOC)) {
+                                    echo "<option value=" . $reponse['idProduit'] . ">" . $reponse['designation'] . "</option>";
+                                };
+                                ?>
+                            </select>
+                        </div>
+
+                        <div class="col-md-6 mb-3">
+                            <label for="QtePaye" class="form-label">Quantité</label>
+                            <input type="number" step="0.01" class="form-control" name="QtePaye" id="QtePaye" required>
+                        </div>
+
+                        <div class="col-md-6 mb-3">
+                            <label for="PUPaye" class="form-label">Prix Unitaire</label>
+                            <input type="number" step="0.01" class="form-control" name="PUPaye" id="PUPaye" required>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Annuler</button>
+                    <button type="submit" class="btn btn-primary">Enregistrer</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
 
 <!-- Modal User -->
 <div class="modal fade" id="modalUser" tabindex="-1" aria-labelledby="modalUserLabel" aria-hidden="true">
