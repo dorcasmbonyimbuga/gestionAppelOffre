@@ -18,16 +18,19 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['table'])) {
             $stmt = $con->query("SELECT idProduit, designation, concat(PUProduit,' ',unite) as PUProduit, categorieproduit.designationCat FROM produit  inner join categorieproduit on produit.refCategorie=categorieproduit.idCategorie ORDER BY idProduit DESC");
             break;
         case 'detailEtat':
-            $stmt = $con->query("SELECT idDetail,etatBesoin.libelle,produit.designation, PU, Qte FROM detailEtat inner join etatBesoin on detailEtat.refEtatDetail=etatBesoin.idEtat inner join produit on detailEtat.refProduit=produit.idProduit ORDER BY idDetail DESC");
+            $stmt = $con->query("SELECT idDetail, etatBesoin.libelle, produit.designation, PU, Qte FROM detailEtat inner join etatBesoin on detailEtat.refEtatDetail=etatBesoin.idEtat inner join produit on detailEtat.refProduit=produit.idProduit ORDER BY idDetail DESC");
             break;
         case 'appelOffre':
             $stmt = $con->query("SELECT idAppel, etatBesoin.libelle, datePub, objets, autresInfo FROM appelOffre inner join etatBesoin on appelOffre.refEtatAppel=etatBesoin.idEtat ORDER BY idAppel DESC");
             break;
         case 'candidats':
-            $stmt = $con->query("SELECT idCandidat,appelOffre.objets, fournisseur.noms, statut, dateCandidature, autresDetails FROM candidats inner join fournisseur on candidats.refFournisseurCandidat=fournisseur.idFourni inner join appelOffre on candidats.refAppelOffre=appelOffre.idAppel ORDER BY idCandidat DESC");
+            $stmt = $con->query("SELECT idCandidat, appelOffre.objets, fournisseur.noms, statut, dateCandidature, autresDetails FROM candidats inner join fournisseur on candidats.refFournisseurCandidat=fournisseur.idFourni inner join appelOffre on candidats.refAppelOffre=appelOffre.idAppel ORDER BY idCandidat DESC");
+            break;
+            case 'payement':
+            $stmt = $con->query("SELECT idPaye, fournisseur.noms, produit.designation, QtePaye, PUPaye, datePaye FROM payement inner join fournisseur on payement.refFourniPaye=fournisseur.idFourni ORDER BY idPaye DESC");
             break;
         case 'user':
-            $stmt = $con->query("SELECT idUser,username,niveauAcces FROM user ORDER BY idUser DESC");
+            $stmt = $con->query("SELECT idUser, username, niveauAcces FROM user ORDER BY idUser DESC");
             break;
         default:
             echo '<tr><td colspan="100%">Table inconnue</td></tr>';
@@ -41,8 +44,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['table'])) {
             echo '<td>' . htmlspecialchars($col) . '</td>';
         }
         echo '<td>
-            <button class="btn btn-primary btn-xs btn-edit" data-modal="modal' . ucfirst($table) . '" data-table="' . $table . '" data-id="' . array_values($row)[0] . '"><i class="fas fa-edit"></i></button>
-            <button class="btn btn-danger btn-xs btn-delete" data-table="' . $table . '" data-id="' . array_values($row)[0] . '"><i class="fas fa-trash-alt"></i></button>
+            <button class="btn btn-primary btn-xs btn-edit" data-modal="modal' . ucfirst($table) . '" data-table="' . $table . '" data-id="' . array_values($row)[0] . '" title="Modifier"><i class="fas fa-edit"></i></button>
+            <button class="btn btn-danger btn-xs btn-delete" data-table="' . $table . '" data-id="' . array_values($row)[0] . '" title="Supprimer"><i class="fas fa-trash-alt"></i></button>
         </td>';
         echo '</tr>';
     }

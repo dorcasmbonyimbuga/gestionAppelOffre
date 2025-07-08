@@ -56,6 +56,9 @@ $candidatures = $stmt->fetchAll(PDO::FETCH_ASSOC);
                                             case 'Validé':
                                                 echo '<span class="badge bg-success">Validé</span>';
                                                 break;
+                                                case 'Validé':
+                                                echo '<span class="badge bg-primary">Payé</span>';
+                                                break;
                                             default:
                                                 echo htmlspecialchars($cand['statut']);
                                         }

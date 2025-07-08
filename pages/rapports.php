@@ -29,6 +29,7 @@ include "../partials/header.php"
                     <button class="btn btn-primary" onclick="printSection('rapport_produits')">Produits</button>
                     <button class="btn btn-primary" onclick="printSection('rapport_appels')">Appels d'offres</button>
                     <button class="btn btn-primary" onclick="printSection('rapport_candidats')">Candidatures</button>
+                    <button class="btn btn-primary" onclick="printSection('rapport_etat')">Etats de besoin</button>
                 </div>
 
                 <!-- Rapport Fournisseurs -->
@@ -140,6 +141,43 @@ include "../partials/header.php"
                                     <td><?= $c['objets'] ?></td>
                                     <td><?= $c['dateCandidature'] ?></td>
                                     <td><?= ucfirst($c['statut']) ?></td>
+                                </tr>
+                            <?php endforeach; ?>
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- Rapport Etat de besoin -->
+                <div id="rapport_etat" class="mb-5">
+                    <h4>Liste d'etats de besoins</h4>
+                    <table class="table table-bordered">
+                        <thead>
+                            <tr>
+                                <th>Objet appel</th>
+                                <th>Etat de besoin</th>
+                                <th>Produit</th>
+                                <th>Quantité</th>
+                                <th>PU</th>
+                                <th>Autres Info</th>
+                                <th>Date</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <?php
+                            $stmt = $con->query("SELECT a.idAppel,a.objets,e.libelle,p.designation,d.Qte,d.PU,a.autresInfo,a.datePub
+                                FROM appeloffre as a JOIN etatbesoin as e ON a.refEtatAppel = e.idEtat JOIN 
+                                detailetat as d ON d.refEtatDetail = e.idEtat JOIN 
+                                produit as p ON d.refProduit = p.idProduit");
+                            foreach ($stmt as $a):
+                            ?>
+                                <tr>
+                                    <td><?= $a['objets'] ?></td>
+                                    <td><?= $a['libelle'] ?></td>
+                                    <td><?= $a['designation'] ?></td>
+                                    <td><?= $a['Qte'] ?></td>
+                                    <td><?= $a['PU'] ?></td>
+                                    <td><?= $a['autresInfo'] ?></td>
+                                    <td><?= $a['datePub'] ?></td>
                                 </tr>
                             <?php endforeach; ?>
                         </tbody>
