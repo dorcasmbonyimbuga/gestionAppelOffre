@@ -73,9 +73,10 @@ foreach ($rows as $row) {
     }
 
     if ($table === 'payement') {
-        echo '<a href="print_recu.php?idPaye=' . $row['idPaye'] . '" class="btn btn-info btn-xs" target="_blank" title="Imprimer Reçu"><i class="fas fa-print"></i></a>';
+        echo '<a href="printRecu.php?idPaye=' . $row['idPaye'] . '" class="btn btn-info btn-xs" target="_blank" title="Imprimer Reçu"><i class="fas fa-print"></i></a>';
     }
 
     echo '</td>';
     echo '</tr>';
+}
 }
