@@ -7,6 +7,9 @@ ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
 date_default_timezone_set('Africa/Kinshasa');
 $date = date('Y-m-d');
+// if ($_POST['table'] === 'detailEtat') {
+//     file_put_contents('debug_insert.txt', print_r($_POST, true));
+// }
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     // Fournisseur

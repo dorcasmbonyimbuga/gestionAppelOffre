@@ -200,23 +200,9 @@
                     <!-- Champs cachés -->
                     <input type="hidden" name="table" value="detailEtat">
                     <input type="hidden" name="idDetail" id="idDetail">
+                    <input type="hidden" name="refEtatDetail" id="refEtatDetail">
                     <div class="row">
-                        <div class="col-md-6 mb-3">
-                            <label for="refEtatDetail" class="form-label">Réf. État de Besoin</label>
-                            <select name="refEtatDetail" id="refEtatDetail" class="form-select" required>
-                                <option value="">-- Sélectionner libellé Etat de besoin --</option>
-                                <?php
-                                $sql = "SELECT * FROM etatBesoin";
-                                $stmt = $con->prepare($sql);
-                                $stmt->execute();
-
-                                while ($reponse = $stmt->fetch(PDO::FETCH_ASSOC)) {
-                                    echo "<option value=" . $reponse['idEtat'] . ">" . $reponse['libelle'] . "</option>";
-                                };
-                                ?>
-                            </select>
-                        </div>
-
+                        <!-- Ajoute ici comment recuperer l'id de etatBesoin pour que lors de l'insertion ca le prenne directement -->
                         <div class="col-md-6 mb-3">
                             <label for="refProduit" class="form-label">Réf. Produit</label>
                             <select name="refProduit" id="refProduit" class="form-select" required>

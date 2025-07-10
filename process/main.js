@@ -1,57 +1,19 @@
-// main.js
 $(document).ready(function () {
-  // Affichage message flash
+  // === AFFICHER MESSAGES FLASH ===
   function showMessage(msg, type = "success") {
-    const alertBox =
-      $(`<div class="alert alert-${type} alert-dismissible fade show" role="alert">${msg}
-      <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-    </div>`);
+    const alertBox = $(
+      `<div class="alert alert-${type} alert-dismissible fade show" role="alert">
+        ${msg}
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+      </div>`
+    );
     $("#alertContainer").append(alertBox);
     setTimeout(() => alertBox.alert("close"), 5000);
   }
+  $(".btn-detail-etat").data("idetat");
+  $(".btn-detail-etat").attr("data-idetat");
 
-  // ============================================
-  // Quand on clique sur le bouton "Ajouter Détail"
-$(document).on('click', '.btn-detail', function () {
-    let idAppel = $(this).data('idappel');
-    $('#refAppel').val(idAppel);
-
-    // Charger les détails existants
-    fetchDetailAppel(idAppel);
-});
-
-// Soumission du formulaire d'ajout
-$('#formDetailAppel').on('submit', function (e) {
-    e.preventDefault();
-    $.post('insert_detailAppel.php', $(this).serialize(), function (response) {
-        let idAppel = $('#refAppel').val();
-        fetchDetailAppel(idAppel); // Recharger les détails après ajout
-        $('#qte').val('');
-        $('#pu').val('');
-    });
-});
-
-// Fonction pour charger les détails d'un appel
-function fetchDetailAppel(idAppel) {
-    $.post('fetch_detailAppel.php', { idAppel: idAppel }, function (data) {
-        $('#tableDetailAppel tbody').html(data);
-    });
-}
-
-// Supprimer un détail
-$(document).on('click', '.btn-delete-detail', function () {
-    if (confirm("Supprimer ce détail ?")) {
-        let idDetail = $(this).data('id');
-        let idAppel = $('#refAppel').val();
-        $.post('delete_detailAppel.php', { idDetail: idDetail }, function () {
-            fetchDetailAppel(idAppel);
-        });
-    }
-});
-
-// ===================================================================
-
-  // Charger un tableau (fonction générique)
+  // === CHARGER TABLEAUX DYNAMIQUES ===
   function loadTable(table) {
     $.post("../process/fetch_all.php", { table: table }, function (data) {
       $(`#table_${table} tbody`).html(data);
@@ -62,12 +24,12 @@ $(document).on('click', '.btn-delete-detail', function () {
 
   // Initialiser tous les tableaux présents dans la page
   $("[id^=table_]").each(function () {
-    const id = $(this).attr("id"); // ex: table_fournisseur
+    const id = $(this).attr("id"); // ex: table_etatBesoin
     const tableName = id.replace("table_", "");
     loadTable(tableName);
   });
 
-  // Ouvrir modal pour ajout (reset formulaire)
+  // === AJOUT MODAL ===
   $(document).on("click", ".btn-add", function () {
     const modalId = $(this).data("modal");
     const form = $(`#${modalId} form`)[0];
@@ -76,31 +38,24 @@ $(document).on('click', '.btn-delete-detail', function () {
     $(`#${modalId}`).modal("show");
   });
 
-  // Ouvrir modal pour édition (charger données)
+  // === ÉDITION MODAL ===
   $(document).on("click", ".btn-edit", function () {
     const modalId = $(this).data("modal");
     const table = $(this).data("table");
     const id = $(this).data("id");
     const form = $(`#${modalId} form`)[0];
 
-    // 1. Vider les champs du formulaire
     $(form).find("input, select, textarea").val("");
-
-    // ✅ 2. Remettre la valeur du champ "table" correctement
     $(form).find('input[name="table"]').val(table);
 
-    // 3. Charger les données depuis la base
     $.post(
       "../process/fetch.php",
       { table: table, id: id },
       function (data) {
         if (data) {
-          // 4. Remplir les champs avec les données reçues
           for (const key in data) {
             $(`#${modalId} [name="${key}"]`).val(data[key]);
           }
-
-          // 5. Afficher le modal
           $(`#${modalId}`).modal("show");
         } else {
           showMessage("Erreur chargement données.", "danger");
@@ -112,49 +67,14 @@ $(document).on('click', '.btn-delete-detail', function () {
     });
   });
 
-  // Notifications
-  function chargerNotifications() {
-    $.ajax({
-      url: "../process/get_notifications.php",
-      method: "GET",
-      dataType: "json",
-      success: function (data) {
-        let html = "";
-        if (data.length === 0) {
-          html =
-            '<div class="notif-center"><span class="dropdown-item">Aucune notification</span></div>';
-        } else {
-          html += '<div class="notif-center">';
-          data.forEach((notif) => {
-            html += `
-            <a href="#">
-              <div class="notif-content">
-                <span class="block">${notif.noms}</span>
-                <span class="block">${notif.objets}</span>
-                <span class="time">${notif.timeago}</span>
-              </div>
-            </a>`;
-          });
-          html += "</div>";
-        }
-
-        $("#notif-container").html(html);
-        $("#notif-count").text(data.length);
-      },
-    });
-  }
-
-  setInterval(chargerNotifications, 15000);
-  $(document).ready(chargerNotifications);
-
-  // Gestion soumission formulaire (insert ou update)
-  $(document).on("submit", "form", function (e) {
+  // === SOUMISSION FORMULAIRE AJOUT OU MODIFICATION ===
+  $(document).on("submit", "form:not(#formDetailEtat)", function (e) {
     e.preventDefault();
     const form = this;
     const modal = $(form).closest(".modal");
     const table = $(form).find('input[name="table"]').val();
-    let url = "../process/insert.php";
 
+    let url = "../process/insert.php";
     const idFields = $(form)
       .find("input[type=hidden]")
       .filter(function () {
@@ -186,7 +106,7 @@ $(document).on('click', '.btn-delete-detail', function () {
     });
   });
 
-  // Suppression avec SweetAlert2
+  // === SUPPRESSION AVEC SWEETALERT ===
   $(document).on("click", ".btn-delete", function () {
     const table = $(this).data("table");
     const id = $(this).data("id");
@@ -219,5 +139,61 @@ $(document).on('click', '.btn-delete-detail', function () {
       }
     });
   });
+
+// ===================== DETAIL ETAT BESOIN =======================
+
+// Quand on clique sur le bouton "Ajouter Détail"
+$(document).on("click", ".btn-detail-etat", function () {
+  const idEtat = $(this).data("idetat");
+
+  console.log("ID capturé :", idEtat);
+
+  // 👉 Supprimer les anciens événements pour éviter double exécution
+  $('#modalDetailEtat').off('shown.bs.modal');
+
+  $('#modalDetailEtat').on('shown.bs.modal', function () {
+    $('#refEtatDetail').val(idEtat);
+    console.log("Valeur insérée :", $('#refEtatDetail').val());
+    fetchDetailEtat(idEtat);
+  });
+
+  // Ouvrir le modal
+  $("#modalDetailEtat").modal("show");
 });
-console.log($(form).serialize());
+
+
+
+$("#formDetailEtat").on("submit", function (e) {
+  e.preventDefault();
+  const form = this;
+
+  console.log("📝 Données envoyées :", $(form).serialize());
+
+  $.post("../process/insert.php", $(form).serialize(), function (response) {
+    const idEtat = $("#refEtatDetail").val();
+
+    if (response.trim() === "success") {
+      fetchDetailEtat(idEtat);
+      $("#refProduit, #PU, #Qte").val("");
+      showMessage("✅ Détail ajouté !");
+    } else {
+      showMessage("❌ Erreur : " + response, "danger");
+    }
+  });
+});
+
+function fetchDetailEtat(idEtat) {
+  $.post(
+    "../process/fetch_all.php",
+    { table: "detailEtat", refEtatDetail: idEtat },
+    function (data) {
+      $("#table_detailEtat tbody").html(data);
+    }
+  );
+}
+
+
+  // // === Notifications automatiques ===
+  // setInterval(chargerNotifications, 15000);
+  // $(document).ready(chargerNotifications);
+});
