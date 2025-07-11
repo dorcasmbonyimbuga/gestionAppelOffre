@@ -2,10 +2,10 @@
 -- version 5.2.1
 -- https://www.phpmyadmin.net/
 --
--- Host: 127.0.0.1
--- Generation Time: Jun 30, 2025 at 04:13 AM
--- Server version: 10.4.32-MariaDB
--- PHP Version: 8.2.12
+-- Hôte : 127.0.0.1
+-- Généré le : jeu. 10 juil. 2025 à 23:31
+-- Version du serveur : 10.4.32-MariaDB
+-- Version de PHP : 8.2.12
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -18,13 +18,13 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- Database: `appel_offre_db`
+-- Base de données : `appel_offre_db`
 --
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `appeloffre`
+-- Structure de la table `appeloffre`
 --
 
 CREATE TABLE `appeloffre` (
@@ -38,7 +38,7 @@ CREATE TABLE `appeloffre` (
 -- --------------------------------------------------------
 
 --
--- Table structure for table `candidats`
+-- Structure de la table `candidats`
 --
 
 CREATE TABLE `candidats` (
@@ -53,7 +53,7 @@ CREATE TABLE `candidats` (
 -- --------------------------------------------------------
 
 --
--- Table structure for table `categorieproduit`
+-- Structure de la table `categorieproduit`
 --
 
 CREATE TABLE `categorieproduit` (
@@ -64,7 +64,7 @@ CREATE TABLE `categorieproduit` (
 -- --------------------------------------------------------
 
 --
--- Table structure for table `detailetat`
+-- Structure de la table `detailetat`
 --
 
 CREATE TABLE `detailetat` (
@@ -78,7 +78,7 @@ CREATE TABLE `detailetat` (
 -- --------------------------------------------------------
 
 --
--- Table structure for table `etatbesoin`
+-- Structure de la table `etatbesoin`
 --
 
 CREATE TABLE `etatbesoin` (
@@ -91,7 +91,7 @@ CREATE TABLE `etatbesoin` (
 -- --------------------------------------------------------
 
 --
--- Table structure for table `fournisseur`
+-- Structure de la table `fournisseur`
 --
 
 CREATE TABLE `fournisseur` (
@@ -107,7 +107,22 @@ CREATE TABLE `fournisseur` (
 -- --------------------------------------------------------
 
 --
--- Table structure for table `produit`
+-- Structure de la table `payement`
+--
+
+CREATE TABLE `payement` (
+  `idPaye` int(11) NOT NULL,
+  `refFourniPaye` int(11) NOT NULL,
+  `refProduitPaye` int(11) NOT NULL,
+  `QtePaye` int(11) NOT NULL,
+  `PUPaye` int(11) NOT NULL,
+  `datePaye` date NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la table `produit`
 --
 
 CREATE TABLE `produit` (
@@ -121,7 +136,7 @@ CREATE TABLE `produit` (
 -- --------------------------------------------------------
 
 --
--- Table structure for table `user`
+-- Structure de la table `user`
 --
 
 CREATE TABLE `user` (
@@ -132,7 +147,7 @@ CREATE TABLE `user` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Dumping data for table `user`
+-- Déchargement des données de la table `user`
 --
 
 INSERT INTO `user` (`idUser`, `username`, `pswd`, `niveauAcces`) VALUES
@@ -140,18 +155,18 @@ INSERT INTO `user` (`idUser`, `username`, `pswd`, `niveauAcces`) VALUES
 (2, 'Gabriel', 'e10adc3949ba59abbe56e057f20f883e', 'Admin');
 
 --
--- Indexes for dumped tables
+-- Index pour les tables déchargées
 --
 
 --
--- Indexes for table `appeloffre`
+-- Index pour la table `appeloffre`
 --
 ALTER TABLE `appeloffre`
   ADD PRIMARY KEY (`idAppel`),
   ADD KEY `fk_etat_appel` (`refEtatAppel`);
 
 --
--- Indexes for table `candidats`
+-- Index pour la table `candidats`
 --
 ALTER TABLE `candidats`
   ADD PRIMARY KEY (`idCandidat`),
@@ -159,14 +174,14 @@ ALTER TABLE `candidats`
   ADD KEY `fk_fourni_candidat` (`refFournisseurCandidat`);
 
 --
--- Indexes for table `categorieproduit`
+-- Index pour la table `categorieproduit`
 --
 ALTER TABLE `categorieproduit`
   ADD PRIMARY KEY (`idCategorie`),
   ADD UNIQUE KEY `une_categorie` (`designationCat`);
 
 --
--- Indexes for table `detailetat`
+-- Index pour la table `detailetat`
 --
 ALTER TABLE `detailetat`
   ADD PRIMARY KEY (`idDetail`),
@@ -174,14 +189,14 @@ ALTER TABLE `detailetat`
   ADD KEY `fk_produit` (`refProduit`);
 
 --
--- Indexes for table `etatbesoin`
+-- Index pour la table `etatbesoin`
 --
 ALTER TABLE `etatbesoin`
   ADD PRIMARY KEY (`idEtat`),
   ADD KEY `fk_fourni_etat` (`refFournisseurEtat`);
 
 --
--- Indexes for table `fournisseur`
+-- Index pour la table `fournisseur`
 --
 ALTER TABLE `fournisseur`
   ADD PRIMARY KEY (`idFourni`),
@@ -190,7 +205,13 @@ ALTER TABLE `fournisseur`
   ADD UNIQUE KEY `un_contact_forunisseur` (`contact`);
 
 --
--- Indexes for table `produit`
+-- Index pour la table `payement`
+--
+ALTER TABLE `payement`
+  ADD PRIMARY KEY (`idPaye`);
+
+--
+-- Index pour la table `produit`
 --
 ALTER TABLE `produit`
   ADD PRIMARY KEY (`idProduit`),
@@ -198,96 +219,102 @@ ALTER TABLE `produit`
   ADD KEY `fk_categorie` (`refCategorie`);
 
 --
--- Indexes for table `user`
+-- Index pour la table `user`
 --
 ALTER TABLE `user`
   ADD PRIMARY KEY (`idUser`),
   ADD UNIQUE KEY `un_usename_user` (`username`);
 
 --
--- AUTO_INCREMENT for dumped tables
+-- AUTO_INCREMENT pour les tables déchargées
 --
 
 --
--- AUTO_INCREMENT for table `appeloffre`
+-- AUTO_INCREMENT pour la table `appeloffre`
 --
 ALTER TABLE `appeloffre`
   MODIFY `idAppel` int(11) NOT NULL AUTO_INCREMENT;
 
 --
--- AUTO_INCREMENT for table `candidats`
+-- AUTO_INCREMENT pour la table `candidats`
 --
 ALTER TABLE `candidats`
   MODIFY `idCandidat` int(11) NOT NULL AUTO_INCREMENT;
 
 --
--- AUTO_INCREMENT for table `categorieproduit`
+-- AUTO_INCREMENT pour la table `categorieproduit`
 --
 ALTER TABLE `categorieproduit`
-  MODIFY `idCategorie` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `idCategorie` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
--- AUTO_INCREMENT for table `detailetat`
+-- AUTO_INCREMENT pour la table `detailetat`
 --
 ALTER TABLE `detailetat`
   MODIFY `idDetail` int(11) NOT NULL AUTO_INCREMENT;
 
 --
--- AUTO_INCREMENT for table `etatbesoin`
+-- AUTO_INCREMENT pour la table `etatbesoin`
 --
 ALTER TABLE `etatbesoin`
-  MODIFY `idEtat` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `idEtat` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
--- AUTO_INCREMENT for table `fournisseur`
+-- AUTO_INCREMENT pour la table `fournisseur`
 --
 ALTER TABLE `fournisseur`
-  MODIFY `idFourni` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `idFourni` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
--- AUTO_INCREMENT for table `produit`
+-- AUTO_INCREMENT pour la table `payement`
+--
+ALTER TABLE `payement`
+  MODIFY `idPaye` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+
+--
+-- AUTO_INCREMENT pour la table `produit`
 --
 ALTER TABLE `produit`
   MODIFY `idProduit` int(11) NOT NULL AUTO_INCREMENT;
 
 --
--- AUTO_INCREMENT for table `user`
+-- AUTO_INCREMENT pour la table `user`
 --
 ALTER TABLE `user`
   MODIFY `idUser` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
--- Constraints for dumped tables
+-- Contraintes pour les tables déchargées
 --
 
 --
--- Constraints for table `appeloffre`
+-- Contraintes pour la table `appeloffre`
 --
 ALTER TABLE `appeloffre`
   ADD CONSTRAINT `fk_etat_appel` FOREIGN KEY (`refEtatAppel`) REFERENCES `etatbesoin` (`idEtat`);
 
 --
--- Constraints for table `candidats`
+-- Contraintes pour la table `candidats`
 --
 ALTER TABLE `candidats`
   ADD CONSTRAINT `fk_appel_offre` FOREIGN KEY (`refAppelOffre`) REFERENCES `appeloffre` (`idAppel`),
   ADD CONSTRAINT `fk_fourni_candidat` FOREIGN KEY (`refFournisseurCandidat`) REFERENCES `fournisseur` (`idFourni`);
 
 --
--- Constraints for table `detailetat`
+-- Contraintes pour la table `detailetat`
 --
 ALTER TABLE `detailetat`
   ADD CONSTRAINT `fk_etat_detail` FOREIGN KEY (`refEtatDetail`) REFERENCES `etatbesoin` (`idEtat`),
   ADD CONSTRAINT `fk_produit` FOREIGN KEY (`refProduit`) REFERENCES `produit` (`idProduit`);
 
 --
--- Constraints for table `etatbesoin`
+-- Contraintes pour la table `etatbesoin`
 --
 ALTER TABLE `etatbesoin`
   ADD CONSTRAINT `fk_fourni_etat` FOREIGN KEY (`refFournisseurEtat`) REFERENCES `fournisseur` (`idFourni`);
 
 --
--- Constraints for table `produit`
+-- Contraintes pour la table `produit`
 --
 ALTER TABLE `produit`
   ADD CONSTRAINT `fk_categorie` FOREIGN KEY (`refCategorie`) REFERENCES `categorieproduit` (`idCategorie`);

@@ -115,27 +115,11 @@ $initiales = implode('', array_map(function ($part) {
                                 <p>Fournisseurs</p>
                             </a>
                         </li>
-                        <!-- Pour les sous-menus (ex. Etat de besoin) -->
-                        <li class="nav-item <?= in_array($currentPage, ['etatBesoin', 'detailEtat']) ? 'active' : '' ?>">
-                            <a data-bs-toggle="collapse" href="#maps" <?= in_array($currentPage, ['etatBesoin', 'detailEtat']) ? 'aria-expanded="true"' : '' ?>>
+                        <li class="nav-item <?= ($currentPage === 'etatBesoin') ? 'active' : '' ?>">
+                            <a href="etatBesoin.php">
                                 <i class="fas fa-th-list"></i>
                                 <p>Etat de besoin</p>
-                                <span class="caret"></span>
                             </a>
-                            <div class="collapse <?= in_array($currentPage, ['etatBesoin', 'detailEtat']) ? 'show' : '' ?>" id="maps">
-                                <ul class="nav nav-collapse">
-                                    <li class="<?= ($currentPage === 'etatBesoin') ? 'active' : '' ?>">
-                                        <a href="etatBesoin.php">
-                                            <span class="sub-item">Etat de besoin</span>
-                                        </a>
-                                    </li>
-                                    <li class="<?= ($currentPage === 'detailEtat') ? 'active' : '' ?>">
-                                        <a href="detailEtat.php">
-                                            <span class="sub-item">Detail etat de besoin</span>
-                                        </a>
-                                    </li>
-                                </ul>
-                            </div>
                         </li>
                         <li class="nav-item <?= ($currentPage === 'appelOffre') ? 'active' : '' ?>">
                             <a href="appelOffre.php">
