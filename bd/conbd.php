@@ -4,6 +4,5 @@ try {
     $con->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 } catch (PDOException $ex) {
     echo "Connection failed: " . $e->getMessage();
-    //die pour fermer le script 
     die();
 }

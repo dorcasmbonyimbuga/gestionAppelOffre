@@ -12,6 +12,8 @@ $(document).ready(function () {
   }
   $(".btn-detail-etat").data("idetat");
   $(".btn-detail-etat").attr("data-idetat");
+    $(".btn-payement").data("idetat");
+  $(".btn-payement").attr("data-paye");
 
   // === CHARGER TABLEAUX DYNAMIQUES ===
   function loadTable(table) {
@@ -160,7 +162,24 @@ $(document).on("click", ".btn-detail-etat", function () {
   // Ouvrir le modal
   $("#modalDetailEtat").modal("show");
 });
+// ===========================================
+// ===================== PAYEMENT =======================
+$(document).on("click", ".btn-payement", function () {
+  const idEtat = $(this).data("paye");
 
+  console.log("ID état pour payement :", idEtat);
+
+  // Réinitialiser le formulaire du payement
+  const form = $("#modalPayement form")[0];
+  form.reset();
+
+  // Remplir le champ caché avec l'id de l'état besoin
+  $("#refEtatPaye").val(idEtat);
+
+  // Afficher le modal
+  $("#modalPayement").modal("show");
+});
+// submit du formulaire de detail état
 
 
 $("#formDetailEtat").on("submit", function (e) {
@@ -181,6 +200,25 @@ $("#formDetailEtat").on("submit", function (e) {
     }
   });
 });
+// submit du formulaire de payement
+$("#formPayement").on("submit", function (e) {
+  e.preventDefault();
+  const form = this;
+
+  console.log("📤 Envoi du formulaire de payement :", $(form).serialize());
+
+  $.post("../process/insert.php", $(form).serialize(), function (response) {
+    if (response.trim() === "success") {
+      showMessage("💰 Paiement enregistré avec succès !");
+      $("#modalPayement").modal("hide");
+      loadTable("etatBesoin"); // Recharge la table liée si besoin
+    } else {
+      showMessage("❌ Erreur lors de l’enregistrement : " + response, "danger");
+    }
+  }).fail(() => {
+    showMessage("⚠️ Erreur serveur.", "danger");
+  });
+});
 
 function fetchDetailEtat(idEtat) {
   $.post(
@@ -193,7 +231,4 @@ function fetchDetailEtat(idEtat) {
 }
 
 
-  // // === Notifications automatiques ===
-  // setInterval(chargerNotifications, 15000);
-  // $(document).ready(chargerNotifications);
 });

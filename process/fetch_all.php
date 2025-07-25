@@ -53,10 +53,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['table'])) {
         echo '<td>';
 
         if ($table === 'etatBesoin') {
-    echo '<button class="btn btn-success btn-xs btn-detail-etat" data-idetat="' . $row['idEtat'] . '" data-bs-toggle="modal" data-bs-target="#modalDetailEtat" title="Ajouter Détail"><i class="fas fa-plus"></i></button> ';
-}
-
-
+            echo '<button class="btn btn-success btn-xs btn-detail-etat" data-idetat="' . $row['idEtat'] . '" data-bs-toggle="modal" data-bs-target="#modalDetailEtat" title="Ajouter Détail"><i class="fas fa-plus"></i></button> ';
+            echo '<button class="btn btn-secondary btn-xs btn-payement" data-paye="' . $row['idEtat'] . '" data-bs-toggle="modal" data-bs-target="#modalPayement" title="Payement"><i class="fas fa-hand-holding-usd"></i></button> ';
+        }
 
         if ($table !== 'payement') {
             echo '<button class="btn btn-primary btn-xs btn-edit" data-modal="modal' . ucfirst($table) . '" data-table="' . $table . '" data-id="' . array_values($row)[0] . '" title="Modifier"><i class="fas fa-edit"></i></button> ';

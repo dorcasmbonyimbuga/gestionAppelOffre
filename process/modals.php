@@ -398,38 +398,8 @@
                     <!-- Champs cachés -->
                     <input type="hidden" name="table" value="payement">
                     <input type="hidden" name="idPaye" id="idPaye">
+                    <input type="hidden" name="refEtatPaye" id="refEtatPaye">
                     <div class="row">
-                        <div class="col-md-6 mb-3">
-                            <label for="refFourniPaye" class="form-label">Fournisseur</label>
-                            <select name="refFourniPaye" id="refFourniPaye" class="form-select" required>
-                                <option value="">-- Sélectionner un fournisseur --</option>
-                                <?php
-                                $sql = "SELECT * FROM fournisseur";
-                                $stmt = $con->prepare($sql);
-                                $stmt->execute();
-
-                                while ($reponse = $stmt->fetch(PDO::FETCH_ASSOC)) {
-                                    echo "<option value=" . $reponse['idFourni'] . ">" . $reponse['noms'] . "</option>";
-                                };
-                                ?>
-                            </select>
-                        </div>
-
-                        <div class="col-md-6 mb-3">
-                            <label for="refProduitPaye" class="form-label">Produit</label>
-                            <select name="refProduitPaye" id="refProduitPaye" class="form-select" required>
-                                <option value="">-- Sélectionner un produit --</option>
-                                <?php
-                                $sql = "SELECT * FROM produit";
-                                $stmt = $con->prepare($sql);
-                                $stmt->execute();
-
-                                while ($reponse = $stmt->fetch(PDO::FETCH_ASSOC)) {
-                                    echo "<option value=" . $reponse['idProduit'] . ">" . $reponse['designation'] . "</option>";
-                                };
-                                ?>
-                            </select>
-                        </div>
 
                         <div class="col-md-6 mb-3">
                             <label for="QtePaye" class="form-label">Quantité</label>
@@ -440,6 +410,27 @@
                             <label for="PUPaye" class="form-label">Prix Unitaire</label>
                             <input type="number" step="0.01" class="form-control" name="PUPaye" id="PUPaye" required>
                         </div>
+                    </div>
+                    <div class="table-responsive">
+                        <table
+                            id="table_payement"
+                            class="display table table-striped table-hover">
+                            <thead class="table-dark">
+                                <tr>
+                                    <th scope="col">ID</th>
+                                    <th scope="col">Fournisseur</th>
+                                    <th scope="col">Produit</th>
+                                    <th scope="col">Quantité</th>
+                                    <th scope="col">PU</th>
+                                    <th scope="col">PT</th>
+                                    <th scope="col">Date</th>
+                                    <th scope="col">Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <!-- Contenu chargé par AJAX -->
+                            </tbody>
+                        </table>
                     </div>
                 </div>
                 <div class="modal-footer">
