@@ -3,68 +3,88 @@ require '../bd/conbd.php';
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['table'])) {
     $table = $_POST['table'];
+    $rows = [];
 
     switch ($table) {
         case 'fournisseur':
             $stmt = $con->query("SELECT idFourni, noms, adresse, contact, username FROM fournisseur ORDER BY idFourni DESC");
+            $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
             break;
+
         case 'categorieProduit':
             $stmt = $con->query("SELECT idCategorie, designationCat FROM categorieProduit ORDER BY idCategorie DESC");
+            $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
             break;
+
         case 'etatBesoin':
             $stmt = $con->query("SELECT idEtat, fournisseur.noms, date, libelle FROM etatBesoin inner join fournisseur on etatBesoin.refFournisseurEtat=fournisseur.idFourni ORDER BY idEtat DESC");
+            $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
             break;
+
         case 'produit':
-            $stmt = $con->query("SELECT idProduit, designation, concat(PUProduit,' ',unite) as PUProduit, categorieproduit.designationCat FROM produit  inner join categorieproduit on produit.refCategorie=categorieproduit.idCategorie ORDER BY idProduit DESC");
+            $stmt = $con->query("SELECT idProduit, designation, concat(PUProduit,' ',unite) as PUProduit, categorieproduit.designationCat FROM produit inner join categorieproduit on produit.refCategorie=categorieproduit.idCategorie ORDER BY idProduit DESC");
+            $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
             break;
+
         case 'detailEtat':
             if (isset($_POST['refEtatDetail'])) {
                 $idEtat = intval($_POST['refEtatDetail']);
                 $stmt = $con->prepare("SELECT idDetail, etatBesoin.libelle, produit.designation, PU, Qte FROM detailEtat inner join etatBesoin on detailEtat.refEtatDetail=etatBesoin.idEtat inner join produit on detailEtat.refProduit=produit.idProduit WHERE refEtatDetail = ? ORDER BY idDetail DESC");
                 $stmt->execute([$idEtat]);
+                $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
             } else {
                 echo '<tr><td colspan="100%">ID État non fourni</td></tr>';
                 exit;
             }
             break;
+
         case 'appelOffre':
             $stmt = $con->query("SELECT idAppel, etatBesoin.libelle, datePub, objets, autresInfo FROM appelOffre inner join etatBesoin on appelOffre.refEtatAppel=etatBesoin.idEtat ORDER BY idAppel DESC");
+            $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
             break;
+
         case 'candidats':
             $stmt = $con->query("SELECT idCandidat, appelOffre.objets, fournisseur.noms, statut, dateCandidature, autresDetails FROM candidats inner join fournisseur on candidats.refFournisseurCandidat=fournisseur.idFourni inner join appelOffre on candidats.refAppelOffre=appelOffre.idAppel ORDER BY idCandidat DESC");
+            $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
             break;
-case 'payement':
-    if (isset($_POST['refEtatPaye'])) {
-        $idEtat = $_POST['refEtatPaye'];
 
-        $stmt = $con->prepare("SELECT paye.idPaye,f.noms AS fournisseur,
-                (SELECT p.designation FROM detailEtat d
-                    INNER JOIN produit p ON d.refProduit = p.idProduit
-                    WHERE d.refEtatDetail = paye.refEtatPaye LIMIT 1) AS produit,
-                paye.QtePaye,paye.PUPaye,(paye.QtePaye * paye.PUPaye) AS PT,paye.datePaye
-            FROM payement paye
-            INNER JOIN etatBesoin e ON paye.refEtatPaye = e.idEtat
-            INNER JOIN fournisseur f ON e.refFournisseurEtat = f.idFourni
-            WHERE paye.refEtatPaye = :idEtat ORDER BY paye.idPaye DESC");
-
-        $stmt->execute(['idEtat' => $idEtat]);
-        $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
-    } else {
-        echo '<tr><td colspan="100%">ID État non fourni</td></tr>';
-        exit;
-    }
-    break;
-
-
+        case 'payement':
+            if (isset($_POST['refEtatPaye']) && !empty($_POST['refEtatPaye'])) {
+                $idEtat = $_POST['refEtatPaye'];
+                $stmt = $con->prepare("
+                    SELECT 
+                        paye.idPaye,
+                        f.noms AS fournisseur,
+                        p.designation AS produit,
+                        paye.QtePaye,
+                        paye.PUPaye,
+                        (paye.QtePaye * paye.PUPaye) AS PT,
+                        paye.datePaye
+                    FROM payement paye
+                    INNER JOIN etatBesoin e ON paye.refEtatPaye = e.idEtat
+                    INNER JOIN fournisseur f ON e.refFournisseurEtat = f.idFourni
+                    INNER JOIN produit p ON paye.refProduitPaye = p.idProduit
+                    WHERE paye.refEtatPaye = :idEtat
+                    ORDER BY paye.idPaye DESC
+                ");
+                $stmt->execute(['idEtat' => $idEtat]);
+                $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
+            } else {
+                echo '<tr><td colspan="100%">ID État non fourni</td></tr>';
+                exit;
+            }
+            break;
 
         case 'user':
             $stmt = $con->query("SELECT idUser, username, niveauAcces FROM user ORDER BY idUser DESC");
+            $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
             break;
+
         default:
             echo '<tr><td colspan="100%">Table inconnue</td></tr>';
             exit;
     }
-    $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
     foreach ($rows as $row) {
         echo '<tr>';
         foreach ($row as $col) {

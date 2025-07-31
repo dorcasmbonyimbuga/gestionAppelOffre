@@ -400,13 +400,25 @@
                     <input type="hidden" name="idPaye" id="idPaye">
                     <input type="hidden" name="refEtatPaye" id="refEtatPaye">
                     <div class="row">
+                        <div class="col-md-4 mb-3">
+                            <label for="refProduitPaye" class="form-label">Produit</label>
+                            <select class="form-select" name="refProduitPaye" required>
+                                <option value="">-- Sélectionner le produit --</option>
+                                <?php
+                                $produits = $con->query("SELECT idProduit, designation FROM produit")->fetchAll(PDO::FETCH_ASSOC);
+                                foreach ($produits as $prod) {
+                                    echo "<option value=\"{$prod['idProduit']}\">{$prod['designation']}</option>";
+                                }
+                                ?>
+                            </select>
+                        </div>
 
-                        <div class="col-md-6 mb-3">
+                        <div class="col-md-4 mb-3">
                             <label for="QtePaye" class="form-label">Quantité</label>
                             <input type="number" step="0.01" class="form-control" name="QtePaye" id="QtePaye" required>
                         </div>
 
-                        <div class="col-md-6 mb-3">
+                        <div class="col-md-4 mb-3">
                             <label for="PUPaye" class="form-label">Prix Unitaire</label>
                             <input type="number" step="0.01" class="form-control" name="PUPaye" id="PUPaye" required>
                         </div>
