@@ -412,9 +412,7 @@
                         </div>
                     </div>
                     <div class="table-responsive">
-                        <table
-                            id="table_payement"
-                            class="display table table-striped table-hover">
+                        <table id="table_payement" class="display table table-striped table-hover">
                             <thead class="table-dark">
                                 <tr>
                                     <th scope="col">ID</th>

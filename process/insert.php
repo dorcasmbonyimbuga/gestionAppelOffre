@@ -71,7 +71,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     // Payement
     elseif ($_POST['table'] === 'payement') {
-        $stmt = $con->prepare("INSERT INTO payement (refEtatPaye,QtePaye,PUPaye, datePaye) VALUES (?, ?, ?, ?, ?)");
+        $stmt = $con->prepare("INSERT INTO payement (refEtatPaye,QtePaye,PUPaye, datePaye) VALUES (?, ?, ?, ?)");
         echo $stmt->execute([
             $_POST['refEtatPaye'], $_POST['QtePaye'],$_POST['PUPaye'],$date
         ]) ? 'success' : 'error';
