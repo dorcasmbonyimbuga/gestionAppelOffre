@@ -4,11 +4,21 @@ require_once '../bd/conbd.php';
 if (isset($_GET['idPaye'])) {
     $idPaye = $_GET['idPaye'];
 
-    $stmt = $con->prepare("SELECT idPaye, f.noms AS fournisseur, p.designation AS produit, QtePaye, PUPaye, (QtePaye * PUPaye) AS PT, datePaye 
-        FROM payement paye 
-        INNER JOIN fournisseur f ON paye.refFourniPaye = f.idFourni 
-        INNER JOIN produit p ON paye.refProduitPaye = p.idProduit 
-        WHERE idPaye = ?");
+    $stmt = $con->prepare("
+        SELECT 
+            paye.idPaye,
+            f.noms AS fournisseur,
+            p.designation AS produit,
+            paye.QtePaye,
+            paye.PUPaye,
+            (paye.QtePaye * paye.PUPaye) AS PT,
+            paye.datePaye
+        FROM payement paye
+        INNER JOIN etatBesoin e ON paye.refEtatPaye = e.idEtat
+        INNER JOIN fournisseur f ON e.refFournisseurEtat = f.idFourni
+        INNER JOIN produit p ON paye.refProduitPaye = p.idProduit
+        WHERE paye.idPaye = ?
+    ");
     $stmt->execute([$idPaye]);
     $recu = $stmt->fetch(PDO::FETCH_ASSOC);
 
