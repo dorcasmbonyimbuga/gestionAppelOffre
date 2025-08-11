@@ -11,7 +11,8 @@ if (isset($_GET['idPaye'])) {
             p.designation AS produit,
             paye.QtePaye,
             paye.PUPaye,
-            (paye.QtePaye * paye.PUPaye) AS PT,
+            (paye.QtePaye * paye.PUPaye) AS PT,paye.montantPaye,
+            ((paye.QtePaye * paye.PUPaye)-montantPaye) AS reste,
             paye.datePaye
         FROM payement paye
         INNER JOIN etatBesoin e ON paye.refEtatPaye = e.idEtat
@@ -49,7 +50,9 @@ if (isset($_GET['idPaye'])) {
         <div class="info"><strong>Quantité :</strong> <?= $recu['QtePaye'] ?></div>
         <div class="info"><strong>Prix Unitaire :</strong> <?= number_format($recu['PUPaye'], 2) ?> FC</div>
         <div class="info"><strong>Date de paiement :</strong> <?= date("d/m/Y", strtotime($recu['datePaye'])) ?></div>
-        <div class="total">Montant total : <?= number_format($recu['PT'], 2) ?> FC</div>
+        <div class="total">Total à payer : <?= number_format($recu['PT'], 2) ?> FC</div>
+        <div class="total">Montant payé : <?= number_format($recu['montantPaye'], 2) ?> FC</div>
+        <div class="total">Reste à payer : <?= number_format($recu['reste'], 2) ?> FC</div>
     </div>
 
 </body>

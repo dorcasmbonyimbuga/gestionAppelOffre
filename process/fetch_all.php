@@ -58,7 +58,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['table'])) {
                         p.designation AS produit,
                         paye.QtePaye,
                         paye.PUPaye,
-                        (paye.QtePaye * paye.PUPaye) AS PT,
+                        (paye.QtePaye * paye.PUPaye) AS PT,paye.montantPaye,((paye.QtePaye * paye.PUPaye)-montantPaye) as reste,
                         paye.datePaye
                     FROM payement paye
                     INNER JOIN etatBesoin e ON paye.refEtatPaye = e.idEtat

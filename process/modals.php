@@ -203,7 +203,7 @@
                     <input type="hidden" name="refEtatDetail" id="refEtatDetail">
                     <div class="row">
                         <!-- Ajoute ici comment recuperer l'id de etatBesoin pour que lors de l'insertion ca le prenne directement -->
-                        <div class="col-md-6 mb-3">
+                        <div class="col-md-4 mb-3">
                             <label for="refProduit" class="form-label">Réf. Produit</label>
                             <select name="refProduit" id="refProduit" class="form-select" required>
                                 <option value="">-- Sélectionner le produit --</option>
@@ -219,12 +219,12 @@
                             </select>
                         </div>
 
-                        <div class="col-md-6 mb-3">
+                        <div class="col-md-4 mb-3">
                             <label for="PU" class="form-label">Prix Unitaire</label>
                             <input type="number" step="0.01" class="form-control" name="PU" id="PU" required>
                         </div>
 
-                        <div class="col-md-6 mb-3">
+                        <div class="col-md-4 mb-3">
                             <label for="Qte" class="form-label">Quantité</label>
                             <input type="number" class="form-control" name="Qte" id="Qte" required>
                         </div>
@@ -400,7 +400,7 @@
                     <input type="hidden" name="idPaye" id="idPaye">
                     <input type="hidden" name="refEtatPaye" id="refEtatPaye">
                     <div class="row">
-                        <div class="col-md-4 mb-3">
+                        <div class="col-md-6 mb-3">
                             <label for="refProduitPaye" class="form-label">Produit</label>
                             <select class="form-select" name="refProduitPaye" required>
                                 <option value="">-- Sélectionner le produit --</option>
@@ -413,15 +413,23 @@
                             </select>
                         </div>
 
-                        <div class="col-md-4 mb-3">
+                        <div class="col-md-6 mb-3">
                             <label for="QtePaye" class="form-label">Quantité</label>
                             <input type="number" step="0.01" class="form-control" name="QtePaye" id="QtePaye" required>
                         </div>
 
-                        <div class="col-md-4 mb-3">
+                        <div class="col-md-6 mb-3">
                             <label for="PUPaye" class="form-label">Prix Unitaire</label>
                             <input type="number" step="0.01" class="form-control" name="PUPaye" id="PUPaye" required>
                         </div>
+                        <div class="col-md-6 mb-3">
+                            <label for="montantPaye" class="form-label">Montant payé</label>
+                            <input type="number" step="0.01" class="form-control" name="montantPaye" id="montantPaye" required>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Annuler</button>
+                        <button type="submit" class="btn btn-primary">Enregistrer</button>
                     </div>
                     <div class="table-responsive">
                         <table id="table_payement" class="display table table-striped table-hover">
@@ -430,9 +438,11 @@
                                     <th scope="col">ID</th>
                                     <th scope="col">Fournisseur</th>
                                     <th scope="col">Produit</th>
-                                    <th scope="col">Quantité</th>
+                                    <th scope="col">Qé</th>
                                     <th scope="col">PU</th>
                                     <th scope="col">PT</th>
+                                    <th scope="col">MONTANT PAYE</th>
+                                    <th scope="col">RESTE</th>
                                     <th scope="col">Date</th>
                                     <th scope="col">Actions</th>
                                 </tr>
@@ -443,10 +453,7 @@
                         </table>
                     </div>
                 </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Annuler</button>
-                    <button type="submit" class="btn btn-primary">Enregistrer</button>
-                </div>
+
             </form>
         </div>
     </div>
