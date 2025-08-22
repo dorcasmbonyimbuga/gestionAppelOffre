@@ -48,164 +48,32 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['table'])) {
             $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
             break;
 
-        // case 'payement':
-        //     if (isset($_POST['refEtatPaye']) && !empty($_POST['refEtatPaye'])) {
-        //         $idEtat = $_POST['refEtatPaye'];
-        //         $stmt = $con->prepare("
-        //             SELECT 
-        //                 paye.idPaye,
-        //                 f.noms AS fournisseur,
-        //                 p.designation AS produit,
-        //                 paye.QtePaye,
-        //                 paye.PUPaye,
-        //                 (paye.QtePaye * paye.PUPaye) AS PT,paye.montantPaye,((paye.QtePaye * paye.PUPaye)-montantPaye) as reste,
-        //                 paye.datePaye
-        //             FROM payement paye
-        //             INNER JOIN etatBesoin e ON paye.refEtatPaye = e.idEtat
-        //             INNER JOIN fournisseur f ON e.refFournisseurEtat = f.idFourni
-        //             INNER JOIN produit p ON paye.refProduitPaye = p.idProduit
-        //             WHERE paye.refEtatPaye = :idEtat
-        //             ORDER BY paye.idPaye DESC
-        //         ");
-        //         $stmt->execute(['idEtat' => $idEtat]);
-        //         $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
-        //     } else {
-        //         echo '<tr><td colspan="100%">ID État non fourni</td></tr>';
-        //         exit;
-        //     }
-        //     break;
-// === PAYEMENT : charger détails ===
         case 'payement':
-            if (isset($_POST['action']) && $_POST['action'] === 'detail' && isset($_POST['idEtat'])) {
-                $idEtat = intval($_POST['idEtat']);
-
-                // 1. Info Etat + Fournisseur
+            if (isset($_POST['refEtatPaye']) && !empty($_POST['refEtatPaye'])) {
+                $idEtat = $_POST['refEtatPaye'];
                 $stmt = $con->prepare("
-            SELECT e.idEtat, e.libelle, f.noms AS fournisseur
-            FROM etatbesoin e
-            INNER JOIN fournisseur f ON e.refFournisseurEtat = f.idFourni
-            WHERE e.idEtat = ?
-        ");
-                $stmt->execute([$idEtat]);
-                $etat = $stmt->fetch(PDO::FETCH_ASSOC);
-
-                // 2. Produits (detailEtat)
-                $stmt = $con->prepare("
-            SELECT p.designation, de.Qte, de.PU, (de.Qte * de.PU) AS total
-            FROM detailetat de
-            INNER JOIN produit p ON de.refProduit = p.idProduit
-            WHERE de.refEtatDetail = ?
-        ");
-                $stmt->execute([$idEtat]);
-                $produits = $stmt->fetchAll(PDO::FETCH_ASSOC);
-
-                // 3. Montant total
-                $stmt = $con->prepare("SELECT SUM(Qte*PU) FROM detailetat WHERE refEtatDetail=?");
-                $stmt->execute([$idEtat]);
-                $montantTotal = $stmt->fetchColumn();
-
-                // 4. Déjà payé
-                $stmt = $con->prepare("SELECT COALESCE(SUM(montantVerse),0) FROM payement WHERE refEtatPaye=?");
-                $stmt->execute([$idEtat]);
-                $dejaPaye = $stmt->fetchColumn();
-
-                $reste = $montantTotal - $dejaPaye;
-
-                echo json_encode([
-                    "etat" => $etat,
-                    "produits" => $produits,
-                    "montantTotal" => $montantTotal,
-                    "dejaPaye" => $dejaPaye,
-                    "reste" => $reste
-                ]);
-            } else {
-                echo json_encode(["error" => "Paramètres invalides"]);
-            }
-            break;
-
-        // === CHARGER DETAILS POUR PAYEMENT ===
-        case 'detailPayement':
-            if (isset($_POST['idEtat'])) {
-                $idEtat = intval($_POST['idEtat']);
-
-                // 1. Info Etat + Fournisseur
-                $stmt = $con->prepare("
-            SELECT e.idEtat, e.libelle, f.noms AS fournisseur
-            FROM etatbesoin e
-            INNER JOIN fournisseur f ON e.refFournisseurEtat = f.idFourni
-            WHERE e.idEtat = ?
-        ");
-                $stmt->execute([$idEtat]);
-                $etat = $stmt->fetch(PDO::FETCH_ASSOC);
-
-                // 2. Produits (detailEtat)
-                $stmt = $con->prepare("
-            SELECT p.designation, de.Qte, de.PU, (de.Qte * de.PU) AS total
-            FROM detailetat de
-            INNER JOIN produit p ON de.refProduit = p.idProduit
-            WHERE de.refEtatDetail = ?
-        ");
-                $stmt->execute([$idEtat]);
-                $produits = $stmt->fetchAll(PDO::FETCH_ASSOC);
-
-                // 3. Total
-                $stmt = $con->prepare("SELECT SUM(Qte*PU) FROM detailetat WHERE refEtatDetail=?");
-                $stmt->execute([$idEtat]);
-                $montantTotal = $stmt->fetchColumn();
-
-                // 4. Déjà payé
-                $stmt = $con->prepare("SELECT COALESCE(SUM(montantVerse),0) FROM payement WHERE refEtatPaye=?");
-                $stmt->execute([$idEtat]);
-                $dejaPaye = $stmt->fetchColumn();
-
-                $reste = $montantTotal - $dejaPaye;
-
-                // Retourner en JSON
-                echo json_encode([
-                    "etat" => $etat,
-                    "produits" => $produits,
-                    "montantTotal" => $montantTotal,
-                    "dejaPaye" => $dejaPaye,
-                    "reste" => $reste
-                ]);
-            } else {
-                echo json_encode(["error" => "ID Etat non fourni"]);
-            }
-            break;
-
-
-        // === PAYEMENT ===
-        case 'payement':
-            if (isset($_POST['refEtatPaye'])) {
-                $idEtat = intval($_POST['refEtatPaye']);
-                $stmt = $con->prepare("
-            SELECT idPaye, montantTotal, montantVerse, reste, datePaye
-            FROM payement
-            WHERE refEtatPaye = ?
-            ORDER BY idPaye DESC
-        ");
-                $stmt->execute([$idEtat]);
+                    SELECT 
+                        paye.idPaye,
+                        f.noms AS fournisseur,
+                        p.designation AS produit,
+                        paye.QtePaye,
+                        paye.PUPaye,
+                        (paye.QtePaye * paye.PUPaye) AS PT,paye.montantPaye,((paye.QtePaye * paye.PUPaye)-montantPaye) as reste,
+                        paye.datePaye
+                    FROM payement paye
+                    INNER JOIN etatBesoin e ON paye.refEtatPaye = e.idEtat
+                    INNER JOIN fournisseur f ON e.refFournisseurEtat = f.idFourni
+                    INNER JOIN produit p ON paye.refProduitPaye = p.idProduit
+                    WHERE paye.refEtatPaye = :idEtat
+                    ORDER BY paye.idPaye DESC
+                ");
+                $stmt->execute(['idEtat' => $idEtat]);
                 $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
-
-                if ($rows) {
-                    foreach ($rows as $row) {
-                        echo "<tr>
-                        <td>{$row['idPaye']}</td>
-                        <td>{$row['montantTotal']}</td>
-                        <td>{$row['montantVerse']}</td>
-                        <td>{$row['reste']}</td>
-                        <td>{$row['datePaye']}</td>
-                      </tr>";
-                    }
-                } else {
-                    echo '<tr><td colspan="100%">Aucun payement trouvé</td></tr>';
-                }
             } else {
                 echo '<tr><td colspan="100%">ID État non fourni</td></tr>';
                 exit;
             }
             break;
-
 
         case 'user':
             $stmt = $con->query("SELECT idUser, username, niveauAcces FROM user ORDER BY idUser DESC");
@@ -226,23 +94,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['table'])) {
         echo '<td>';
 
         if ($table === 'etatBesoin') {
-            echo '<button class="btn btn-success btn-xs btn-detail-etat" 
-                 data-idetat="' . $row['idEtat'] . '" 
-                 data-bs-toggle="modal" 
-                 data-bs-target="#modalDetailEtat" 
-                 title="Ajouter Détail">
-              <i class="fas fa-plus"></i>
-          </button> ';
-
-            echo '<button class="btn btn-secondary btn-xs btn-payement" 
-                 data-idetat="' . $row['idEtat'] . '" 
-                 data-bs-toggle="modal" 
-                 data-bs-target="#modalPayement" 
-                 title="Payement">
-              <i class="fas fa-hand-holding-usd"></i>
-          </button> ';
+            echo '<button class="btn btn-success btn-xs btn-detail-etat" data-idetat="' . $row['idEtat'] . '" data-bs-toggle="modal" data-bs-target="#modalDetailEtat" title="Ajouter Détail"><i class="fas fa-plus"></i></button> ';
+            echo '<button class="btn btn-secondary btn-xs btn-payement" data-paye="' . $row['idEtat'] . '" data-bs-toggle="modal" data-bs-target="#modalPayement" title="Payement"><i class="fas fa-hand-holding-usd"></i></button> ';
         }
-
 
         if ($table !== 'payement') {
             echo '<button class="btn btn-primary btn-xs btn-edit" data-modal="modal' . ucfirst($table) . '" data-table="' . $table . '" data-id="' . array_values($row)[0] . '" title="Modifier"><i class="fas fa-edit"></i></button> ';
