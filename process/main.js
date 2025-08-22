@@ -117,19 +117,66 @@ $(document).ready(function () {
     });
   });
 
-  // === PAYEMENT ===
-  function fetchPayement(idEtat) {
+function fetchPayement(idEtat) {
+    if (!idEtat) return;
+
     $.post("../process/fetch_all.php", { table: "payement", refEtatPaye: idEtat }, function (data) {
-      $("#table_payement tbody").html(data);
-    });
-  }
+        let resp;
+        try {
+            resp = JSON.parse(data);
+        } catch(e) {
+            console.error("Réponse invalide :", data);
+            return;
+        }
+
+        if (resp.error) {
+            showMessage(resp.error, "danger");
+            return;
+        }
+
+        // Résumé
+        $("#montantTotal").text(resp.resume.montantTotal);
+        $("#dejaPaye").text(resp.resume.dejaPaye);
+        $("#reste").text(resp.resume.reste);
+        $("#montantTotalInput").val(resp.resume.montantTotal);
+        $("#resteInput").val(resp.resume.reste);
+        $("#datePaye").val(resp.resume.dateNow);
+
+        // Historique
+        let rows = "";
+        if (resp.table.length > 0) {
+            resp.table.forEach(row => {
+                rows += `
+                <tr>
+                    <td>${row.idPaye}</td>
+                    <td>${row.montantTotal}</td>
+                    <td>${row.montantVerse}</td>
+                    <td>${row.reste}</td>
+                    <td>${row.datePaye}</td>
+                    <td>
+                        <a href="printRecu.php?idPaye=${row.idPaye}" class="btn btn-info btn-xs" target="_blank">
+                            <i class="fas fa-print"></i>
+                        </a>
+                    </td>
+                </tr>`;
+            });
+        } else {
+            rows = `<tr><td colspan="6">Aucun paiement</td></tr>`;
+        }
+        $("#table_payement tbody").html(rows);
+
+    }).fail(() => showMessage("Erreur serveur payement.", "danger"));
+}
+
 
   $(document).on("click", ".btn-payement", function () {
     const idEtat = $(this).data("paye");
-    $("#refEtatPaye").val(idEtat);
-    $("#modalPayement").modal("show");
-    fetchPayement(idEtat);
-  });
+    console.log("🔹 Ouverture modal payement pour Etat ID =", idEtat); // debug
+
+    $("#refEtatPaye").val(idEtat); // remplir le hidden input
+    fetchPayement(idEtat);         // charger les données
+});
+
 
   $("#formPayement").off("submit").on("submit", function (e) {
     e.preventDefault();

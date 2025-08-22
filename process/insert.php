@@ -86,31 +86,21 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $date,
             $_POST['autresDetails']
         ]) ? 'success' : 'error';
-    }
-
-    // Payement
+    } 
     elseif ($_POST['table'] === 'payement') {
-        $stmt = $con->prepare("INSERT INTO payement (refEtatPaye,refProduitPaye,QtePaye,PUPaye,montantPaye, datePaye) VALUES (?, ?, ?, ?,?,?)");
-        echo $stmt->execute([
-            $_POST['refEtatPaye'],
-            $_POST['refProduitPaye'],
-            $_POST['QtePaye'],
-            $_POST['PUPaye'],
-            $_POST['montantPaye'],
-            $date
-        ]) ? 'success' : 'error';
-    }
+        $idEtat = $_POST['refEtatPaye'];
+        $montantTotal = $_POST['montantTotal'];
+        $montantVerse = $_POST['montantVerse'];
 
-    // Paiement
-    elseif ($_POST['table'] === 'paiement') {
-        $stmt = $con->prepare("INSERT INTO paiement (refEtatPaye, montantTotal, montantVerse, reste, datePaye) VALUES (?, ?, ?, ?, ?)");
-        echo $stmt->execute([
-            $_POST['refEtatPaye'],
-            $_POST['montantTotal'],
-            $_POST['montantVerse'],
-            $_POST['reste'],
-            $_POST['datePaye']
-        ]) ? 'success' : 'error';
+        // déjà payé
+        $stmt = $con->prepare("SELECT COALESCE(SUM(montantVerse),0) FROM payement WHERE refEtatPaye=?");
+        $stmt->execute([$idEtat]);
+        $dejaPaye = $stmt->fetchColumn();
+
+        $reste = $montantTotal - ($dejaPaye + $montantVerse);
+
+        $stmt = $con->prepare("INSERT INTO payement (refEtatPaye, montantTotal, montantVerse, reste, datePaye) VALUES (?, ?, ?, ?, NOW())");
+        echo $stmt->execute([$idEtat, $montantTotal, $montantVerse, $reste]) ? 'success' : 'error';
     }
 
 

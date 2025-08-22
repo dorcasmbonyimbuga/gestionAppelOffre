@@ -50,10 +50,13 @@ include "../partials/header.php";
                 <div class="mb-4 no-print">
                     <div class="mb-2"><strong>Sélectionner un rapport :</strong></div>
                     <div class="btn-group flex-wrap" role="group">
-                        <button class="btn btn-primary" onclick="printSection('rapport_fournisseurs')">Fournisseurs</button>
+                        <button class="btn btn-primary"
+                            onclick="printSection('rapport_fournisseurs')">Fournisseurs</button>
                         <button class="btn btn-primary" onclick="printSection('rapport_produits')">Produits</button>
-                        <button class="btn btn-primary" onclick="printSection('rapport_appels')">Appels d'offres</button>
-                        <button class="btn btn-primary" onclick="printSection('rapport_candidats')">Candidatures</button>
+                        <button class="btn btn-primary" onclick="printSection('rapport_appels')">Appels
+                            d'offres</button>
+                        <button class="btn btn-primary"
+                            onclick="printSection('rapport_candidats')">Candidatures</button>
                         <button class="btn btn-primary" onclick="printSection('rapport_etat')">Etats de besoin</button>
                         <button class="btn btn-primary" onclick="printSection('rapport_paiements')">Paiements</button>
                     </div>
@@ -87,7 +90,7 @@ include "../partials/header.php";
                             <?php
                             $stmt = $con->query("SELECT noms, adresse, contact, username FROM fournisseur ORDER BY noms");
                             foreach ($stmt as $f):
-                            ?>
+                                ?>
                                 <tr>
                                     <td><?= $f['noms'] ?></td>
                                     <td><?= $f['adresse'] ?></td>
@@ -116,7 +119,7 @@ include "../partials/header.php";
                              FROM produit INNER JOIN categorieProduit 
                              ON produit.refCategorie = categorieProduit.idCategorie");
                             foreach ($stmt as $p):
-                            ?>
+                                ?>
                                 <tr>
                                     <td><?= $p['designation'] ?></td>
                                     <td><?= $p['PUProduit'] . ' ' . $p['unite'] ?></td>
@@ -144,7 +147,7 @@ include "../partials/header.php";
                              FROM appelOffre 
                              INNER JOIN etatBesoin ON refEtatAppel = idEtat");
                             foreach ($stmt as $a):
-                            ?>
+                                ?>
                                 <tr>
                                     <td><?= $a['objets'] ?></td>
                                     <td><?= $a['libelle'] ?></td>
@@ -174,7 +177,7 @@ include "../partials/header.php";
                              INNER JOIN fournisseur f ON c.refFournisseurCandidat = f.idFourni
                              INNER JOIN appelOffre a ON c.refAppelOffre = a.idAppel");
                             foreach ($stmt as $c):
-                            ?>
+                                ?>
                                 <tr>
                                     <td><?= $c['noms'] ?></td>
                                     <td><?= $c['objets'] ?></td>
@@ -208,7 +211,7 @@ include "../partials/header.php";
                                 JOIN detailetat d ON d.refEtatDetail = e.idEtat 
                                 JOIN produit p ON d.refProduit = p.idProduit");
                             foreach ($stmt as $a):
-                            ?>
+                                ?>
                                 <tr>
                                     <td><?= $a['objets'] ?></td>
                                     <td><?= $a['libelle'] ?></td>
@@ -230,33 +233,41 @@ include "../partials/header.php";
                         <thead>
                             <tr>
                                 <th>Fournisseur</th>
-                                <th>Produit</th>
-                                <th>Quantité payée</th>
-                                <th>PU</th>
-                                <th>Total payé</th>
+                                <th>Montant total</th>
+                                <th>Déjà payé</th>
+                                <th>Montant payé</th>
+                                <th>Reste</th>
                                 <th>Date</th>
                             </tr>
                         </thead>
                         <tbody>
                             <?php
                             $stmt = $con->query("
-                                SELECT f.noms, p.designation, paye.QtePaye, paye.PUPaye, 
-                                (paye.QtePaye * paye.PUPaye) AS PT, paye.datePaye
-                                FROM payement paye
-                                INNER JOIN etatBesoin e ON paye.refEtatPaye = e.idEtat
-                                INNER JOIN fournisseur f ON e.refFournisseurEtat = f.idFourni
-                                INNER JOIN produit p ON paye.refProduitPaye = p.idProduit
-                                ORDER BY paye.datePaye DESC
-                            ");
-                            foreach ($stmt as $row):
-                            ?>
+                                        SELECT paye.idPaye, f.noms AS fournisseur, paye.montantVerse, paye.datePaye, e.idEtat
+                                        FROM payement paye
+                                        INNER JOIN etatBesoin e ON paye.refEtatPaye = e.idEtat
+                                        INNER JOIN fournisseur f ON e.refFournisseurEtat = f.idFourni
+                                        ORDER BY paye.datePaye DESC
+                                    ");
+
+                            foreach ($stmt as $paiement):
+                                $stmt2 = $con->prepare("SELECT SUM(Qte*PU) FROM detailEtat WHERE refEtatDetail = ?");
+                                $stmt2->execute([$paiement['idEtat']]);
+                                $montantTotal = $stmt2->fetchColumn() ?? 0;
+
+                                $stmt3 = $con->prepare("SELECT COALESCE(SUM(montantVerse),0) FROM payement WHERE refEtatPaye = ? AND idPaye < ?");
+                                $stmt3->execute([$paiement['idEtat'], $paiement['idPaye']]);
+                                $dejaPaye = $stmt3->fetchColumn() ?? 0;
+
+                                $reste = $montantTotal - ($dejaPaye + $paiement['montantVerse']);
+                                ?>
                                 <tr>
-                                    <td><?= $row['noms'] ?></td>
-                                    <td><?= $row['designation'] ?></td>
-                                    <td><?= $row['QtePaye'] ?></td>
-                                    <td><?= number_format($row['PUPaye'], 2) ?> FC</td>
-                                    <td><?= number_format($row['PT'], 2) ?> FC</td>
-                                    <td class="date"><?= $row['datePaye'] ?></td>
+                                    <td><?= htmlspecialchars($paiement['fournisseur']) ?></td>
+                                    <td><?= number_format($montantTotal, 2) ?> FC</td>
+                                    <td><?= number_format($dejaPaye, 2) ?> FC</td>
+                                    <td><?= number_format($paiement['montantVerse'], 2) ?> FC</td>
+                                    <td><?= number_format($reste, 2) ?> FC</td>
+                                    <td class="date"><?= date("Y-m-d", strtotime($paiement['datePaye'])) ?></td>
                                 </tr>
                             <?php endforeach; ?>
                         </tbody>
@@ -271,37 +282,37 @@ include "../partials/header.php";
 <?php include "../partials/footer.php"; ?>
 
 <script>
-function autoFilter() {
-    const startInput = document.getElementById('dateStart');
-    const endInput = document.getElementById('dateEnd');
-    const start = new Date(startInput.value);
-    const end = new Date(endInput.value);
+    function autoFilter() {
+        const startInput = document.getElementById('dateStart');
+        const endInput = document.getElementById('dateEnd');
+        const start = new Date(startInput.value);
+        const end = new Date(endInput.value);
 
-    if (!startInput.value || !endInput.value) {
-        document.querySelectorAll('.date-filter tbody tr').forEach(tr => tr.style.display = '');
-        return;
+        if (!startInput.value || !endInput.value) {
+            document.querySelectorAll('.date-filter tbody tr').forEach(tr => tr.style.display = '');
+            return;
+        }
+
+        document.querySelectorAll('.date-filter tbody tr').forEach(row => {
+            const dateCell = row.querySelector('.date');
+            if (dateCell) {
+                const currentDate = new Date(dateCell.textContent.trim());
+                if (currentDate >= start && currentDate <= end) {
+                    row.style.display = '';
+                } else {
+                    row.style.display = 'none';
+                }
+            }
+        });
     }
 
-    document.querySelectorAll('.date-filter tbody tr').forEach(row => {
-        const dateCell = row.querySelector('.date');
-        if (dateCell) {
-            const currentDate = new Date(dateCell.textContent.trim());
-            if (currentDate >= start && currentDate <= end) {
-                row.style.display = '';
-            } else {
-                row.style.display = 'none';
-            }
-        }
-    });
-}
-
-function printSection(sectionId) {
-    autoFilter(); // appliquer filtre avant impression
-    const printContents = document.getElementById(sectionId).innerHTML;
-    const originalContents = document.body.innerHTML;
-    document.body.innerHTML = printContents;
-    window.print();
-    document.body.innerHTML = originalContents;
-    location.reload();
-}
+    function printSection(sectionId) {
+        autoFilter(); // appliquer filtre avant impression
+        const printContents = document.getElementById(sectionId).innerHTML;
+        const originalContents = document.body.innerHTML;
+        document.body.innerHTML = printContents;
+        window.print();
+        document.body.innerHTML = originalContents;
+        location.reload();
+    }
 </script>

@@ -49,31 +49,46 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['table'])) {
             break;
 
         case 'payement':
-            if (isset($_POST['refEtatPaye']) && !empty($_POST['refEtatPaye'])) {
-                $idEtat = $_POST['refEtatPaye'];
-                $stmt = $con->prepare("
-                    SELECT 
-                        paye.idPaye,
-                        f.noms AS fournisseur,
-                        p.designation AS produit,
-                        paye.QtePaye,
-                        paye.PUPaye,
-                        (paye.QtePaye * paye.PUPaye) AS PT,paye.montantPaye,((paye.QtePaye * paye.PUPaye)-montantPaye) as reste,
-                        paye.datePaye
-                    FROM payement paye
-                    INNER JOIN etatBesoin e ON paye.refEtatPaye = e.idEtat
-                    INNER JOIN fournisseur f ON e.refFournisseurEtat = f.idFourni
-                    INNER JOIN produit p ON paye.refProduitPaye = p.idProduit
-                    WHERE paye.refEtatPaye = :idEtat
-                    ORDER BY paye.idPaye DESC
-                ");
-                $stmt->execute(['idEtat' => $idEtat]);
+            if (isset($_POST['refEtatPaye'])) {
+                $idEtat = intval($_POST['refEtatPaye']);
+
+                // Résumé
+                $stmt = $con->prepare("SELECT SUM(Qte * PU) FROM detailEtat WHERE refEtatDetail=?");
+                $stmt->execute([$idEtat]);
+                $montantTotal = $stmt->fetchColumn() ?? 0;
+
+                $stmt = $con->prepare("SELECT COALESCE(SUM(montantVerse),0) FROM payement WHERE refEtatPaye=?");
+                $stmt->execute([$idEtat]);
+                $dejaPaye = $stmt->fetchColumn() ?? 0;
+
+                $reste = $montantTotal - $dejaPaye;
+
+                // Historique
+                $stmt = $con->prepare("SELECT idPaye, montantTotal, montantVerse, reste, datePaye 
+                               FROM payement 
+                               WHERE refEtatPaye=? 
+                               ORDER BY idPaye DESC");
+                $stmt->execute([$idEtat]);
                 $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+                // Retour JSON
+                echo json_encode([
+                    "resume" => [
+                        "montantTotal" => $montantTotal,
+                        "dejaPaye" => $dejaPaye,
+                        "reste" => $reste,
+                        "dateNow" => date('Y-m-d H:i:s')
+                    ],
+                    "table" => $rows
+                ]);
             } else {
-                echo '<tr><td colspan="100%">ID État non fourni</td></tr>';
-                exit;
+                echo json_encode(["error" => "ID État non fourni"]);
             }
+            exit;
             break;
+
+
+        // ==========================================================
 
         case 'user':
             $stmt = $con->query("SELECT idUser, username, niveauAcces FROM user ORDER BY idUser DESC");
