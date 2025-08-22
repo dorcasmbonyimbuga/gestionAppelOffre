@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Hôte : 127.0.0.1
--- Généré le : jeu. 10 juil. 2025 à 23:31
+-- Généré le : lun. 11 août 2025 à 20:33
 -- Version du serveur : 10.4.32-MariaDB
 -- Version de PHP : 8.2.12
 
@@ -73,7 +73,7 @@ CREATE TABLE `detailetat` (
   `refProduit` int(11) NOT NULL,
   `PU` double NOT NULL,
   `Qte` int(11) NOT NULL
-) ;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
 
@@ -112,10 +112,11 @@ CREATE TABLE `fournisseur` (
 
 CREATE TABLE `payement` (
   `idPaye` int(11) NOT NULL,
-  `refFourniPaye` int(11) NOT NULL,
+  `refEtatPaye` int(11) NOT NULL,
   `refProduitPaye` int(11) NOT NULL,
   `QtePaye` int(11) NOT NULL,
   `PUPaye` int(11) NOT NULL,
+  `montantPaye` int(11) NOT NULL,
   `datePaye` date NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
@@ -131,7 +132,7 @@ CREATE TABLE `produit` (
   `PUProduit` double NOT NULL,
   `unite` varchar(10) NOT NULL,
   `refCategorie` int(11) NOT NULL
-) ;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
 
@@ -245,7 +246,7 @@ ALTER TABLE `candidats`
 -- AUTO_INCREMENT pour la table `categorieproduit`
 --
 ALTER TABLE `categorieproduit`
-  MODIFY `idCategorie` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `idCategorie` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT pour la table `detailetat`
@@ -257,19 +258,19 @@ ALTER TABLE `detailetat`
 -- AUTO_INCREMENT pour la table `etatbesoin`
 --
 ALTER TABLE `etatbesoin`
-  MODIFY `idEtat` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `idEtat` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT pour la table `fournisseur`
 --
 ALTER TABLE `fournisseur`
-  MODIFY `idFourni` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `idFourni` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT pour la table `payement`
 --
 ALTER TABLE `payement`
-  MODIFY `idPaye` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `idPaye` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT pour la table `produit`

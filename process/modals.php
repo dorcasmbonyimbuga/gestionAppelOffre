@@ -80,7 +80,8 @@
 
                                 while ($reponse = $stmt->fetch(PDO::FETCH_ASSOC)) {
                                     echo "<option value=" . $reponse['idFourni'] . ">" . $reponse['noms'] . "</option>";
-                                };
+                                }
+                                ;
                                 ?>
                             </select>
                         </div>
@@ -102,7 +103,8 @@
 
 
 <!-- Modal Catégorie Produit -->
-<div class="modal fade" id="modalCategorieProduit" tabindex="-1" aria-labelledby="modalCategorieProduitLabel" aria-hidden="true">
+<div class="modal fade" id="modalCategorieProduit" tabindex="-1" aria-labelledby="modalCategorieProduitLabel"
+    aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
             <form id="formCategorieProduit" name="formCategorieProduit">
@@ -152,7 +154,8 @@
 
                         <div class="col-md-6 mb-3">
                             <label for="PUProduit" class="form-label">Prix Unitaire</label>
-                            <input type="number" step="0.01" class="form-control" name="PUProduit" id="PUProduit" required>
+                            <input type="number" step="0.01" class="form-control" name="PUProduit" id="PUProduit"
+                                required>
                         </div>
 
                         <div class="col-md-6 mb-3">
@@ -171,7 +174,8 @@
 
                                 while ($reponse = $stmt->fetch(PDO::FETCH_ASSOC)) {
                                     echo "<option value=" . $reponse['idCategorie'] . ">" . $reponse['designationCat'] . "</option>";
-                                };
+                                }
+                                ;
                                 ?>
                             </select>
                         </div>
@@ -214,7 +218,8 @@
 
                                 while ($reponse = $stmt->fetch(PDO::FETCH_ASSOC)) {
                                     echo "<option value=" . $reponse['idProduit'] . ">" . $reponse['designation'] . "</option>";
-                                };
+                                }
+                                ;
                                 ?>
                             </select>
                         </div>
@@ -237,9 +242,7 @@
 
                 <!-- Tableau détails existants -->
                 <div class="table-responsive mt-4">
-                    <table
-                        id="table_detailEtat"
-                        class="display table table-striped table-hover">
+                    <table id="table_detailEtat" class="display table table-striped table-hover">
                         <thead class="table-dark">
                             <tr>
                                 <th scope="col">ID</th>
@@ -286,7 +289,8 @@
 
                                 while ($reponse = $stmt->fetch(PDO::FETCH_ASSOC)) {
                                     echo "<option value=" . $reponse['idEtat'] . ">" . $reponse['libelle'] . "</option>";
-                                };
+                                }
+                                ;
                                 ?>
                             </select>
                         </div>
@@ -337,14 +341,16 @@
 
                                 while ($reponse = $stmt->fetch(PDO::FETCH_ASSOC)) {
                                     echo "<option value=" . $reponse['idAppel'] . ">" . $reponse['objets'] . "</option>";
-                                };
+                                }
+                                ;
                                 ?>
                             </select>
                         </div>
 
                         <div class="col-md-6 mb-3">
                             <label for="refFournisseurCandidat" class="form-label">Réf. Fournisseur</label>
-                            <select name="refFournisseurCandidat" id="refFournisseurCandidat" class="form-select" required>
+                            <select name="refFournisseurCandidat" id="refFournisseurCandidat" class="form-select"
+                                required>
                                 <option value="">-- Sélectionner un fournisseur --</option>
                                 <?php
                                 $sql = "SELECT * FROM fournisseur";
@@ -353,7 +359,8 @@
 
                                 while ($reponse = $stmt->fetch(PDO::FETCH_ASSOC)) {
                                     echo "<option value=" . $reponse['idFourni'] . ">" . $reponse['noms'] . "</option>";
-                                };
+                                }
+                                ;
                                 ?>
                             </select>
                         </div>
@@ -386,7 +393,7 @@
 
 
 <!-- Modal Payement -->
-<div class="modal fade" id="modalPayement" tabindex="-1" aria-labelledby="modalPayementLabel" aria-hidden="true">
+<div class="modal fade" id="modalPayement1" tabindex="-1" aria-labelledby="modalPayementLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered modal-lg">
         <div class="modal-content">
             <form id="formPayement" name="formPayement">
@@ -399,33 +406,35 @@
                     <input type="hidden" name="table" value="payement">
                     <input type="hidden" name="idPaye" id="idPaye">
                     <input type="hidden" name="refEtatPaye" id="refEtatPaye">
+                    <input type="hidden" id="idEtatHidden" name="idEtat">
                     <div class="row">
-                        <div class="col-md-6 mb-3">
-                            <label for="refProduitPaye" class="form-label">Produit</label>
-                            <select class="form-select" name="refProduitPaye" required>
-                                <option value="">-- Sélectionner le produit --</option>
-                                <?php
-                                $produits = $con->query("SELECT idProduit, designation FROM produit")->fetchAll(PDO::FETCH_ASSOC);
-                                foreach ($produits as $prod) {
-                                    echo "<option value=\"{$prod['idProduit']}\">{$prod['designation']}</option>";
-                                }
-                                ?>
-                            </select>
+                        <!-- tableau -->
+                        <h6>Détails de l'état de besoin</h6>
+                        <table class="table table-sm table-bordered">
+                            <thead>
+                                <tr>
+                                    <th>Produit</th>
+                                    <th>Qté</th>
+                                    <th>PU</th>
+                                    <th>Total</th>
+                                </tr>
+                            </thead>
+                            <tbody id="detailEtatBody">
+                                <!-- rempli via AJAX -->
+                            </tbody>
+                        </table>
+
+                        <div class="mt-3">
+                            <p><b>Total à payer :</b> <span id="montantTotal"></span></p>
+                            <p><b>Déjà payé :</b> <span id="dejaPaye"></span></p>
+                            <p><b>Reste :</b> <span id="reste"></span></p>
                         </div>
 
-                        <div class="col-md-6 mb-3">
-                            <label for="QtePaye" class="form-label">Quantité</label>
-                            <input type="number" step="0.01" class="form-control" name="QtePaye" id="QtePaye" required>
+                        <div class="form-group">
+                            <label>Montant versé :</label>
+                            <input type="number" id="montantVerse" class="form-control">
                         </div>
-
-                        <div class="col-md-6 mb-3">
-                            <label for="PUPaye" class="form-label">Prix Unitaire</label>
-                            <input type="number" step="0.01" class="form-control" name="PUPaye" id="PUPaye" required>
-                        </div>
-                        <div class="col-md-6 mb-3">
-                            <label for="montantPaye" class="form-label">Montant payé</label>
-                            <input type="number" step="0.01" class="form-control" name="montantPaye" id="montantPaye" required>
-                        </div>
+                        <!-- Fin -->
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Annuler</button>
@@ -458,6 +467,60 @@
         </div>
     </div>
 </div>
+
+
+<div class="modal fade" id="modalPayement" tabindex="-1">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+
+            <div class="modal-header">
+                <h5 class="modal-title">payement Fournisseur</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+
+            <div class="modal-body">
+
+                <!-- Fournisseur -->
+                <div id="infoFournisseur" class="mb-3"></div>
+
+                <!-- Produits -->
+                <table class="table table-bordered">
+                    <thead>
+                        <tr>
+                            <th>Produit</th>
+                            <th>Qte</th>
+                            <th>PU</th>
+                            <th>Total</th>
+                        </tr>
+                    </thead>
+                    <tbody id="produitsPayement"></tbody>
+                </table>
+
+                <!-- Résumé -->
+                <div class="alert alert-info">
+                    <p>Total : <span id="montantTotal"></span> $</p>
+                    <p>Déjà payé : <span id="dejaPaye"></span> $</p>
+                    <p>Reste à payer : <span id="reste"></span> $</p>
+                </div>
+
+                <!-- Formulaire payement -->
+                <form id="formPayement">
+                    <input type="hidden" name="refEtatPaye" id="refEtatPaye">
+                    <div class="mb-3">
+                        <label for="montantVerse" class="form-label">Montant à verser</label>
+                        <input type="number" step="0.01" class="form-control" name="montantVerse" id="montantVerse"
+                            required>
+                    </div>
+                    <button type="submit" class="btn btn-success">Enregistrer payement</button>
+                </form>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
 
 <!-- Modal User -->
 <div class="modal fade" id="modalUser" tabindex="-1" aria-labelledby="modalUserLabel" aria-hidden="true">

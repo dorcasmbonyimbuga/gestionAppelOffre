@@ -118,19 +118,159 @@ $(document).ready(function () {
   });
 
   // === PAYEMENT ===
+  // function fetchPayement(idEtat) {
+  //   $.post("../process/fetch_all.php", { table: "payement", refEtatPaye: idEtat }, function (data) {
+  //     $("#table_payement tbody").html(data);
+  //   });
+  // }
+
+  // === PAYEMENT ===
   function fetchPayement(idEtat) {
     $.post("../process/fetch_all.php", { table: "payement", refEtatPaye: idEtat }, function (data) {
-      $("#table_payement tbody").html(data);
+      $("#detailEtatBody").html(data);
     });
   }
 
+  // ==========================================
+
+  // Charger les infos de payement
+  function fetchPayementDetails(idEtat) {
+    $.post("../process/fetch_all.php", { table: "payement", action: "detail", idEtat: idEtat }, function (data) {
+      let info = JSON.parse(data);
+
+      if (info.error) {
+        $("#modalPayement .modal-body").html("<p class='text-danger'>" + info.error + "</p>");
+        return;
+      }
+
+      // Remplir la modale
+      let html = `
+      <h5>État : ${info.etat.libelle}</h5>
+      <p><strong>Fournisseur :</strong> ${info.etat.fournisseur}</p>
+      <p><strong>Montant total :</strong> ${info.montantTotal}</p>
+      <p><strong>Déjà payé :</strong> ${info.dejaPaye}</p>
+      <p><strong>Reste :</strong> ${info.reste}</p>
+      <hr>
+      <h6>Détails produits</h6>
+      <table class="table table-sm">
+        <thead>
+          <tr><th>Produit</th><th>Qte</th><th>PU</th><th>Total</th></tr>
+        </thead>
+        <tbody>
+          ${info.produits.map(p => `
+            <tr>
+              <td>${p.designation}</td>
+              <td>${p.Qte}</td>
+              <td>${p.PU}</td>
+              <td>${p.total}</td>
+            </tr>
+          `).join("")}
+        </tbody>
+      </table>
+    `;
+
+      $("#modalPayement .modal-body").html(html);
+    });
+  }
+
+  // ==========================================
+
+  // $(document).on("click", ".btn-payement", function () {
+  //   const idEtat = $(this).data("paye");
+  //   $("#refEtatPaye").val(idEtat);
+  //   $("#modalPayement").modal("show");
+  //   fetchPayement(idEtat);
+  // });
+
+  // ***********************************************************************
+  // Lorsqu'on clique sur le bouton Payement
+  // $(document).on("click", ".btn-payement", function () {
+  //   let idEtat = $(this).data("paye");
+
+  //   $.post("../process/fetch_all.php", { table: "detailPayement", idEtat: idEtat }, function (response) {
+  //     let data = JSON.parse(response);
+
+  //     if (data.error) {
+  //       alert(data.error);
+  //       return;
+  //     }
+
+  //     // 1. Afficher fournisseur et libellé de l'état
+  //     $("#modalPayement .modal-title").text(
+  //       "Payement – " + data.etat.libelle + " | Fournisseur : " + data.etat.fournisseur
+  //     );
+
+  //     // 2. Remplir tableau produits
+  //     let rows = "";
+  //     data.produits.forEach(p => {
+  //       rows += `<tr>
+  //                       <td>${p.designation}</td>
+  //                       <td>${p.Qte}</td>
+  //                       <td>${p.PU}</td>
+  //                       <td>${p.total}</td>
+  //                    </tr>`;
+  //     });
+  //     $("#detailEtatBody").html(rows);
+
+  //     // 3. Afficher montants
+  //     $("#montantTotal").text(data.montantTotal);
+  //     $("#dejaPaye").text(data.dejaPaye);
+  //     $("#reste").text(data.reste);
+
+  //     // 4. Stocker idEtat dans un input caché pour l’enregistrement
+  //     $("#idEtatHidden").val(idEtat);
+
+  //     // Ouvrir modal
+  //     $("#modalPayement").modal("show");
+  //   });
+  // });
+
+  // ***********************************************************************
+
+
+  // Lorsqu'on clique sur le bouton Payement
+  // === OUVRIR MODAL PAYEMENT ===
+  // Quand on clique sur le bouton payement
   $(document).on("click", ".btn-payement", function () {
-    const idEtat = $(this).data("paye");
-    $("#refEtatPaye").val(idEtat);
-    $("#modalPayement").modal("show");
-    fetchPayement(idEtat);
+    let idEtat = $(this).data("paye");
+
+    $.post("../process/fetch_all.php", { table: "detailPayement", idEtat: idEtat }, function (response) {
+      let data = JSON.parse(response);
+
+      if (data.error) {
+        alert(data.error);
+        return;
+      }
+
+      // Fournisseur
+      $("#infoFournisseur").html(
+        "<strong>Fournisseur :</strong> " + data.etat.fournisseur
+      );
+
+      // Produits
+      let rows = "";
+      data.produits.forEach(p => {
+        rows += `<tr>
+        <td>${p.designation}</td>
+        <td>${p.Qte}</td>
+        <td>${p.PU}</td>
+        <td>${p.total}</td>
+      </tr>`;
+      });
+      $("#produitsPayement").html(rows);
+
+      // Résumé
+      $("#montantTotal").text(data.montantTotal);
+      $("#dejaPaye").text(data.dejaPaye);
+      $("#reste").text(data.reste);
+
+      // Préparer hidden input
+      $("#refEtatPaye").val(idEtat);
+    });
   });
 
+  // ..........................................................................
+  // _______________________________________________________________________
   $("#formPayement").off("submit").on("submit", function (e) {
     e.preventDefault();
     e.stopImmediatePropagation(); // ✅ Empêche le double appel
@@ -146,7 +286,7 @@ $(document).ready(function () {
     $.post("../process/insert.php", $(form).serialize(), function (response) {
       if (response.trim() === "success") {
         fetchPayement(idEtat);
-        showMessage("💰 Paiement enregistré avec succès !");
+        showMessage("💰 payement enregistré avec succès !");
         $("#modalPayement").modal("hide");
         loadTable("etatBesoin");
       } else {
