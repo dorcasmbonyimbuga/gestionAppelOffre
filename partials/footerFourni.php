@@ -1,7 +1,7 @@
       <footer class="footer">
         <div class="container-fluid d-flex justify-content-between">
           <div class="">© 2025 All rights reserved by Team 467</div>
-          <div>Done by Dorcas Mbonyimbuga.</div>
+          <div>Done by Team 467.</div>
         </div>
       </footer>
     </div>

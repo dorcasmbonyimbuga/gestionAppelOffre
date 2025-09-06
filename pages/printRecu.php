@@ -26,7 +26,7 @@ if (isset($_GET['idPaye'])) {
 
         // === Récupérer tous les produits de cet état ===
         $stmt2 = $con->prepare("
-            SELECT p.designation, d.Qte, d.PU, (d.Qte*d.PU) AS PT
+            SELECT p.designation, d.Qte, d.PU, (d.Qte*d.PU) AS PT,p.unite
             FROM detailEtat d
             INNER JOIN produit p ON d.refProduit = p.idProduit
             WHERE d.refEtatDetail = ?
@@ -67,8 +67,8 @@ if (isset($_GET['idPaye'])) {
                 <tr>
                     <th>Produit</th>
                     <th>Quantité</th>
-                    <th>PU (FC)</th>
-                    <th>PT (FC)</th>
+                    <th>PU</th>
+                    <th>PT</th>
                 </tr>
             </thead>
             <tbody>
@@ -87,9 +87,9 @@ if (isset($_GET['idPaye'])) {
             </tbody>
         </table>
 
-        <div class="total">Montant Total : <?= number_format($recu['montantTotal'],2) ?> FC</div>
-        <div class="total">Montant Payé : <?= number_format($recu['montantVerse'],2) ?> FC</div>
-        <div class="total">Reste à payer : <?= number_format($recu['reste'],2) ?> FC</div>
+        <div class="total">Montant Total : <?= number_format($recu['montantTotal'],2) ?><?= $prod['unite'] ?> </div>
+        <div class="total">Montant Payé : <?= number_format($recu['montantVerse'],2) ?> <?= $prod['unite'] ?></div>
+        <div class="total">Reste à payer : <?= number_format($recu['reste'],2) ?> <?= $prod['unite'] ?></div>
     </div>
 
 </body>

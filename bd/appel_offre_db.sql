@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Hôte : 127.0.0.1
--- Généré le : ven. 22 août 2025 à 05:40
+-- Généré le : sam. 30 août 2025 à 19:02
 -- Version du serveur : 10.4.32-MariaDB
 -- Version de PHP : 8.2.12
 
@@ -83,9 +83,8 @@ CREATE TABLE `detailetat` (
 
 CREATE TABLE `etatbesoin` (
   `idEtat` int(11) NOT NULL,
-  `refFournisseurEtat` int(11) NOT NULL,
-  `date` varchar(20) NOT NULL,
-  `libelle` varchar(200) NOT NULL
+  `libelle` varchar(200) NOT NULL,
+  `date` varchar(50) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
@@ -117,7 +116,7 @@ CREATE TABLE `payement` (
   `montantVerse` double NOT NULL,
   `reste` double NOT NULL,
   `datePaye` date NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ;
 
 -- --------------------------------------------------------
 
@@ -192,8 +191,7 @@ ALTER TABLE `detailetat`
 -- Index pour la table `etatbesoin`
 --
 ALTER TABLE `etatbesoin`
-  ADD PRIMARY KEY (`idEtat`),
-  ADD KEY `fk_fourni_etat` (`refFournisseurEtat`);
+  ADD PRIMARY KEY (`idEtat`);
 
 --
 -- Index pour la table `fournisseur`
@@ -307,12 +305,6 @@ ALTER TABLE `candidats`
 ALTER TABLE `detailetat`
   ADD CONSTRAINT `fk_etat_detail` FOREIGN KEY (`refEtatDetail`) REFERENCES `etatbesoin` (`idEtat`),
   ADD CONSTRAINT `fk_produit` FOREIGN KEY (`refProduit`) REFERENCES `produit` (`idProduit`);
-
---
--- Contraintes pour la table `etatbesoin`
---
-ALTER TABLE `etatbesoin`
-  ADD CONSTRAINT `fk_fourni_etat` FOREIGN KEY (`refFournisseurEtat`) REFERENCES `fournisseur` (`idFourni`);
 
 --
 -- Contraintes pour la table `payement`

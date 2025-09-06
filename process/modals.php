@@ -85,7 +85,6 @@
                                 ?>
                             </select>
                         </div>
-
                         <div class="col-md-6 mb-3">
                             <label for="libelle" class="form-label">Libellé</label>
                             <input type="text" class="form-control" name="libelle" id="libelle" required>

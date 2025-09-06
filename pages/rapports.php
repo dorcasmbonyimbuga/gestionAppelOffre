@@ -243,36 +243,47 @@ include "../partials/header.php";
                         <tbody>
                             <?php
                             $stmt = $con->query("
-                                        SELECT paye.idPaye, f.noms AS fournisseur, paye.montantVerse, paye.datePaye, e.idEtat
-                                        FROM payement paye
-                                        INNER JOIN etatBesoin e ON paye.refEtatPaye = e.idEtat
-                                        INNER JOIN fournisseur f ON e.refFournisseurEtat = f.idFourni
-                                        ORDER BY paye.datePaye DESC
-                                    ");
+                SELECT paye.idPaye, f.noms AS fournisseur, paye.montantVerse, paye.datePaye, e.idEtat
+                FROM payement paye
+                INNER JOIN etatBesoin e ON paye.refEtatPaye = e.idEtat
+                INNER JOIN fournisseur f ON e.refFournisseurEtat = f.idFourni
+                ORDER BY paye.datePaye DESC
+            ");
 
                             foreach ($stmt as $paiement):
-                                $stmt2 = $con->prepare("SELECT SUM(Qte*PU) FROM detailEtat WHERE refEtatDetail = ?");
+                                // Montant total
+                                $stmt2 = $con->prepare("
+                    SELECT SUM(d.Qte*d.PU) AS total, MAX(p.unite) AS devise
+                    FROM detailEtat d
+                    INNER JOIN produit p ON d.refProduit = p.idProduit
+                    WHERE d.refEtatDetail = ?
+                ");
                                 $stmt2->execute([$paiement['idEtat']]);
-                                $montantTotal = $stmt2->fetchColumn() ?? 0;
+                                $res = $stmt2->fetch(PDO::FETCH_ASSOC);
+                                $montantTotal = $res['total'] ?? 0;
+                                $devise = $res['devise'] ?? '';
 
+                                // Déjà payé avant ce paiement
                                 $stmt3 = $con->prepare("SELECT COALESCE(SUM(montantVerse),0) FROM payement WHERE refEtatPaye = ? AND idPaye < ?");
                                 $stmt3->execute([$paiement['idEtat'], $paiement['idPaye']]);
                                 $dejaPaye = $stmt3->fetchColumn() ?? 0;
 
+                                // Reste à payer
                                 $reste = $montantTotal - ($dejaPaye + $paiement['montantVerse']);
                                 ?>
                                 <tr>
                                     <td><?= htmlspecialchars($paiement['fournisseur']) ?></td>
-                                    <td><?= number_format($montantTotal, 2) ?> FC</td>
-                                    <td><?= number_format($dejaPaye, 2) ?> FC</td>
-                                    <td><?= number_format($paiement['montantVerse'], 2) ?> FC</td>
-                                    <td><?= number_format($reste, 2) ?> FC</td>
+                                    <td><?= number_format($montantTotal, 2) ?>     <?= $devise ?></td>
+                                    <td><?= number_format($dejaPaye, 2) ?>     <?= $devise ?></td>
+                                    <td><?= number_format($paiement['montantVerse'], 2) ?>     <?= $devise ?></td>
+                                    <td><?= number_format($reste, 2) ?>     <?= $devise ?></td>
                                     <td class="date"><?= date("Y-m-d", strtotime($paiement['datePaye'])) ?></td>
                                 </tr>
                             <?php endforeach; ?>
                         </tbody>
                     </table>
                 </div>
+
 
             </div>
         </div>

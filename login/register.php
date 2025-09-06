@@ -78,8 +78,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['enregistrer'])) {
                     <div class="col-md-6">
                         <div class="card">
                             <div class="card-body">
-                                <h3 class="text-center">Appel d'offre</h3>
-                                <h4 class="text-center">Register</h4>
+                                <h3 class="text-center">Création d'un compte fournisseur</h3>
+                                <!-- <h4 class="text-center">Register</h4> -->
                                 <form method="POST">
                                     <?php if ($message): ?>
                                         <div id="message" class="alert alert-<?= $alertClass ?> text-center">
@@ -135,7 +135,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['enregistrer'])) {
         <footer class="footer">
             <div class="container-fluid d-flex justify-content-between">
                 <div class="">© 2025 All rights reserved by Team 467</div>
-                <div>Done by Dorcas Mbonyimbuga.</div>
+                <div>Done by Team 467.</div>
             </div>
         </footer>
     </div>

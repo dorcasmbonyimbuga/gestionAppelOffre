@@ -86,22 +86,38 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $date,
             $_POST['autresDetails']
         ]) ? 'success' : 'error';
-    } 
-    elseif ($_POST['table'] === 'payement') {
-        $idEtat = $_POST['refEtatPaye'];
-        $montantTotal = $_POST['montantTotal'];
-        $montantVerse = $_POST['montantVerse'];
-
-        // déjà payé
-        $stmt = $con->prepare("SELECT COALESCE(SUM(montantVerse),0) FROM payement WHERE refEtatPaye=?");
-        $stmt->execute([$idEtat]);
-        $dejaPaye = $stmt->fetchColumn();
-
-        $reste = $montantTotal - ($dejaPaye + $montantVerse);
-
-        $stmt = $con->prepare("INSERT INTO payement (refEtatPaye, montantTotal, montantVerse, reste, datePaye) VALUES (?, ?, ?, ?, NOW())");
-        echo $stmt->execute([$idEtat, $montantTotal, $montantVerse, $reste]) ? 'success' : 'error';
     }
+
+    // Payement
+    
+    elseif ($_POST['table'] === 'payement') {
+    $idEtat = intval($_POST['refEtatPaye']);
+    $montantTotal = floatval($_POST['montantTotal']);
+    $montantVerse = floatval($_POST['montantVerse']);
+
+    // Déjà payé
+    $stmt = $con->prepare("SELECT COALESCE(SUM(montantVerse),0) FROM payement WHERE refEtatPaye=?");
+    $stmt->execute([$idEtat]);
+    $dejaPaye = $stmt->fetchColumn();
+
+    $reste = $montantTotal - $dejaPaye;
+
+    // ✅ Vérification : on ne peut pas verser plus que le reste
+    if ($montantVerse > $reste) {
+        echo "error"; // comme pour 'candidats'
+        exit;
+    }
+
+    // Nouveau reste après ce paiement
+    $resteFinal = $reste - $montantVerse;
+
+    // Insertion
+    $stmt = $con->prepare("INSERT INTO payement (refEtatPaye, montantTotal, montantVerse, reste, datePaye) 
+                           VALUES (?, ?, ?, ?, NOW())");
+    echo $stmt->execute([$idEtat, $montantTotal, $montantVerse, $resteFinal]) ? "success" : "error";
+}
+
+
 
 
     // Utilisateur

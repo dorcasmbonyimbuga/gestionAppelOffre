@@ -566,7 +566,7 @@ $initiales = implode('', array_map(function ($part) {
             © 2025 All rights reserved by Team 467
           </div>
           <div>
-            Designed by Dorcas Mbonyimbuga.
+            Designed by Team 467.
           </div>
         </div>
       </footer>
